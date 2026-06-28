@@ -6,11 +6,12 @@
   --hd-blue: #00aad2;
   --hd-bg: #f6f3f0;
   --hd-warm: #c4977a;
+  --font-cairo: "Cairo", sans-serif; /* fallback before JS hydration */
 }
 
 /* base resets */
 body {
-  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  font-family: var(--font-cairo), sans-serif;
   background: var(--hd-bg);
   -webkit-font-smoothing: antialiased;
 }

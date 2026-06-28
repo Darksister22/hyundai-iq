@@ -8,7 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
-
+//Anmiations
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
@@ -84,50 +84,56 @@ export default function HomeClient({
         delay: 0.2,
       });
 
-      // ─── 3. Section heading reveal on scroll ───
-      if (headingRef.current) {
-        gsap.from(headingRef.current.children, {
-          y: 30,
-          opacity: 0,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 80%",
-          },
-        });
-      }
+// ─── 3. Section heading reveal on scroll ───
+if (headingRef.current) {
+  gsap.from(headingRef.current.children, {
+    y: 30,
+    opacity: 0,
+    duration: 0.7,
+    stagger: 0.1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: headingRef.current,
+      start: "top 80%",
+      end: "bottom 20%",          // explicit end so the back-edges fire predictably
+      toggleActions: "play reverse play reverse",
+    },
+  });
+}
 
-      // ─── 4. Filter tabs slide in ───
-      if (tabsRef.current) {
-        gsap.from(tabsRef.current.children, {
-          y: 20,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.06,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: tabsRef.current,
-            start: "top 85%",
-          },
-        });
-      }
+// ─── 4. Filter tabs slide in ───
+if (tabsRef.current) {
+  gsap.from(tabsRef.current.children, {
+    y: 20,
+    opacity: 0,
+    duration: 0.5,
+    stagger: 0.06,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: tabsRef.current,
+      start: "top 85%",
+      end: "bottom 20%",
+      toggleActions: "play reverse play reverse",
+    },
+  });
+}
 
-      // ─── 5. Model cards staggered reveal ───
-      if (gridRef.current) {
-        gsap.from(gridRef.current.children, {
-          y: 50,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: gridRef.current,
-            start: "top 80%",
-          },
-        });
-      }
+// ─── 5. Model cards staggered reveal ───
+if (gridRef.current) {
+  gsap.from(gridRef.current.children, {
+    y: 50,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: gridRef.current,
+      start: "top 80%",
+      end: "bottom 20%",
+      toggleActions: "play reverse play reverse",
+    },
+  });
+}
     }, rootRef);
 
     return () => ctx.revert();
