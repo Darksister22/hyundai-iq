@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { getDictionary, Locale } from "@/lib/i18n";
+import ContactForm from "@/components/contact-form";
 
 export default async function ContactPage({
   params,
@@ -11,55 +13,52 @@ export default async function ContactPage({
   const t = dict.contact;
 
   return (
-    <section className="py-20">
-      <div className="max-w-3xl mx-auto px-6">
-        <h1 className="text-3xl font-bold text-[#002C5F] mb-2">{t.title}</h1>
-        <p className="text-gray-500 mb-12">{t.subtitle}</p>
-
-        <div className="bg-white rounded-xl border border-gray-200 p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                {t.name}
-              </label>
-              <input
-                type="text"
-                className="w-full px-4 py-3 border border-gray-200 rounded text-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                {t.phone}
-              </label>
-              <input
-                type="tel"
-                className="w-full px-4 py-3 border border-gray-200 rounded text-sm"
-              />
-            </div>
-          </div>
-          <div className="mt-6">
-            <label className="block text-sm text-gray-600 mb-2">
-              {t.email}
-            </label>
-            <input
-              type="email"
-              className="w-full px-4 py-3 border border-gray-200 rounded text-sm"
-            />
-          </div>
-          <div className="mt-6">
-            <label className="block text-sm text-gray-600 mb-2">
-              {t.message}
-            </label>
-            <textarea
-              rows={5}
-              className="w-full px-4 py-3 border border-gray-200 rounded text-sm resize-none"
-            />
-          </div>
-          <button className="mt-8 px-8 py-3 bg-[#002C5F] text-white text-sm font-semibold rounded hover:bg-[#003d7a] transition-colors">
-            {t.send}
-          </button>
+    <>
+      {/* ── Hero banner: placeholder for an image, with breadcrumb + title overlaid ── */}
+      <section className="relative h-[420px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">
+        {/* TODO: replace this placeholder block with the banner image, e.g.
+            <Image src="/images/contact-banner.webp" alt="" fill className="object-cover" priority /> */}
+        <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">
+          Banner image
         </div>
-      </div>
-    </section>
+
+        {/* dark gradient so overlaid text stays readable on any image */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/20" />
+
+        <div className="relative h-full max-w-7xl mx-auto px-6 flex flex-col">
+          {/* breadcrumb pinned to the top */}
+          <nav className="mt-6 text-xs text-white/80 flex items-center gap-2 self-start">
+            <Link href={`/${locale}`} className="hover:text-white">
+              {t.home}
+            </Link>
+            <span>/</span>
+            <span>{t.breadcrumbSupport}</span>
+            <span>/</span>
+            <span className="text-white">{t.title}</span>
+          </nav>
+
+          {/* page title pinned to the bottom */}
+          <h1 className="mt-auto mb-10 text-4xl md:text-5xl font-bold text-white">
+            {t.title}
+          </h1>
+        </div>
+      </section>
+
+      {/* ── Form section: heading, then form offset to one side ── */}
+{/* ── Form section: form on the right, heading on the left ── */}
+<section className="py-16">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      {/* form — first item sits on the right in RTL */}
+      <ContactForm locale={locale} dict={t} />
+
+      {/* heading on the opposite side of the form */}
+      <aside className="lg:order-first">
+        <h2 className="text-2xl font-bold text-[#002C5F]">{t.subtitle}</h2>
+      </aside>
+    </div>
+  </div>
+</section>
+    </>
   );
 }
