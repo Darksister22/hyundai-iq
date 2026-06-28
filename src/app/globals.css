@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/* hyundai brand colors as CSS custom properties */
+:root {
+  --hd-dark: #002c5f;
+  --hd-blue: #00aad2;
+  --hd-bg: #f6f3f0;
+  --hd-warm: #c4977a;
+}
+
+/* base resets */
+body {
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  background: var(--hd-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* RTL-aware utilities — these flip automatically with dir="rtl" */
+/* use logical properties in custom CSS: */
+/* margin-inline-start, padding-inline-end, inset-inline-start, etc. */
+
+/* swiper custom pagination dots */
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  width: 24px;
+  border-radius: 4px;
+  background: white;
+}

@@ -1,0 +1,76 @@
+{
+  "nav": {
+    "findACar": "Find a Car",
+    "aboutUs": "About Us",
+    "findUs": "Find Us",
+    "contactUs": "Contact Us",
+    "offers": "Offers",
+    "requestCallback": "Request a Callback",
+    "langSwitch": "العربية",
+    "langCode": "ar"
+  },
+  "home": {
+    "exploreModels": "Explore featured models",
+    "exploreModelsDesc": "Find the perfect Hyundai for your lifestyle",
+    "allCars": "All cars",
+    "sedan": "Sedan",
+    "suv": "SUV",
+    "electric": "Electric",
+    "mpv": "MPV",
+    "explore": "Explore",
+    "configure": "Configure",
+    "knowMore": "Know more",
+    "whoWeAre": "Who we are",
+    "whoWeAreDesc": "From pioneering automaker in Korea to global auto industry leader"
+  },
+  "model": {
+    "highlights": "Highlights",
+    "atAGlance": "at a glance",
+    "engine": "Engine",
+    "maxPower": "Maximum power",
+    "maxTorque": "Maximum torque",
+    "drive": "Drive",
+    "design": "Design",
+    "performance": "Performance",
+    "safety": "Safety",
+    "convenience": "Convenience",
+    "requestCallback": "Request a Callback",
+    "requestTestDrive": "Request a Test Drive",
+    "exterior": "Exterior",
+    "interior": "Interior",
+    "specification": "Specification",
+    "colors": "Colors",
+    "view360": "360° Interior View",
+    "viewSpecs": "View full specifications"
+  },
+  "about": {
+    "title": "About Hyundai",
+    "subtitle": "From pioneering automaker in Korea to global auto industry leader"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you",
+    "name": "Full name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "message": "Your message",
+    "send": "Send message"
+  },
+  "findUs": {
+    "title": "Find Us",
+    "subtitle": "Locate your nearest Hyundai showroom"
+  },
+  "footer": {
+    "newsletter": "Sign up for our newsletter",
+    "newsletterDesc": "Stay updated on new models, offers, and Hyundai news",
+    "emailPlaceholder": "Email address",
+    "subscribe": "Subscribe",
+    "vehicles": "Vehicles",
+    "services": "Hyundai Services",
+    "support": "Support",
+    "story": "Hyundai Story",
+    "privacyPolicy": "Privacy Policy",
+    "legalTerms": "Legal Disclaimer",
+    "rights": "© 2026 Hyundai Iraq. All rights reserved."
+  }
+}
