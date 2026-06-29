@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getDictionary, Locale } from "@/lib/i18n";
 import ContactForm from "@/components/contact-form";
+import Image from "next/image";
 
 export default async function ContactPage({
   params,
@@ -18,9 +19,13 @@ export default async function ContactPage({
       <section className="relative h-[420px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">
         {/* TODO: replace this placeholder block with the banner image, e.g.
             <Image src="/images/contact-banner.webp" alt="" fill className="object-cover" priority /> */}
-        <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">
-          Banner image
-        </div>
+<Image
+  src="/images/contact-us.webp"
+  alt=""              // decorative; text is overlaid separately
+  fill
+  priority           // it's above the fold
+  className="object-cover"
+/>
 
         {/* dark gradient so overlaid text stays readable on any image */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/20" />
