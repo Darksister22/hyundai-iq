@@ -1,50 +1,63 @@
-export interface VehicleSpec {
-  engine: string;
-  power: string;
-  torque: string;
-  drive: string;
+// ── Shared sub-types ──
+
+export interface OverviewStat {
+  labelEn: string;
+  labelAr: string;
+  value: string;
 }
 
-export interface VehicleHighlight {
-  category: string;
+export interface FeatureCard {
+  category?: string;
   titleEn: string;
   titleAr: string;
   descEn: string;
   descAr: string;
   image: string;
+}
+
+export interface CaptionedImage {
+  image: string;
+  captionEn: string;
+  captionAr: string;
 }
 
 export interface ColorOption {
   nameEn: string;
   nameAr: string;
   hex: string;
-  image: string;
+  gradient: string; // background gradient shown behind this color's spin
+  spinFrames: string[];
 }
 
-export interface GalleryItem {
-  image: string;
-  captionEn?: string;
-  captionAr?: string;
+/**
+ * Generates an ordered list of spin-frame paths.
+ * Matches the "prefix- (1).webp, prefix- (2).webp, ..." naming.
+ *   spinFrames("/images/models/accent/spin/grey-", 36)
+ *   → [".../grey- (1).webp", ".../grey- (2).webp", ... 36 entries]
+ */
+export function spinFrames(
+  prefix: string,
+  count: number,
+  ext = "webp"
+): string[] {
+  return Array.from(
+    { length: count },
+    (_, i) => `${prefix} (${i + 1}).${ext}`
+  );
 }
 
-export interface FeatureItem {
+export interface DesignRow {
+  labelEn: string;
+  labelAr: string;
   titleEn: string;
   titleAr: string;
-  descEn: string;
-  descAr: string;
   image: string;
 }
 
-export interface SpecRow {
+export interface PerfStat {
   labelEn: string;
   labelAr: string;
   value: string;
-}
-
-export interface SpecGroup {
-  groupEn: string;
-  groupAr: string;
-  rows: SpecRow[];
 }
 
 export interface VehicleModel {
@@ -52,319 +65,218 @@ export interface VehicleModel {
   nameEn: string;
   nameAr: string;
   category: "sedan" | "suv" | "electric" | "mpv";
-  taglineEn: string;
-  taglineAr: string;
   hero: string;
-  specs: VehicleSpec;
-  highlights: VehicleHighlight[];
-  exterior: {
-    gallery: GalleryItem[];
+  heroHeadlineEn: string;
+  heroHeadlineAr: string;
+  overview: {
+    headlineEn: string;
+    headlineAr: string;
+    taglineEn: string;
+    taglineAr: string;
+    engineEn: string;
+    engineAr: string;
+    stats: OverviewStat[];
+  };
+  highlights: FeatureCard[];
+  design: {
+    headingEn: string;
+    headingAr: string;
+    heroImage: string;
+    exterior: CaptionedImage[];
+    interior: CaptionedImage[];
+  };
+  additionalDesign: {
+    headingEn: string;
+    headingAr: string;
+    rows: DesignRow[];
+  };
+  visualizer: {
     colors: ColorOption[];
+    panorama360?: string;
   };
-  interior: {
-    gallery: GalleryItem[];
-    panorama360?: string; // equirectangular image for the 360 viewer
+  performance: {
+    heroImage: string;
+    engineEn: string;
+    engineAr: string;
+    stats: PerfStat[];
+    closingImage: string;
   };
-  performance: FeatureItem[];
-  safety: FeatureItem[];
-  convenience: FeatureItem[];
-  specification: SpecGroup[];
+  safety: {
+    headingEn: string;
+    headingAr: string;
+    cards: FeatureCard[];
+  };
+  convenience: {
+    headingEn: string;
+    headingAr: string;
+    bgImage: string;
+    cards: FeatureCard[];
+  };
+  gallery: string[];
 }
 
-// placeholder data — will be replaced by dashboard API
+const emptySections = {
+  highlights: [],
+  design: { headingEn: "", headingAr: "", heroImage: "", exterior: [], interior: [] },
+  additionalDesign: { headingEn: "", headingAr: "", rows: [] },
+  visualizer: { colors: [] },
+  performance: { heroImage: "", engineEn: "", engineAr: "", stats: [], closingImage: "" },
+  safety: { headingEn: "", headingAr: "", cards: [] },
+  convenience: { headingEn: "", headingAr: "", bgImage: "", cards: [] },
+  gallery: [],
+};
+
 export const models: VehicleModel[] = [
   {
     slug: "accent",
     nameEn: "ACCENT",
     nameAr: "أكسنت",
     category: "sedan",
-    taglineEn: "Smart elegance and space beyond expectations",
-    taglineAr: "أناقة ذكية ومساحة تفوق التوقعات",
-    hero: "/images/models/accent-hero.webp",
-    specs: {
-      engine: "1.5L",
-      power: "113 HP",
-      torque: "144 Nm",
-      drive: "2WD",
+    hero: "/images/models/accent/hero.webp",
+    heroHeadlineEn: "Bold and sophisticated",
+    heroHeadlineAr: "جريئة وأنيقة",
+    overview: {
+      headlineEn: "This is How You Dare",
+      headlineAr: "هكذا تجرؤ",
+      taglineEn: "Refined sportiness, exquisite interior, and advanced safety and convenience features",
+      taglineAr: "رياضية مصقولة، تصميم داخلي رائع، وميزات سلامة وراحة متطورة",
+      engineEn: "1.5L Gasoline",
+      engineAr: "١.٥ لتر بنزين",
+      stats: [
+        { labelEn: "Max Power", labelAr: "القوة القصوى", value: "113 HP" },
+        { labelEn: "Max Torque", labelAr: "عزم الدوران", value: "144 Nm" },
+        { labelEn: "Seating", labelAr: "المقاعد", value: "5 Seats" },
+        { labelEn: "Drive", labelAr: "الدفع", value: "2 WD (FWD)" },
+      ],
     },
     highlights: [
-      {
-        category: "design",
-        titleEn: "City spirit and next-gen confidence",
-        titleAr: "تصميم يعكس روح المدينة وثقة الجيل الجديد",
-        descEn:
-          "Placeholder copy describing the exterior design language and overall character of the vehicle.",
-        descAr: "نص مؤقت يصف لغة التصميم الخارجي والطابع العام للسيارة.",
-        image: "/images/models/accent-design.webp",
-      },
-      {
-        category: "performance",
-        titleEn: "Quiet power and smooth daily performance",
-        titleAr: "قوة هادئة وأداء يومي سلس",
-        descEn:
-          "Placeholder copy describing engine response, refinement, and driving feel.",
-        descAr: "نص مؤقت يصف استجابة المحرك والنعومة وإحساس القيادة.",
-        image: "/images/models/accent-performance.webp",
-      },
-      {
-        category: "safety",
-        titleEn: "Stronger frame and smarter protection",
-        titleAr: "هيكل أقوى وحماية أذكى",
-        descEn:
-          "Placeholder copy describing the safety systems and body structure.",
-        descAr: "نص مؤقت يصف أنظمة السلامة وهيكل السيارة.",
-        image: "/images/models/accent-safety.webp",
-      },
-      {
-        category: "convenience",
-        titleEn: "Advanced comfort with smart features",
-        titleAr: "راحة متقدمة بميزات ذكية",
-        descEn:
-          "Placeholder copy describing the convenience and comfort features.",
-        descAr: "نص مؤقت يصف ميزات الراحة والرفاهية.",
-        image: "/images/models/accent-convenience.webp",
-      },
+      { category: "Safety", titleEn: "Exceptional Safety", titleAr: "سلامة استثنائية", descEn: "Placeholder description for the safety highlight card.", descAr: "وصف مؤقت لبطاقة ميزة السلامة.", image: "/images/models/accent/highlight-safety.webp" },
+      { category: "Convenience", titleEn: "A New Level of Excellence", titleAr: "مستوى جديد من التميز", descEn: "Placeholder description for the convenience highlight card.", descAr: "وصف مؤقت لبطاقة ميزة الراحة.", image: "/images/models/accent/highlight-convenience.webp" },
+      { category: "Design", titleEn: "Parametric Dynamics", titleAr: "الديناميكية البارامترية", descEn: "Placeholder description for the design highlight card.", descAr: "وصف مؤقت لبطاقة ميزة التصميم.", image: "/images/models/accent/highlight-design.webp" },
     ],
-    exterior: {
-      gallery: [
-        { image: "/images/models/accent-ext-1.webp" },
-        { image: "/images/models/accent-ext-2.webp" },
-        { image: "/images/models/accent-ext-3.webp" },
+    design: {
+      headingEn: "Refined Sportiness",
+      headingAr: "رياضية مصقولة",
+      heroImage: "/images/models/accent/design-hero.webp",
+      exterior: [
+        { image: "/images/models/accent/ext-1.webp", captionEn: "LED tail lamps create a bold, continuous light signature with a confident rear stance.", captionAr: "مصابيح خلفية LED تخلق توقيعًا ضوئيًا جريئًا ومستمرًا بمظهر خلفي واثق." },
+        { image: "/images/models/accent/ext-2.webp", captionEn: "Full LED headlamps blend with the parametric grille for a striking front stance.", captionAr: "مصابيح أمامية LED كاملة تمتزج مع الشبك البارامتري لمظهر أمامي لافت." },
+        { image: "/images/models/accent/ext-3.webp", captionEn: "Placeholder caption for an additional exterior shot.", captionAr: "تعليق مؤقت للقطة خارجية إضافية." },
       ],
+      interior: [
+        { image: "/images/models/accent/int-1.webp", captionEn: "Dual displays integrated under a single glass panel for a clear, high-tech feel.", captionAr: "شاشات مزدوجة مدمجة تحت لوحة زجاجية واحدة لإحساس واضح وعالي التقنية." },
+        { image: "/images/models/accent/int-2.webp", captionEn: "Crafted for comfort with power adjustment and lumbar support on every journey.", captionAr: "مصممة للراحة مع تعديل كهربائي ودعم قطني في كل رحلة." },
+      ],
+    },
+    additionalDesign: {
+      headingEn: "A Deeper Look into the Design Craftsmanship",
+      headingAr: "نظرة أعمق على إتقان التصميم",
+      rows: [
+        { labelEn: "Power Driver's Seat", labelAr: "مقعد سائق كهربائي", titleEn: "Easily adjust seat height and position to find your perfect driving posture.", titleAr: "اضبط بسهولة ارتفاع المقعد وموضعه للعثور على وضعية القيادة المثالية.", image: "/images/models/accent/add-1.webp" },
+        { labelEn: "USB-C Type Charger", labelAr: "شاحن USB-C", titleEn: "Enjoy faster charging and seamless connectivity with the switch-type USB-C module.", titleAr: "استمتع بشحن أسرع واتصال سلس مع وحدة USB-C.", image: "/images/models/accent/add-2.webp" },
+        { labelEn: "Ventilated Seats", labelAr: "مقاعد مهواة", titleEn: "Helps you stay cool and comfortable by keeping your temperature regulated.", titleAr: "تساعدك على البقاء منتعشًا ومرتاحًا من خلال تنظيم درجة حرارتك.", image: "/images/models/accent/add-3.webp" },
+      ],
+    },
+    visualizer: {
       colors: [
-        {
-          nameEn: "Polar White",
-          nameAr: "أبيض قطبي",
-          hex: "#F4F4F2",
-          image: "/images/models/accent-color-white.webp",
-        },
-        {
-          nameEn: "Phantom Black",
-          nameAr: "أسود فانتوم",
-          hex: "#1A1A1A",
-          image: "/images/models/accent-color-black.webp",
-        },
-        {
-          nameEn: "Dazzling Blue",
-          nameAr: "أزرق لامع",
-          hex: "#2B4A7E",
-          image: "/images/models/accent-color-blue.webp",
-        },
-        {
-          nameEn: "Fiery Red",
-          nameAr: "أحمر ناري",
-          hex: "#A21F2D",
-          image: "/images/models/accent-color-red.webp",
-        },
+        { nameEn: "Fluid Grey Metal", nameAr: "رمادي معدني", hex: "#9A9C9E", gradient: "linear-gradient(180deg, #8C8E90 0%, #A7A9AB 100%)", spinFrames: spinFrames("/images/models/accent/spin/grey-", 36) },
+        { nameEn: "Polar White", nameAr: "أبيض قطبي", hex: "#EDEDED", gradient: "linear-gradient(180deg, #D8D8D8 0%, #F0F0F0 100%)", spinFrames: spinFrames("/images/models/accent/spin/white-", 36) },
+        { nameEn: "Phantom Black", nameAr: "أسود فانتوم", hex: "#1C1C1C", gradient: "linear-gradient(180deg, #2A2A2A 0%, #4A4A4A 100%)", spinFrames: spinFrames("/images/models/accent/spin/black-", 36) },
+        { nameEn: "Intense Blue", nameAr: "أزرق كثيف", hex: "#1F4E8C", gradient: "linear-gradient(180deg, #1E3F6E 0%, #3E6BA8 100%)", spinFrames: spinFrames("/images/models/accent/spin/blue-", 36) },
+      ],
+      panorama360: "/images/models/accent/interior-360.webp",
+    },
+    performance: {
+      heroImage: "/images/models/accent/perf-hero.webp",
+      engineEn: "1.5L Gasoline",
+      engineAr: "١.٥ لتر بنزين",
+      stats: [
+        { labelEn: "Max Power", labelAr: "القوة القصوى", value: "113 HP" },
+        { labelEn: "Max Torque", labelAr: "عزم الدوران", value: "144 Nm" },
+        { labelEn: "Transmission", labelAr: "ناقل الحركة", value: "IVT" },
+        { labelEn: "0-100 kph", labelAr: "٠-١٠٠ كم/س", value: "10.4 seconds" },
+      ],
+      closingImage: "/images/models/accent/perf-closing.webp",
+    },
+    safety: {
+      headingEn: "Revel in the Safety of Premium Models",
+      headingAr: "انعم بسلامة الطرازات الفاخرة",
+      cards: [
+        { titleEn: "ECM (Electrochromic Rearview Mirror)", titleAr: "مرآة رؤية خلفية إلكتروكرومية", descEn: "Placeholder description for the ECM safety feature.", descAr: "وصف مؤقت لميزة السلامة ECM.", image: "/images/models/accent/safety-1.webp" },
+        { titleEn: "Forward Collision-Avoidance Assist (FCA)", titleAr: "مساعد تجنب الاصطدام الأمامي", descEn: "Placeholder description for the FCA safety feature.", descAr: "وصف مؤقت لميزة السلامة FCA.", image: "/images/models/accent/safety-2.webp" },
+        { titleEn: "Blind Spot Collision-Avoidance Assist (BCA)", titleAr: "مساعد تجنب تصادم النقطة العمياء", descEn: "Placeholder description for the BCA safety feature.", descAr: "وصف مؤقت لميزة السلامة BCA.", image: "/images/models/accent/safety-3.webp" },
+        { titleEn: "Rear Cross-Traffic Collision Assist (RCCA)", titleAr: "مساعد تصادم حركة المرور الخلفية", descEn: "Placeholder description for the RCCA safety feature.", descAr: "وصف مؤقت لميزة السلامة RCCA.", image: "/images/models/accent/safety-4.webp" },
       ],
     },
-    interior: {
-      gallery: [
-        { image: "/images/models/accent-int-1.webp" },
-        { image: "/images/models/accent-int-2.webp" },
-        { image: "/images/models/accent-int-3.webp" },
+    convenience: {
+      headingEn: "Enhanced Drives",
+      headingAr: "قيادة محسّنة",
+      bgImage: "/images/models/accent/conv-bg.webp",
+      cards: [
+        { titleEn: "Apple CarPlay and Android Auto", titleAr: "Apple CarPlay و Android Auto", descEn: "Placeholder description for smartphone connectivity.", descAr: "وصف مؤقت لاتصال الهاتف الذكي.", image: "/images/models/accent/conv-1.webp" },
+        { titleEn: "Wireless Smartphone Charger", titleAr: "شاحن لاسلكي للهاتف", descEn: "Placeholder description for the wireless charger.", descAr: "وصف مؤقت للشاحن اللاسلكي.", image: "/images/models/accent/conv-2.webp" },
+        { titleEn: "Integrated Voice Control", titleAr: "تحكم صوتي مدمج", descEn: "Placeholder description for voice control.", descAr: "وصف مؤقت للتحكم الصوتي.", image: "/images/models/accent/conv-3.webp" },
       ],
-      panorama360: "/images/models/accent-360-interior.webp",
     },
-    performance: [
-      {
-        titleEn: "Smart Stream engine",
-        titleAr: "محرك Smart Stream",
-        descEn: "Placeholder copy describing the engine technology.",
-        descAr: "نص مؤقت يصف تقنية المحرك.",
-        image: "/images/models/accent-perf-1.webp",
-      },
-      {
-        titleEn: "IVT transmission",
-        titleAr: "ناقل حركة IVT",
-        descEn: "Placeholder copy describing the transmission.",
-        descAr: "نص مؤقت يصف ناقل الحركة.",
-        image: "/images/models/accent-perf-2.webp",
-      },
-    ],
-    safety: [
-      {
-        titleEn: "Multiple airbags",
-        titleAr: "وسائد هوائية متعددة",
-        descEn: "Placeholder copy describing the airbag system.",
-        descAr: "نص مؤقت يصف نظام الوسائد الهوائية.",
-        image: "/images/models/accent-safety-1.webp",
-      },
-      {
-        titleEn: "Anti-lock braking (ABS)",
-        titleAr: "نظام منع انغلاق المكابح (ABS)",
-        descEn: "Placeholder copy describing the braking system.",
-        descAr: "نص مؤقت يصف نظام المكابح.",
-        image: "/images/models/accent-safety-2.webp",
-      },
-    ],
-    convenience: [
-      {
-        titleEn: "8-inch display audio",
-        titleAr: "شاشة صوتية مقاس 8 إنش",
-        descEn: "Placeholder copy describing the infotainment system.",
-        descAr: "نص مؤقت يصف نظام المعلومات والترفيه.",
-        image: "/images/models/accent-conv-1.webp",
-      },
-      {
-        titleEn: "Wireless charging",
-        titleAr: "شحن لاسلكي",
-        descEn: "Placeholder copy describing the charging feature.",
-        descAr: "نص مؤقت يصف ميزة الشحن.",
-        image: "/images/models/accent-conv-2.webp",
-      },
-    ],
-    specification: [
-      {
-        groupEn: "Engine",
-        groupAr: "المحرك",
-        rows: [
-          { labelEn: "Type", labelAr: "النوع", value: "1.5L Smart Stream" },
-          { labelEn: "Max power", labelAr: "القوة القصوى", value: "113 HP" },
-          { labelEn: "Max torque", labelAr: "عزم الدوران", value: "144 Nm" },
-        ],
-      },
-      {
-        groupEn: "Dimensions",
-        groupAr: "الأبعاد",
-        rows: [
-          { labelEn: "Length", labelAr: "الطول", value: "4,500 mm" },
-          { labelEn: "Width", labelAr: "العرض", value: "1,729 mm" },
-          { labelEn: "Height", labelAr: "الارتفاع", value: "1,470 mm" },
-          { labelEn: "Wheelbase", labelAr: "قاعدة العجلات", value: "2,580 mm" },
-        ],
-      },
-      {
-        groupEn: "Wheels",
-        groupAr: "العجلات",
-        rows: [
-          { labelEn: "Tire size", labelAr: "مقاس الإطار", value: "195/65 R15" },
-          { labelEn: "Wheel type", labelAr: "نوع الجنط", value: "Alloy" },
-        ],
-      },
+    gallery: [
+      "/images/models/accent/gallery-1.webp",
+      "/images/models/accent/gallery-2.webp",
+      "/images/models/accent/gallery-3.webp",
+      "/images/models/accent/gallery-4.webp",
+      "/images/models/accent/gallery-5.webp",
+      "/images/models/accent/gallery-6.webp",
     ],
   },
-  // Other models: minimal data, sections render as placeholders until filled
   {
     slug: "elantra",
     nameEn: "ELANTRA",
     nameAr: "إلنترا",
     category: "sedan",
-    taglineEn: "Dynamic styling with cutting-edge technology",
-    taglineAr: "تصميم ديناميكي مع تقنيات متطورة",
-    hero: "/images/models/elantra-hero.webp",
-    specs: { engine: "1.6L", power: "123 HP", torque: "154 Nm", drive: "2WD" },
-    highlights: [],
-    exterior: { gallery: [], colors: [] },
-    interior: { gallery: [] },
-    performance: [],
-    safety: [],
-    convenience: [],
-    specification: [],
-  },
-  {
-    slug: "sonata",
-    nameEn: "SONATA",
-    nameAr: "سوناتا",
-    category: "sedan",
-    taglineEn: "Absolute sensation",
-    taglineAr: "إحساس مطلق",
-    hero: "/images/models/sonata-hero.webp",
-    specs: { engine: "2.5L", power: "191 HP", torque: "245 Nm", drive: "2WD" },
-    highlights: [],
-    exterior: { gallery: [], colors: [] },
-    interior: { gallery: [] },
-    performance: [],
-    safety: [],
-    convenience: [],
-    specification: [],
+    hero: "/images/models/elantra/hero.webp",
+    heroHeadlineEn: "Bold and sophisticated",
+    heroHeadlineAr: "جريئة وأنيقة",
+    overview: {
+      headlineEn: "This is How You Dare",
+      headlineAr: "هكذا تجرؤ",
+      taglineEn: "Refined sportiness, exquisite interior, and advanced safety and convenience features",
+      taglineAr: "رياضية مصقولة، تصميم داخلي رائع، وميزات سلامة وراحة متطورة",
+      engineEn: "2.0L Gasoline",
+      engineAr: "٢.٠ لتر بنزين",
+      stats: [
+        { labelEn: "Max Power", labelAr: "القوة القصوى", value: "157 HP" },
+        { labelEn: "Max Torque", labelAr: "عزم الدوران", value: "191 Nm" },
+        { labelEn: "Seating", labelAr: "المقاعد", value: "5 Seats" },
+        { labelEn: "Drive", labelAr: "الدفع", value: "2 WD (FWD)" },
+      ],
+    },
+    ...emptySections,
   },
   {
     slug: "tucson",
     nameEn: "TUCSON",
     nameAr: "توسان",
     category: "suv",
-    taglineEn: "Sensuous sportiness",
-    taglineAr: "رياضية حسية",
-    hero: "/images/models/tucson-hero.webp",
-    specs: {
-      engine: "1.6L Turbo",
-      power: "178 HP",
-      torque: "265 Nm",
-      drive: "2WD / 4WD",
+    hero: "/images/models/tucson/hero.webp",
+    heroHeadlineEn: "Sensuous sportiness",
+    heroHeadlineAr: "رياضية حسية",
+    overview: {
+      headlineEn: "Designed to Stand Out",
+      headlineAr: "صُممت لتتميز",
+      taglineEn: "Bold design, spacious interior, and advanced technology",
+      taglineAr: "تصميم جريء، مقصورة واسعة، وتقنية متطورة",
+      engineEn: "1.6L Turbo",
+      engineAr: "١.٦ لتر تيربو",
+      stats: [
+        { labelEn: "Max Power", labelAr: "القوة القصوى", value: "178 HP" },
+        { labelEn: "Max Torque", labelAr: "عزم الدوران", value: "265 Nm" },
+        { labelEn: "Seating", labelAr: "المقاعد", value: "5 Seats" },
+        { labelEn: "Drive", labelAr: "الدفع", value: "2WD / 4WD" },
+      ],
     },
-    highlights: [],
-    exterior: { gallery: [], colors: [] },
-    interior: { gallery: [] },
-    performance: [],
-    safety: [],
-    convenience: [],
-    specification: [],
-  },
-  {
-    slug: "creta",
-    nameEn: "CRETA",
-    nameAr: "كريتا",
-    category: "suv",
-    taglineEn: "Smart and bold SUV",
-    taglineAr: "SUV ذكي وجريء",
-    hero: "/images/models/creta-hero.webp",
-    specs: { engine: "1.5L", power: "115 HP", torque: "144 Nm", drive: "2WD" },
-    highlights: [],
-    exterior: { gallery: [], colors: [] },
-    interior: { gallery: [] },
-    performance: [],
-    safety: [],
-    convenience: [],
-    specification: [],
-  },
-  {
-    slug: "santa-fe",
-    nameEn: "SANTA FE",
-    nameAr: "سانتا في",
-    category: "suv",
-    taglineEn: "The ultimate family SUV",
-    taglineAr: "سيارة العائلة المثالية",
-    hero: "/images/models/santa-fe-hero.webp",
-    specs: {
-      engine: "2.5L Turbo",
-      power: "281 HP",
-      torque: "421 Nm",
-      drive: "4WD",
-    },
-    highlights: [],
-    exterior: { gallery: [], colors: [] },
-    interior: { gallery: [] },
-    performance: [],
-    safety: [],
-    convenience: [],
-    specification: [],
-  },
-  {
-    slug: "staria",
-    nameEn: "STARIA",
-    nameAr: "ستاريا",
-    category: "mpv",
-    taglineEn: "Futuristic design meets spacious versatility",
-    taglineAr: "تصميم مستقبلي يلتقي مع تعدد الاستخدامات",
-    hero: "/images/models/staria-hero.webp",
-    specs: {
-      engine: "3.5L V6",
-      power: "272 HP",
-      torque: "331 Nm",
-      drive: "2WD",
-    },
-    highlights: [],
-    exterior: { gallery: [], colors: [] },
-    interior: { gallery: [] },
-    performance: [],
-    safety: [],
-    convenience: [],
-    specification: [],
+    ...emptySections,
   },
 ];
 
-// these functions will be replaced by API calls to your dashboard
 export function getModelBySlug(slug: string): VehicleModel | null {
   return models.find((m) => m.slug === slug) ?? null;
 }
@@ -373,9 +285,7 @@ export function getAllSlugs(): string[] {
   return models.map((m) => m.slug);
 }
 
-export function getModelsByCategory(
-  category?: VehicleModel["category"]
-): VehicleModel[] {
+export function getModelsByCategory(category?: VehicleModel["category"]): VehicleModel[] {
   if (!category) return models;
   return models.filter((m) => m.category === category);
 }

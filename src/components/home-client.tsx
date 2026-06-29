@@ -250,7 +250,7 @@ if (gridRef.current) {
                     {locale === "ar" ? model.nameAr : model.nameEn}
                   </h3>
                   <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                    {locale === "ar" ? model.taglineAr : model.taglineEn}
+                    {/* {locale === "ar" ? model.taglineAr : model.taglineEn} */}
                   </p>
                   <span className="inline-block mt-4 text-sm font-semibold text-[#002C5F] group-hover:text-[#00AAD2] transition-colors">
                     {dict.explore} →

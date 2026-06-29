@@ -41,7 +41,11 @@
     "specification": "Specification",
     "colors": "Colors",
     "view360": "360° Interior View",
-    "viewSpecs": "View full specifications"
+    "viewSpecs": "View full specifications",
+    "gallery": "Gallery",
+    "overview": "Overview",
+    "contact": "Contact",
+    "whichColor": "Which color is yours?"
   },
   "about": {
     "title": "About Hyundai",
