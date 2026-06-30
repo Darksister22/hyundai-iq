@@ -16,7 +16,7 @@ export default async function HomePage({
   // first 4 models feed the hero carousel
   const heroSlides = models.slice(0, 4).map((m) => ({
     name: locale === "ar" ? m.nameAr : m.nameEn,
-    tagline: locale === "ar" ? m.taglineAr : m.taglineEn,
+    tagline: locale === "ar" ? m.overview.taglineAr : m.overview.taglineEn,
     slug: m.slug,
   }));
 
