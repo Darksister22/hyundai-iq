@@ -126,10 +126,10 @@ export default function HomeClient({
 
   return (
     // overflow-x-hidden guards against any full-bleed sub-pixel overflow
-    <div ref={rootRef} className="flex flex-col overflow-x-hidden">
+    <div ref={rootRef} className="flex flex-col">
       {/* ─── Hero carousel — full screen under the floating header ─── */}
       <div className="-mt-[72px]">
-        <section ref={heroRef} className="relative h-screen overflow-hidden">
+        <section ref={heroRef} className="relative h-screen ">
           <Swiper
             modules={[Autoplay, EffectFade, Pagination]}
             effect="fade"
