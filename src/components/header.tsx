@@ -50,7 +50,7 @@ export default function Header({ locale, dict }: HeaderProps) {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${atTop
-          ? "bg-white/15 backdrop-blur-xl"                                   // transparent + blur at top
+          ? "bg-gray/30 backdrop-blur-xl"                                   // transparent + blur at top
           : "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200" // solid once scrolled
         } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
     >

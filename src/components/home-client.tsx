@@ -8,7 +8,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
-//Anmiations
+import ParallaxImage from "@/components/parallax-image";
+// Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
@@ -53,13 +54,10 @@ export default function HomeClient({
   const tabsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const parallaxRef = useRef<HTMLDivElement>(null); //Apparently an oversized image that follows you is called a parallax?
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-
-
-      // ─── 2. Hero content entrance ───
+      // ─── Hero content entrance ───
       gsap.from(".hero-anim", {
         y: 40,
         opacity: 0,
@@ -69,7 +67,7 @@ export default function HomeClient({
         delay: 0.2,
       });
 
-      // ─── 3. Section heading reveal on scroll ───
+      // ─── Section heading reveal on scroll (in/out both directions) ───
       if (headingRef.current) {
         gsap.from(headingRef.current.children, {
           y: 30,
@@ -80,13 +78,13 @@ export default function HomeClient({
           scrollTrigger: {
             trigger: headingRef.current,
             start: "top 80%",
-            end: "bottom 20%",          // explicit end so the back-edges fire predictably
+            end: "bottom 20%",
             toggleActions: "play reverse play reverse",
           },
         });
       }
 
-      // ─── 4. Filter tabs slide in ───
+      // ─── Filter tabs slide in ───
       if (tabsRef.current) {
         gsap.from(tabsRef.current.children, {
           y: 20,
@@ -103,7 +101,7 @@ export default function HomeClient({
         });
       }
 
-      // ─── 5. Model cards staggered reveal ───
+      // ─── Model cards staggered reveal ───
       if (gridRef.current) {
         gsap.from(gridRef.current.children, {
           y: 50,
@@ -119,44 +117,17 @@ export default function HomeClient({
           },
         });
       }
-      // ─── 6. Parallax: oversized image drifts within its clipped frame ───
-      // image is scaled larger than the frame, then moved top→bottom as the
-      // section passes through the viewport, so its edges appear to shift.
-      if (parallaxRef.current) {
-        gsap.fromTo(
-          parallaxRef.current,
-          { yPercent: -12 },
-          {
-            yPercent: 12,
-            ease: "none",
-            scrollTrigger: {
-              trigger: parallaxRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          }
-        );
-      }
     }, rootRef);
 
     return () => ctx.revert();
   }, []);
 
-  const tabs = [
-    dict.allCars,
-    dict.sedan,
-    dict.suv,
-    dict.electric,
-    dict.mpv,
-  ];
+  const tabs = [dict.allCars, dict.sedan, dict.suv, dict.electric, dict.mpv];
 
   return (
-    <div ref={rootRef} className="flex flex-col">
-      {/* ─── Collapsing top bar ─── */}
-
-
-      {/* ─── Hero carousel (Swiper) ─── */}
+    // overflow-x-hidden guards against any full-bleed sub-pixel overflow
+    <div ref={rootRef} className="flex flex-col overflow-x-hidden">
+      {/* ─── Hero carousel — full screen under the floating header ─── */}
       <div className="-mt-[72px]">
         <section ref={heroRef} className="relative h-screen overflow-hidden">
           <Swiper
@@ -213,10 +184,11 @@ export default function HomeClient({
             {tabs.map((label, i) => (
               <button
                 key={label}
-                className={`px-6 py-2 rounded-full text-sm border transition-colors ${i === 0
-                  ? "bg-[#002C5F] text-white border-[#002C5F]"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
-                  }`}
+                className={`px-6 py-2 rounded-full text-sm border transition-colors ${
+                  i === 0
+                    ? "bg-[#002C5F] text-white border-[#002C5F]"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                }`}
               >
                 {label}
               </button>
@@ -234,7 +206,6 @@ export default function HomeClient({
                 href={`/${locale}/models/${model.slug}`}
                 className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
               >
-                {/* image container clips the zoom */}
                 <div className="h-44 overflow-hidden">
                   <div className="h-full w-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 ease-out group-hover:scale-110">
                     {model.nameEn} image
@@ -247,9 +218,7 @@ export default function HomeClient({
                   <h3 className="text-lg font-bold mt-1">
                     {locale === "ar" ? model.nameAr : model.nameEn}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                    {/* {locale === "ar" ? model.taglineAr : model.taglineEn} */}
-                  </p>
+                  <p className="text-sm text-gray-500 mt-2 line-clamp-2" />
                   <span className="inline-block mt-4 text-sm font-semibold text-[#002C5F] group-hover:text-[#00AAD2] transition-colors">
                     {dict.explore} →
                   </span>
@@ -259,31 +228,47 @@ export default function HomeClient({
           </div>
         </div>
       </section>
-      {/* ─── Who we are — parallax image ─── */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* clipped frame; inner image is bigger than the frame so its edges can move */}
-          <div className="relative h-80 lg:h-[420px] rounded-xl overflow-hidden">
-            <div
-              ref={parallaxRef}
-              className="absolute inset-0 scale-125 bg-gradient-to-br from-gray-200 to-gray-400 flex items-center justify-center text-sm text-gray-500"
-            >
-              {/* replace with <Image src="/images/about.webp" fill className="object-cover" alt="" /> */}
-              Who-we-are image
-            </div>
-          </div>
 
-          {/* text */}
-          <div>
-            <h2 className="text-3xl font-bold text-[#002C5F] mb-5">{dict.whoWeAre}</h2>
-            <p className="text-gray-600 leading-relaxed mb-8">{dict.whoWeAreDesc}</p>
-            <Link
-              href={`/${locale}/about-hyundai`}
-              className="inline-block px-8 py-3 bg-[#002C5F] text-white text-sm font-semibold rounded hover:bg-[#003d7a] transition-colors"
-            >
-              {dict.knowMore}
-            </Link>
-          </div>
+      {/* ─── Who we are — FULL-BLEED image (RTL-safe), CTA + heading below ─── */}
+      <section className="py-24 overflow-hidden">
+        {/* mx-[calc(50%-50vw)] breaks out to 100vw correctly in both LTR and RTL */}
+        <div className="relative w-screen mx-[calc(50%-50vw)]">
+          <ParallaxImage
+            src="/images/founder.webp"
+            className="h-[70vh] min-h-[460px] w-full"
+          />
+          {/* CTA pill overlapping the image's bottom-start corner */}
+          <Link
+            href={`/${locale}/about-hyundai`}
+            className="absolute -bottom-5 start-8 inline-flex items-center gap-2 bg-[#002C5F] text-white text-sm font-semibold px-6 py-3 rounded shadow-lg hover:bg-[#003d7a] transition-colors"
+          >
+            {dict.knowMore}
+            <span aria-hidden>›</span>
+          </Link>
+        </div>
+
+        {/* label + heading in the normal container */}
+        <div className="max-w-7xl mx-auto px-6 mt-12">
+          <span className="text-sm text-gray-400">{dict.whoWeAre}</span>
+          <h2 className="mt-2 text-2xl md:text-4xl font-bold text-[#002C5F] leading-snug max-w-4xl">
+            {dict.whoWeAreDesc}
+          </h2>
+        </div>
+      </section>
+
+      {/* ─── Tagline banner — full-bleed, non-clickable ─── */}
+      <section className="relative w-screen mx-[calc(50%-50vw)] overflow-hidden mb-16">
+        <ParallaxImage
+          src="/images/IONIQ_9_3.webp"
+          className="h-[60vh] min-h-[400px] w-full"
+        />
+        {/* gradient for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        {/* tagline only — no link */}
+        <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex items-center">
+          <h2 className="text-3xl md:text-5xl font-bold text-white">
+            {locale === "ar" ? "الآن نمضي قدماً" : "Now we move forward"}
+          </h2>
         </div>
       </section>
     </div>

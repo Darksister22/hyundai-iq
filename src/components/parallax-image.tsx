@@ -1,52 +1,71 @@
+// parallax-image.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Oversized image that drifts within a clipped frame on scroll,
-// and zooms in on hover. Swap the inner div for <Image fill> later.
 export default function ParallaxImage({
+  src,
+  alt = "",
   label,
   className = "",
+  priority = false,
 }: {
-  label: string;       // placeholder text until real images arrive
-  className?: string;   // height/rounded utilities for the frame
+  src?: string;
+  alt?: string;
+  label?: string;
+  className?: string;
+  priority?: boolean;
 }) {
-  const inner = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!inner.current) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        inner.current,
-        { yPercent: -12 },
-        {
-          yPercent: 12,
-          ease: "none",
-          scrollTrigger: {
-            trigger: inner.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
-    });
-    return () => ctx.revert();
-  }, []);
+  const drift = useRef<HTMLDivElement>(null); // GSAP moves this (transform: translateY)
+// parallax-image.tsx
+useEffect(() => {
+  if (!drift.current) return;
+  const ctx = gsap.context(() => {
+    // GSAP tween: more dramatic movement (stays within the 1.35 overscan)
+    gsap.fromTo(
+      drift.current,
+      { yPercent: -18 },              // was -12
+      {
+        yPercent: 18,                 // was 12
+        ease: "none",
+        scrollTrigger: {
+          trigger: drift.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      }
+    );
+  });
+  return () => ctx.revert();          // cleanup on unmount
+}, []);
 
   return (
     <div className={`relative overflow-hidden group ${className}`}>
-      {/* scale-125 = overscan for parallax; group-hover bumps it for the zoom */}
-      <div
-        ref={inner}
-        className="absolute inset-0 scale-125 transition-transform duration-700 ease-out group-hover:scale-[1.4] bg-gradient-to-br from-gray-200 to-gray-400 flex items-center justify-center text-sm text-gray-500"
-      >
-        {/* replace with: <Image src="/images/about/..." alt="" fill className="object-cover" /> */}
-        {label}
+      {/* outer: GSAP-controlled vertical drift (overscan via scale-125) */}
+<div ref={drift} className="absolute inset-0 scale-[1.35]">   {/* was scale-125 */}
+            {/* inner: hover zoom lives here so it doesn't clash with GSAP's transform */}
+        <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-110">
+          {src ? (
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              priority={priority}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-400 flex items-center justify-center text-sm text-gray-500">
+              {label}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
