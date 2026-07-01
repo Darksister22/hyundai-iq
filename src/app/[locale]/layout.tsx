@@ -3,7 +3,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Cairo } from "next/font/google";
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale })); 
+  return locales.map((locale) => ({ locale }));
 }
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -27,7 +27,7 @@ export default async function LocaleLayout({
     <html lang={locale} dir={dir} className="{cairo.variable}">
       <body>
         <Header locale={locale} dict={dict.nav} />
-        <main>{children}</main>
+        <main className="pt-[72px]">{children}</main>
         <Footer locale={locale} dict={dict.footer} />
       </body>
     </html>

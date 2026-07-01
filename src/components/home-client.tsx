@@ -46,7 +46,6 @@ export default function HomeClient({
   heroSlides,
 }: HomeClientProps) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const topBarRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -54,25 +53,7 @@ export default function HomeClient({
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // ─── 1. Top bar collapse on scroll into hero ───
-      // the slim promo/title bar shrinks to height 0 and fades
-      // as the user scrolls down through the hero banner.
-      if (topBarRef.current && heroRef.current) {
-        gsap.to(topBarRef.current, {
-          height: 0,
-          paddingTop: 0,
-          paddingBottom: 0,
-          opacity: 0,
-          overflow: "hidden",
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
+
 
       // ─── 2. Hero content entrance ───
       gsap.from(".hero-anim", {
@@ -84,56 +65,56 @@ export default function HomeClient({
         delay: 0.2,
       });
 
-// ─── 3. Section heading reveal on scroll ───
-if (headingRef.current) {
-  gsap.from(headingRef.current.children, {
-    y: 30,
-    opacity: 0,
-    duration: 0.7,
-    stagger: 0.1,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: headingRef.current,
-      start: "top 80%",
-      end: "bottom 20%",          // explicit end so the back-edges fire predictably
-      toggleActions: "play reverse play reverse",
-    },
-  });
-}
+      // ─── 3. Section heading reveal on scroll ───
+      if (headingRef.current) {
+        gsap.from(headingRef.current.children, {
+          y: 30,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 80%",
+            end: "bottom 20%",          // explicit end so the back-edges fire predictably
+            toggleActions: "play reverse play reverse",
+          },
+        });
+      }
 
-// ─── 4. Filter tabs slide in ───
-if (tabsRef.current) {
-  gsap.from(tabsRef.current.children, {
-    y: 20,
-    opacity: 0,
-    duration: 0.5,
-    stagger: 0.06,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: tabsRef.current,
-      start: "top 85%",
-      end: "bottom 20%",
-      toggleActions: "play reverse play reverse",
-    },
-  });
-}
+      // ─── 4. Filter tabs slide in ───
+      if (tabsRef.current) {
+        gsap.from(tabsRef.current.children, {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.06,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: tabsRef.current,
+            start: "top 85%",
+            end: "bottom 20%",
+            toggleActions: "play reverse play reverse",
+          },
+        });
+      }
 
-// ─── 5. Model cards staggered reveal ───
-if (gridRef.current) {
-  gsap.from(gridRef.current.children, {
-    y: 50,
-    opacity: 0,
-    duration: 0.6,
-    stagger: 0.1,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: gridRef.current,
-      start: "top 80%",
-      end: "bottom 20%",
-      toggleActions: "play reverse play reverse",
-    },
-  });
-}
+      // ─── 5. Model cards staggered reveal ───
+      if (gridRef.current) {
+        gsap.from(gridRef.current.children, {
+          y: 50,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play reverse play reverse",
+          },
+        });
+      }
     }, rootRef);
 
     return () => ctx.revert();
@@ -148,56 +129,51 @@ if (gridRef.current) {
   ];
 
   return (
-    <div ref={rootRef}>
+    <div ref={rootRef} className="flex flex-col">
       {/* ─── Collapsing top bar ─── */}
-      <div
-        ref={topBarRef}
-        className="bg-[#00AAD2] text-white text-center text-sm py-2.5"
-      >
-        {locale === "ar"
-          ? "هيونداي العراق — البداية الآن"
-          : "Hyundai Iraq — Next Starts Now"}
-      </div>
+
 
       {/* ─── Hero carousel (Swiper) ─── */}
-      <section ref={heroRef} className="relative h-[520px] overflow-hidden">
-        <Swiper
-          modules={[Autoplay, EffectFade, Pagination]}
-          effect="fade"
-          fadeEffect={{ crossFade: true }}
-          autoplay={{ delay: 5000, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          loop
-          className="h-full"
-        >
-          {heroSlides.map((slide) => (
-            <SwiperSlide key={slide.slug}>
-              <div className="relative h-full bg-[#002C5F] flex items-center">
-                <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
-                  <p className="hero-anim text-xs uppercase tracking-[3px] opacity-60 mb-3">
-                    {locale === "ar" ? "البداية الآن" : "Next Starts Now"}
-                  </p>
-                  <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
-                    {slide.name}
-                  </h1>
-                  <p className="hero-anim text-base opacity-70 max-w-md mb-8">
-                    {slide.tagline}
-                  </p>
-                  <div className="hero-anim">
-                    <Link
-                      href={`/${locale}/models/${slide.slug}`}
-                      className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
-                    >
-                      {dict.explore}
-                    </Link>
+      <div className="-mt-[72px]">
+        <section ref={heroRef} className="relative h-screen overflow-hidden">
+          <Swiper
+            modules={[Autoplay, EffectFade, Pagination]}
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            pagination={{ clickable: true }}
+            loop
+            className="h-full"
+          >
+            {heroSlides.map((slide) => (
+              <SwiperSlide key={slide.slug}>
+                <div className="relative h-full bg-[#002C5F] flex items-center">
+                  <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
+                    <p className="hero-anim text-xs uppercase tracking-[3px] opacity-60 mb-3">
+                      {locale === "ar" ? "البداية الآن" : "Next Starts Now"}
+                    </p>
+                    <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
+                      {slide.name}
+                    </h1>
+                    <p className="hero-anim text-base opacity-70 max-w-md mb-8">
+                      {slide.tagline}
+                    </p>
+                    <div className="hero-anim">
+                      <Link
+                        href={`/${locale}/models/${slide.slug}`}
+                        className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
+                      >
+                        {dict.explore}
+                      </Link>
+                    </div>
                   </div>
+                  <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#002C5F] z-[1]" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#002C5F] z-[1]" />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </section>
+      </div>
 
       {/* ─── Model grid ─── */}
       <section className="py-20">
@@ -214,11 +190,10 @@ if (gridRef.current) {
             {tabs.map((label, i) => (
               <button
                 key={label}
-                className={`px-6 py-2 rounded-full text-sm border transition-colors ${
-                  i === 0
+                className={`px-6 py-2 rounded-full text-sm border transition-colors ${i === 0
                     ? "bg-[#002C5F] text-white border-[#002C5F]"
                     : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
-                }`}
+                  }`}
               >
                 {label}
               </button>
