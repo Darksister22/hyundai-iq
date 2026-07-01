@@ -47,10 +47,29 @@
     "contact": "Contact",
     "whichColor": "Which color is yours?"
   },
-  "about": {
-    "title": "About Hyundai",
-    "subtitle": "From pioneering automaker in Korea to global auto industry leader"
-  },
+"about": {
+  "title": "About Hyundai",
+  "subtitle": "From pioneering automaker in Korea to global auto industry leader",
+  "philosophyTab": "Philosophy",
+  "historyTab": "History",
+  "intro": "We are dedicated to moving humanity forward, crafting vehicles that redefine mobility for our global community.",
+  "overviewLabel": "Overview",
+  "overviewTitle": "Moving Forward Together",
+  "overviewBody": "A big technological step forward is only meaningful when it is anchored in a deep sense of humanity. From hydrogen-powered solutions and next-generation electric vehicles to cutting-edge robotics and air mobility, we advance human progress through innovation. Progress for humanity is our guiding principle, uniting us in who we are, where we come from, and where we are going.",
+  "progressTitle": "Progress for Humanity",
+  "progressBody": "We believe progress only becomes meaningful when connected with a deep sense of humanity. Humanity is what unites us and makes us stronger; it guides our investments and drives our innovations. We are here to do the right thing for humanity.",
+  "quote": "If someone asks me what is the motivating force for Hyundai, I would have a ready answer: a desire for better.",
+  "quoteAuthor": "— Chung Ju-yung, Founding Chairman of Hyundai Motor Group",
+  "cornerTitle": "Inspired by What's Around the Corner",
+  "cornerBody": "Today we stand at an amazing point in the evolution of mobility and the benefits it brings humanity. Transportation is becoming smarter, safer, more connected, and in harmony with sustainability and a zero-emission tomorrow — and we are at the forefront as a smart mobility solution provider.",
+  "nextTitle": "The Next Big Thing",
+  "nextBody": "Progress needs new perspectives to move forward. Our transformation from an automobile manufacturer into a smart mobility solutions provider demonstrates this flexibility and vision — through autonomous driving, robotics, advanced air mobility, and AI- and big-data-based connectivity.",
+  "wayTitle": "Going Our Way",
+  "wayBody": "Any great road trip needs the right traveling companions. That's why we look forward to taking these exciting next steps together with you, providing everyone with the mobility solutions they need to enhance their lives. That's progress for humanity.",
+  "storyCrumb": "Hyundai Story",
+"progressQuote": "We are here to do what benefits humanity.",
+"home": "Home"
+},
   "contact": {
     "title": "Contact Us",
     "subtitle": "We'd love to hear from you.",

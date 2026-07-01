@@ -24,6 +24,9 @@ interface HomeDict {
   electric: string;
   mpv: string;
   explore: string;
+  whoWeAre: string;
+  whoWeAreDesc: string;
+  knowMore: string;
 }
 
 interface HeroSlide {
@@ -50,6 +53,7 @@ export default function HomeClient({
   const tabsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const parallaxRef = useRef<HTMLDivElement>(null); //Apparently an oversized image that follows you is called a parallax?
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -114,6 +118,25 @@ export default function HomeClient({
             toggleActions: "play reverse play reverse",
           },
         });
+      }
+      // ─── 6. Parallax: oversized image drifts within its clipped frame ───
+      // image is scaled larger than the frame, then moved top→bottom as the
+      // section passes through the viewport, so its edges appear to shift.
+      if (parallaxRef.current) {
+        gsap.fromTo(
+          parallaxRef.current,
+          { yPercent: -12 },
+          {
+            yPercent: 12,
+            ease: "none",
+            scrollTrigger: {
+              trigger: parallaxRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
       }
     }, rootRef);
 
@@ -191,8 +214,8 @@ export default function HomeClient({
               <button
                 key={label}
                 className={`px-6 py-2 rounded-full text-sm border transition-colors ${i === 0
-                    ? "bg-[#002C5F] text-white border-[#002C5F]"
-                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                  ? "bg-[#002C5F] text-white border-[#002C5F]"
+                  : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
                   }`}
               >
                 {label}
@@ -233,6 +256,33 @@ export default function HomeClient({
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+      {/* ─── Who we are — parallax image ─── */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* clipped frame; inner image is bigger than the frame so its edges can move */}
+          <div className="relative h-80 lg:h-[420px] rounded-xl overflow-hidden">
+            <div
+              ref={parallaxRef}
+              className="absolute inset-0 scale-125 bg-gradient-to-br from-gray-200 to-gray-400 flex items-center justify-center text-sm text-gray-500"
+            >
+              {/* replace with <Image src="/images/about.webp" fill className="object-cover" alt="" /> */}
+              Who-we-are image
+            </div>
+          </div>
+
+          {/* text */}
+          <div>
+            <h2 className="text-3xl font-bold text-[#002C5F] mb-5">{dict.whoWeAre}</h2>
+            <p className="text-gray-600 leading-relaxed mb-8">{dict.whoWeAreDesc}</p>
+            <Link
+              href={`/${locale}/about-hyundai`}
+              className="inline-block px-8 py-3 bg-[#002C5F] text-white text-sm font-semibold rounded hover:bg-[#003d7a] transition-colors"
+            >
+              {dict.knowMore}
+            </Link>
           </div>
         </div>
       </section>
