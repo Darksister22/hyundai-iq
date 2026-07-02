@@ -15,7 +15,10 @@ body {
   background: var(--hd-bg);
   -webkit-font-smoothing: antialiased;
 }
-
+html, body{
+  overflow-x: hidden;
+  width: 100%;
+}
 /* RTL-aware utilities — these flip automatically with dir="rtl" */
 /* use logical properties in custom CSS: */
 /* margin-inline-start, padding-inline-end, inset-inline-start, etc. */
