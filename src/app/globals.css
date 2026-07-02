@@ -6,7 +6,13 @@
   --hd-blue: #00aad2;
   --hd-bg: #f6f3f0;
   --hd-warm: #c4977a;
-  --font-cairo: "Cairo", sans-serif; /* fallback before JS hydration */
+  --font-cairo: "Cairo", sans-serif;
+  /* fallback before JS hydration */
+}
+
+/*lock to small viewport in mobile to disable the address bar from collabsing.*/
+.h-screen-stable {
+  height: 100svh;
 }
 
 /* base resets */
@@ -15,10 +21,17 @@ body {
   background: var(--hd-bg);
   -webkit-font-smoothing: antialiased;
 }
-html, body{
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html,
+body {
   overflow-x: hidden;
   width: 100%;
 }
+
 /* RTL-aware utilities — these flip automatically with dir="rtl" */
 /* use logical properties in custom CSS: */
 /* margin-inline-start, padding-inline-end, inset-inline-start, etc. */

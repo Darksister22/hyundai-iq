@@ -31,11 +31,12 @@ export default function VisualizerSection({
   const lastX = useRef(0);
   const frames = color?.spinFrames ?? [];
 
-  // preload the active color's frames so spinning is seamless (no flash)
+  // preload the active color's frames so spinning is seamless (no flash).
+  // NOTE: loaded is reset in the color-change handlers (not here) to avoid
+  // calling setState synchronously inside the effect body.
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     if (frames.length === 0) return;
-    setLoaded(false);
     let done = 0;
     let cancelled = false;
     const imgs: HTMLImageElement[] = [];
@@ -43,7 +44,7 @@ export default function VisualizerSection({
       const img = new window.Image();
       img.onload = img.onerror = () => {
         done += 1;
-        if (!cancelled && done === frames.length) setLoaded(true);
+        if (!cancelled && done === frames.length) setLoaded(true); // async → allowed
       };
       img.src = src;
       imgs.push(img);
@@ -72,10 +73,16 @@ export default function VisualizerSection({
     dragging.current = false;
   };
 
+  // change color + reset loading state (reset lives here, not in the effect)
+  const selectColor = (updater: number | ((i: number) => number)) => {
+    setLoaded(false);
+    setColorIdx((i) => (typeof updater === "function" ? updater(i) : updater));
+  };
+
   return (
     <section
       id="visualizer"
-      className="scroll-mt-36 h-screen min-h-[640px] flex flex-col"
+      className="scroll-mt-36 h-[100svh] min-h-[640px] flex flex-col"
     >
       {/* EXTERIOR — gradient changes per color; "which color" text is part
           of the spin image itself, so nothing is pinned here */}
@@ -180,7 +187,7 @@ export default function VisualizerSection({
                 <div className="flex items-center justify-center gap-3">
                   <button
                     onClick={() =>
-                      setColorIdx((i) => (i - 1 + colors.length) % colors.length)
+                      selectColor((i) => (i - 1 + colors.length) % colors.length)
                     }
                     className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center"
                   >
@@ -190,7 +197,7 @@ export default function VisualizerSection({
                     <button
                       key={c.hex}
                       onClick={() => {
-                        setColorIdx(i);
+                        selectColor(i);
                         setFrame(0);
                       }}
                       title={isAr ? c.nameAr : c.nameEn}
@@ -203,7 +210,7 @@ export default function VisualizerSection({
                     />
                   ))}
                   <button
-                    onClick={() => setColorIdx((i) => (i + 1) % colors.length)}
+                    onClick={() => selectColor((i) => (i + 1) % colors.length)}
                     className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center"
                   >
                     ›

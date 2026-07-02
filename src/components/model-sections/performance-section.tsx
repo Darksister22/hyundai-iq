@@ -61,7 +61,7 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
       className="relative scroll-mt-36 bg-black text-white"
     >
       {/* sticky blurring background */}
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div
           ref={bgRef}
           className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm"
