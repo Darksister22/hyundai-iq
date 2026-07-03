@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import FindCarPanel from "@/components/find-car-panel";
 import { useEffect, useRef, useState } from "react";
 import { Locale } from "@/lib/i18n";
 
@@ -14,6 +15,11 @@ interface HeaderProps {
     requestCallback: string;
     langSwitch: string;
     langCode: string;
+    allCars: string;
+    sedan: string;
+    suv: string;
+    mpv: string;
+    electric: string;
   };
 }
 
@@ -25,6 +31,7 @@ export default function Header({ locale, dict }: HeaderProps) {
   const lastScroll = useRef(0);                   // previous scroll position
   const [menuOpen, setMenuOpen] = useState(false); //state for mobile menu
   const [menuVisible, setMenuVisible] = useState(false); // controls slide animation
+  const [findOpen, setFindOpen] = useState(false); // Find car panel
   const navLink = atTop
     ? "text-white/90 hover:text-white"
     : "text-gray-800 hover:text-[#00AAD2]";
@@ -62,23 +69,20 @@ export default function Header({ locale, dict }: HeaderProps) {
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${atTop
           ? "bg-gray/30 backdrop-blur-xl"                                   // transparent + blur at top
           : "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200" // solid once scrolled
-        } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
-    >
-      <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
-        <Link href={`/${locale}`} className="text-xl font-bold text-[#002C5F]">
-          HYUNDAI
-        </Link>
-        <nav className="hidden md:flex items-center gap-8">
-          {/* logo */}
-          <Link href={`/${locale}`} className={`text-xl font-bold transition-colors ${logoColor}`}>
+          } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
+      >
+        <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
+          <Link href={`/${locale}`} className="text-xl font-bold text-[#002C5F]">
             HYUNDAI
           </Link>
-
-
+          <nav className="hidden md:flex items-center gap-8">
             {/* nav links */}
-            <Link href={`/${locale}/models/accent`} className={`text-sm font-medium transition-colors ${navLink}`}>
+            <button
+              onClick={() => setFindOpen(true)}
+              className={`text-sm font-medium transition-colors ${navLink}`}
+            >
               {dict.findACar}
-            </Link>
+            </button>
             <Link href={`/${locale}/about-hyundai`} className={`text-sm font-medium transition-colors ${navLink}`}>
               {dict.aboutUs}
             </Link>
@@ -102,44 +106,60 @@ export default function Header({ locale, dict }: HeaderProps) {
           <button
             className="md:hidden text-2xl text-current"
             aria-label="menu"
-            onClick={() => { setMenuVisible(true);  requestAnimationFrame(() => setMenuOpen(true)); }}        >
+            onClick={() => { setMenuVisible(true); requestAnimationFrame(() => setMenuOpen(true)); }}        >
             ☰
           </button>
 
         </div>
       </header>
       {/* ── Mobile overlay menu (slide + fade) ── */}
-{menuVisible && (
-  <div className="md:hidden fixed inset-0 z-[60]">
-    {/* backdrop fades with menuOpen */}
-    <div
-      className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
-        menuOpen ? "opacity-100" : "opacity-0"
-      }`}
-      onClick={() => setMenuOpen(false) }
-    />
+      {menuVisible && (
+        <div className="md:hidden fixed inset-0 z-[60]">
+          {/* backdrop fades with menuOpen */}
+          <div
+            className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"
+              }`}
+            onClick={() => setMenuOpen(false)}
+          />
 
-    {/* panel slides from the end (start edge in RTL); translate-x-full when closed */}
-<nav
-  onTransitionEnd={() => { if (!menuOpen) setMenuVisible(false); }}
-  className={`absolute inset-y-0 end-0 w-72 max-w-[80vw] bg-white shadow-2xl p-6
+          {/* panel slides from the end (start edge in RTL); translate-x-full when closed */}
+          <nav
+            onTransitionEnd={() => { if (!menuOpen) setMenuVisible(false); }}
+            className={`absolute inset-y-0 end-0 w-72 max-w-[80vw] bg-white shadow-2xl p-6
     flex flex-col gap-6 text-gray-800 transition-transform duration-300 ease-out
     ${menuOpen
-      ? "translate-x-0"
-      : "translate-x-full rtl:-translate-x-full"}`}  // closed: off the correct edge per dir
->
-      <button className="self-end text-2xl leading-none text-gray-500" aria-label="close" onClick={() => setMenuOpen(false)}>×</button>
+                ? "translate-x-0"
+                : "translate-x-full rtl:-translate-x-full"}`}  // closed: off the correct edge per dir
+          >
+            <button className="self-end text-2xl leading-none text-gray-500" aria-label="close" onClick={() => setMenuOpen(false)}>×</button>
 
-      <Link href={`/${locale}/models/accent`} onClick={() => setMenuOpen(false)}>{dict.findACar}</Link>
-      <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)}>{dict.aboutUs}</Link>
-      <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)}>{dict.findUs}</Link>
-      <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)}>{dict.contactUs}</Link>
+            <button
+              onClick={() => { setMenuOpen(false); setFindOpen(true); }}
+              className="text-start"
+            >
+              {dict.findACar}
+            </button>            <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)}>{dict.aboutUs}</Link>
+            <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)}>{dict.findUs}</Link>
+            <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)}>{dict.contactUs}</Link>
 
-      <Link href={switchedPath} onClick={() => setMenuOpen(false)} className="text-sm text-gray-500 border border-gray-300 px-3 py-1 rounded w-fit">{dict.langSwitch}</Link>
-      <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)} className="text-sm font-semibold bg-[#002C5F] text-white px-5 py-2 rounded text-center">{dict.requestCallback}</Link>
-    </nav>
-  </div>
-)}
+            <Link href={switchedPath} onClick={() => setMenuOpen(false)} className="text-sm text-gray-500 border border-gray-300 px-3 py-1 rounded w-fit">{dict.langSwitch}</Link>
+            <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)} className="text-sm font-semibold bg-[#002C5F] text-white px-5 py-2 rounded text-center">{dict.requestCallback}</Link>
+          </nav>
+        </div>
+      )}
+      <FindCarPanel
+        locale={locale}
+        open={findOpen}
+        onClose={() => setFindOpen(false)}
+        dict={{
+          allCars: dict.allCars,
+          sedan: dict.sedan,
+          suv: dict.suv,
+          mpv: dict.mpv,
+          electric: dict.electric,
+        }}
+        navHeight={72}
+      />
     </>
   );
 }

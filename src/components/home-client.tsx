@@ -129,7 +129,7 @@ export default function HomeClient({
     <div ref={rootRef} className="flex flex-col">
       {/* ─── Hero carousel — full screen under the floating header ─── */}
       <div className="-mt-[72px]">
-        <section ref={heroRef} className="relative h-[100svh] ">
+        <section ref={heroRef} className="relative h-[100svh] overflow-hidden">
           <Swiper
             modules={[Autoplay, EffectFade, Pagination]}
             effect="fade"

@@ -15,7 +15,7 @@ export default async function AboutPage({
   return (
     <>
 {/* ── Intro banner: 70vh, full-bleed under the fixed header ── */}
-<section className="relative h-[80vh] min-h-[460px] -mt-[72px] overflow-hidden">
+<section className="relative h-[80svh] min-h-[460px] -mt-[72px] overflow-hidden">
   <ParallaxImage src="/images/about-us.webp" priority className="absolute inset-0 h-full w-full" />
   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
   <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">

@@ -30,6 +30,7 @@ html,
 body {
   overflow-x: hidden;
   width: 100%;
+  height: 100%;
 }
 
 /* RTL-aware utilities — these flip automatically with dir="rtl" */
@@ -49,3 +50,4 @@ body {
   border-radius: 4px;
   background: white;
 }
+
