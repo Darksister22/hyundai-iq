@@ -60,9 +60,7 @@ export default function Header({ locale, dict }: HeaderProps) {
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           {/* logo */}
-          <Link href={`/${locale}`} className={`text-xl font-bold transition-colors ${logoColor}`}>
-            HYUNDAI
-          </Link>
+
 
 
           {/* nav links */}
