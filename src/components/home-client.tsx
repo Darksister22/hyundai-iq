@@ -28,7 +28,7 @@ interface HomeDict {
   whoWeAre: string;
   whoWeAreDesc: string;
   knowMore: string;
-}
+} // pull ar and en locale vars to be used in this page. 
 
 interface HeroSlide {
   name: string;
@@ -49,15 +49,15 @@ export default function HomeClient({
   models,
   heroSlides,
 }: HomeClientProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null); //Reference for the root of all the element. Changes to it might play with the item's general margins and positions.
+  const headingRef = useRef<HTMLDivElement>(null); //
   const tabsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // ─── Hero content entrance ───
+      // Hero enterance
       gsap.from(".hero-anim", {
         y: 40,
         opacity: 0,
@@ -67,7 +67,7 @@ export default function HomeClient({
         delay: 0.2,
       });
 
-      // ─── Section heading reveal on scroll (in/out both directions) ───
+      //section heading reveal
       if (headingRef.current) {
         gsap.from(headingRef.current.children, {
           y: 30,
@@ -129,7 +129,7 @@ export default function HomeClient({
     <div ref={rootRef} className="flex flex-col">
       {/* ─── Hero carousel — full screen under the floating header ─── */}
       <div className="-mt-[72px]">
-        <section ref={heroRef} className="relative h-screen ">
+        <section ref={heroRef} className="relative h-[100svh] ">
           <Swiper
             modules={[Autoplay, EffectFade, Pagination]}
             effect="fade"
