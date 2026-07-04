@@ -30,7 +30,6 @@ export default async function ContactPage({
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/20" />
 
         <div className="relative h-full max-w-7xl mx-auto px-6 flex flex-col justify-end pb-10">
-          {/* breadcrumb now sits directly on top of the title line */}
           <nav className="text-xs text-white/80 flex items-center gap-2 self-start mb-3">
             <Link href={`/${locale}`} className="hover:text-white">
               {t.home}
@@ -40,13 +39,10 @@ export default async function ContactPage({
             <span>/</span>
             <span className="text-white">{t.title}</span>
           </nav>
-
-          {/* title directly below the breadcrumb */}
           <h1 className="text-4xl md:text-5xl font-bold text-white">{t.title}</h1>
         </div>
       </section>
 
-      {/* ── Form section: heading, then form offset to one side ── */}
       {/* ── Form section: form on the right, heading on the left ── */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6">

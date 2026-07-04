@@ -53,24 +53,31 @@ export default async function AboutPage({
         img= "/images/philosophy.webp"
       />
 
-      {/* ── Quote band (dark, oversized background quote) ── */}
-      <section className="relative bg-[#002C5F] text-white py-24 overflow-hidden">
-        {/* giant translucent quote sits behind the copy */}
-        <div className="absolute inset-0 flex items-center px-6 pointer-events-none">
-          <p className="text-white/10 font-bold text-4xl md:text-6xl leading-tight max-w-3xl">
-            “{t.progressQuote}”
-          </p>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12">
-          <div className="lg:col-start-2">
-            <Reveal>
-            <h3 className="text-2xl font-bold mb-5">{t.progressTitle}</h3>
-            <p className="text-white/80 leading-relaxed">{t.progressBody}</p>
-            </Reveal>
+{/* ── Quote band  */}
+<section className="bg-[#002C5F] text-white py-16 md:py-24">
+  <div className="max-w-7xl mx-auto px-6">
+    {/* copy block */}
+    <div className="max-w-3xl">
+      <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-5">
+        {t.progressTitle}
+      </h3>
+      <p className="text-white/80 leading-relaxed text-sm md:text-base">
+        {t.progressBody}
+      </p>
+    </div>
 
-          </div>
-        </div>
-      </section>
+    {/* big translucent quote below, with an opening quote mark on the side */}
+    <div className="relative mt-10 md:mt-16">
+      {/* oversized quotation mark, start-aligned (RTL-aware) */}
+      <span className="absolute -top-6 md:-top-10 start-0 text-white/15 font-bold text-6xl md:text-8xl leading-none">
+        “
+      </span>
+      <p className="text-white/15 font-bold text-3xl md:text-6xl leading-tight ps-10 md:ps-16">
+        {t.progressQuote}
+      </p>
+    </div>
+  </div>
+</section>
 
  {/* ── Founder quote (full-width image + gray quote card) ── */}
 <section className="py-20">
