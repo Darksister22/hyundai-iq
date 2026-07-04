@@ -1,16 +1,11 @@
 import { getDictionary, getDirection, Locale, locales } from "@/lib/i18n";
 import Header from "@/components/header";
+import "@fontsource-variable/cairo";
 import Footer from "@/components/footer";
-import { Cairo } from "next/font/google";
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-cairo",
-  display: "swap",
-});
+
 export default async function LocaleLayout({
   children,
   params,
@@ -24,7 +19,7 @@ export default async function LocaleLayout({
   const dict = await getDictionary(locale);
 
   return (
-    <html lang={locale} dir={dir} className="{cairo.variable}">
+    <html lang={locale} dir={dir} >
       <body>
         <Header locale={locale} dict={dict.nav} />
         <main className="pt-[72px]">{children}</main>

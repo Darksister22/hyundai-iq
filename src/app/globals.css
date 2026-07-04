@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@fontsource-variable/cairo";
 
 /* hyundai brand colors as CSS custom properties */
 :root {
@@ -17,7 +18,6 @@
 
 /* base resets */
 body {
-  font-family: var(--font-cairo), sans-serif;
   background: var(--hd-bg);
   -webkit-font-smoothing: antialiased;
 }
@@ -49,5 +49,9 @@ body {
   width: 24px;
   border-radius: 4px;
   background: white;
+}
+
+@theme {
+  --font-sans: "Cairo Variable", sans-serif;   /* makes font-sans / body use Cairo */
 }
 
