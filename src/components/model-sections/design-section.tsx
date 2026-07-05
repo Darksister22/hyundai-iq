@@ -5,7 +5,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
-
+import ParallaxImage from "@/components/parallax-image";
+import Reveal from "@/components/reveal";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -34,36 +35,34 @@ export default function DesignSection({
         <p className="text-sm text-gray-400 mb-2">
           {isAr ? "التصميم" : "Design"}
         </p>
-        <h2 className="text-3xl md:text-5xl font-bold text-[#111]">
-          {isAr ? model.design.headingAr : model.design.headingEn}
-        </h2>
+        <Reveal>
+          <h2 className="text-3xl md:text-5xl font-bold text-[#111]">
+            {isAr ? model.design.headingAr : model.design.headingEn}
+          </h2>
+        </Reveal>
       </div>
 
       {/* full-bleed design hero image */}
-      <div className="h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-gray-500 text-sm">
-        Design hero image (full-bleed)
-      </div>
+<ParallaxImage label="Full Design Section" className="h-[60svh] min-h-[400px]" />
 
       {/* exterior / interior toggle + gallery */}
       <div className="max-w-[1400px] mx-auto px-8 py-16">
         <div className="flex items-center gap-6 mb-10">
           <button
             onClick={() => setTab("exterior")}
-            className={`text-3xl font-bold transition-colors ${
-              tab === "exterior"
+            className={`text-3xl font-bold transition-colors ${tab === "exterior"
                 ? "text-[#111] border-b-2 border-[#111] pb-1"
                 : "text-gray-300"
-            }`}
+              }`}
           >
             {exteriorLabel}
           </button>
           <button
             onClick={() => setTab("interior")}
-            className={`text-3xl font-bold transition-colors ${
-              tab === "interior"
+            className={`text-3xl font-bold transition-colors ${tab === "interior"
                 ? "text-[#111] border-b-2 border-[#111] pb-1"
                 : "text-gray-300"
-            }`}
+              }`}
           >
             {interiorLabel}
           </button>

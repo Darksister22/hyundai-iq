@@ -13,8 +13,7 @@ export default function HeroSection({ locale, model }: Props) {
     locale === "ar" ? model.heroHeadlineAr : model.heroHeadlineEn;
 
   return (
-    <section className="relative h-[calc(100svh-72px)] min-h-[560px] w-full overflow-hidden bg-gray-300">
-      {/* full-bleed exterior image */}
+<section className="relative h-[100svh] -mt-[72px] min-h-[560px] w-full overflow-hidden bg-gray-300">      {/* full-bleed exterior image */}
       <img
         src={model.hero}
         alt={locale === "ar" ? model.nameAr : model.nameEn}

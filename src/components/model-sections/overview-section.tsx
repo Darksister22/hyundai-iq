@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
+import Reveal from "../reveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,13 +34,14 @@ export default function OverviewSection({ locale, model }: Props) {
   }, []);
 
   return (
+    <Reveal>
     <section id="overview" ref={ref} className="bg-white py-20 scroll-mt-36">
       <div className="max-w-[1400px] mx-auto px-8">
         {/* big headline */}
-        <h2 className="ov-reveal text-4xl md:text-6xl font-bold text-[#111] mb-6">
-          {isAr ? ov.headlineAr : ov.headlineEn}
-        </h2>
-
+          <h2 className="ov-reveal text-4xl md:text-6xl font-bold text-[#111] mb-6">
+            {isAr ? ov.headlineAr : ov.headlineEn}
+          </h2>
+        
         {/* tagline */}
         <p className="ov-reveal text-lg text-gray-500 max-w-xl mb-10">
           {isAr ? ov.taglineAr : ov.taglineEn}
@@ -50,7 +52,6 @@ export default function OverviewSection({ locale, model }: Props) {
           {isAr ? ov.engineAr : ov.engineEn}
         </p>
         <hr className="ov-reveal border-gray-200 mb-8" />
-
         {/* spec row */}
         <div className="ov-reveal grid grid-cols-2 md:grid-cols-4 gap-8">
           {ov.stats.map((stat) => (
@@ -63,6 +64,6 @@ export default function OverviewSection({ locale, model }: Props) {
           ))}
         </div>
       </div>
-    </section>
+    </section></Reveal>
   );
 }

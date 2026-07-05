@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
+import Reveal from "../reveal";
 
 interface Props {
   locale: Locale;
@@ -55,10 +56,11 @@ export default function SafetySection({ locale, model }: Props) {
   return (
     <section id="safety" className="bg-white py-20 scroll-mt-36">
       <div className="max-w-[1400px] mx-auto px-8">
+        <Reveal>
         <p className="text-sm text-gray-400 mb-2">SmartSense</p>
         <h2 className="text-3xl md:text-5xl font-bold text-[#111] mb-12 max-w-3xl">
           {isAr ? model.safety.headingAr : model.safety.headingEn}
-        </h2>
+        </h2></Reveal>
       </div>
 
       {/* horizontal card row */}
@@ -73,6 +75,7 @@ export default function SafetySection({ locale, model }: Props) {
               <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105">
                 safety image
               </div>
+              
             </div>
             <h3 className="font-bold text-[#111] mb-2">
               {isAr ? card.titleAr : card.titleEn}

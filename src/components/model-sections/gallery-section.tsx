@@ -8,6 +8,7 @@ import type { VehicleModel } from "@/lib/models-data";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import Reveal from "../reveal";
 
 interface Props {
   locale: Locale;
@@ -20,9 +21,10 @@ export default function GallerySection({ model, heading }: Props) {
 
   return (
     <section id="gallery" className="bg-white py-20 scroll-mt-36">
+      <Reveal>
       <h2 className="text-4xl md:text-5xl font-bold text-[#111] text-center mb-12">
         {heading}
-      </h2>
+      </h2></Reveal>
 
       <div className="max-w-[1400px] mx-auto px-8">
         {/* main image with fullscreen affordance */}

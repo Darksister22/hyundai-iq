@@ -1,9 +1,15 @@
 import { getDictionary, getDirection, Locale, locales } from "@/lib/i18n";
+import type { Viewport } from "next";
 import Header from "@/components/header";
 import "@fontsource-variable/cairo";
 import Footer from "@/components/footer";
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
+}
+export const viewport:Viewport = {
+  width:"device-width",
+  initialScale : 1,
+  interactiveWidget : "resizes-content"
 }
 
 export default async function LocaleLayout({

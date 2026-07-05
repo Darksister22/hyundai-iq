@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 interface Props {
@@ -68,6 +69,7 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
         >
           Performance driving image (full-bleed)
         </div>
+
       </div>
 
       {/* content scrolls over */}

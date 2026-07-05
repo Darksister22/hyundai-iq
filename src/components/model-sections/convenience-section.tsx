@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import ParallaxImage from "../parallax-image";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
@@ -26,7 +27,7 @@ export default function ConvenienceSection({ locale, model }: Props) {
         opacity: 0,
         duration: 0.8,
         ease: "power2.out",
-        scrollTrigger: { trigger: ".conv-intro", start: "top 80%" },
+        scrollTrigger: { trigger: ".conv-intro", start: "top 80%", toggleActions: "play reverse play reverse" },
       });
 
       // card row slides in right-to-left
@@ -36,22 +37,10 @@ export default function ConvenienceSection({ locale, model }: Props) {
         duration: 0.7,
         stagger: 0.12,
         ease: "power2.out",
-        scrollTrigger: { trigger: ".conv-row", start: "top 85%" },
+        scrollTrigger: { trigger: ".conv-row", start: "top 85%", toggleActions: "play reverse play reverse" },
       });
 
-      // subtle parallax bob tied to scroll velocity/direction
-      gsap.utils.toArray<HTMLElement>(".conv-card").forEach((card, i) => {
-        gsap.to(card, {
-          y: i % 2 === 0 ? -20 : 20,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".conv-row",
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      });
+
     }, ref);
     return () => ctx.revert();
   }, [isAr]);
@@ -76,9 +65,10 @@ export default function ConvenienceSection({ locale, model }: Props) {
           {conv.cards.map((card) => (
             <div key={card.titleEn} className="conv-card group">
               <div className="h-[200px] rounded-lg overflow-hidden mb-4">
-                <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105">
-                  convenience image
-                </div>
+                <ParallaxImage
+                  label={`convenience image`}
+                  className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400"
+                />
               </div>
               <h3 className="text-lg font-bold text-[#111] mb-2">
                 {isAr ? card.titleAr : card.titleEn}

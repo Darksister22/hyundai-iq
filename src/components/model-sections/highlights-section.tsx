@@ -3,6 +3,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import type { Locale } from "@/lib/i18n";
+import Reveal from "@/components/reveal";
 import type { VehicleModel } from "@/lib/models-data";
 
 import "swiper/css";
@@ -21,13 +22,12 @@ export default function HighlightsSection({ locale, model, heading }: Props) {
   return (
     <section id="highlights" className="bg-white py-20 scroll-mt-36">
       <div className="max-w-[1400px] mx-auto px-8">
-        <p className="text-sm text-gray-400 mb-2">{heading}</p>
-        <h2 className="text-3xl md:text-5xl font-bold text-[#111] mb-12 max-w-2xl">
+        <Reveal><p className="text-sm text-gray-400 mb-2">{heading}</p></Reveal>
+        <Reveal><h2 className="text-3xl md:text-5xl font-bold text-[#111] mb-12 max-w-2xl">
           {isAr
             ? `اكتشف لماذا تجعل ${model.nameAr} كل رحلة استثنائية`
             : `Find Out Why ${model.nameEn} Makes Every Drive Exceptional`}
-        </h2>
-
+        </h2></Reveal>
         <Swiper
           modules={[Navigation, Pagination]}
           navigation
