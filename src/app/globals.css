@@ -18,16 +18,26 @@
 
 /* base resets */
 body {
-    background: var(--hd-bg);
+  background: var(--hd-bg);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;   /* stops full-bleed sideways shift on mobile */
+  overflow-x: hidden;
+  /* stops full-bleed sideways shift on mobile */
+  width: 100%;
 }
 
 html {
   scrollbar-gutter: stable;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+  /*Stop toolbar resize*/
 }
 
+.full-bleed {
+  /*Viewport to help with the phone view jitter. */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+
+}
 
 
 /* RTL-aware utilities — these flip automatically with dir="rtl" */

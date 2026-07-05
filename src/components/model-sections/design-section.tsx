@@ -40,7 +40,7 @@ export default function DesignSection({
       </div>
 
       {/* full-bleed design hero image */}
-      <div className="h-[60vh] min-h-[400px] bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-gray-500 text-sm">
+      <div className="h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-gray-500 text-sm">
         Design hero image (full-bleed)
       </div>
 

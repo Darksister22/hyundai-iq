@@ -70,7 +70,7 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
                 ref={(el) => {
                   rowRefs.current[i] = el;
                 }}
-                className="min-h-[60vh] flex flex-col justify-center"
+                className="min-h-[60svh] flex flex-col justify-center"
               >
                 {/* image shown inline on mobile only */}
                 <div className="md:hidden h-72 rounded-lg overflow-hidden mb-6 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400">

@@ -1,4 +1,3 @@
-// parallax-image.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -22,16 +21,15 @@ export default function ParallaxImage({
   priority?: boolean;
 }) {
   const drift = useRef<HTMLDivElement>(null); // GSAP moves this (transform: translateY)
-// parallax-image.tsx
 useEffect(() => {
   if (!drift.current) return;
+  const mobile = window.matchMedia("(max-width: 767px)").matches;
   const ctx = gsap.context(() => {
-    // GSAP tween: more dramatic movement (stays within the 1.35 overscan)
     gsap.fromTo(
       drift.current,
-      { yPercent: -18 },              // was -12
+      { yPercent: mobile ? -10 : -18 },
       {
-        yPercent: 18,                 // was 12
+        yPercent: mobile ? 10 : 18,      // still dramatic, but within scale-1.2
         ease: "none",
         scrollTrigger: {
           trigger: drift.current,
@@ -42,13 +40,13 @@ useEffect(() => {
       }
     );
   });
-  return () => ctx.revert();          // cleanup on unmount
+  ScrollTrigger.refresh();
+  return () => ctx.revert();
 }, []);
-
   return (
     <div className={`relative overflow-hidden group ${className}`}>
       {/* outer: GSAP-controlled vertical drift (overscan via scale-125) */}
-<div ref={drift} className="absolute inset-0 scale-[1.35]">   {/* was scale-125 */}
+<div ref={drift} className="absolute inset-0 scale-[1.2] md:scale-[1.35]">   {/* was scale-125 */}
             {/* inner: hover zoom lives here so it doesn't clash with GSAP's transform */}
         <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-110">
           {src ? (

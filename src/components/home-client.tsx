@@ -184,11 +184,10 @@ export default function HomeClient({
             {tabs.map((label, i) => (
               <button
                 key={label}
-                className={`px-6 py-2 rounded-full text-sm border transition-colors ${
-                  i === 0
+                className={`px-6 py-2 rounded-full text-sm border transition-colors ${i === 0
                     ? "bg-[#002C5F] text-white border-[#002C5F]"
                     : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
-                }`}
+                  }`}
               >
                 {label}
               </button>
@@ -231,13 +230,10 @@ export default function HomeClient({
 
       {/* ─── Who we are — FULL-BLEED image (RTL-safe), CTA + heading below ─── */}
       <section className="py-24 overflow-hidden">
-        {/* mx-[calc(50%-50vw)] breaks out to 100vw correctly in both LTR and RTL */}
-        <div className="relative w-screen mx-[calc(50%-50vw)]">
-          <ParallaxImage
-            src="/images/founder.webp"
-            className="h-[70vh] min-h-[460px] w-full"
-          />
-          {/* CTA pill overlapping the image's bottom-start corner */}
+        <div className="relative full-bleed">
+          <ParallaxImage src="/images/founder.webp" className="h-[70svh] min-h-[460px] w-full" />
+
+          {/* CTA now positions against THIS wrapper */}
           <Link
             href={`/${locale}/about-hyundai`}
             className="absolute -bottom-5 start-8 inline-flex items-center gap-2 bg-[#002C5F] text-white text-sm font-semibold px-6 py-3 rounded shadow-lg hover:bg-[#003d7a] transition-colors"
@@ -257,10 +253,10 @@ export default function HomeClient({
       </section>
 
       {/* ─── Tagline banner — full-bleed, non-clickable ─── */}
-      <section className="relative w-screen mx-[calc(50%-50vw)] overflow-hidden mb-16">
+      <section className="relative full-bleed overflow-hidden mb-16">
         <ParallaxImage
           src="/images/IONIQ_9_3.webp"
-          className="h-[60vh] min-h-[400px] w-full"
+          className="h-[60svh] min-h-[400px] w-full"
         />
         {/* gradient for text legibility */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />

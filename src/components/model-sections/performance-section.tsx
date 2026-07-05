@@ -72,7 +72,7 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
 
       {/* content scrolls over */}
       <div className="relative -mt-screen">
-        <div className="max-w-[1400px] mx-auto px-8 pt-[70vh] pb-32">
+        <div className="max-w-[1400px] mx-auto px-8 pt-[70svh] pb-32">
           <p className="text-sm opacity-70">{heading}</p>
           <h2 className="text-4xl md:text-6xl font-bold mb-20">
             {isAr ? perf.engineAr : perf.engineEn}

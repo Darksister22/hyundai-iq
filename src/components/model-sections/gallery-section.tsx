@@ -26,7 +26,7 @@ export default function GallerySection({ model, heading }: Props) {
 
       <div className="max-w-[1400px] mx-auto px-8">
         {/* main image with fullscreen affordance */}
-        <div className="relative h-[60vh] min-h-[400px] rounded-lg overflow-hidden mb-4 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-gray-500 text-sm">
+        <div className="relative h-[60svh] min-h-[400px] rounded-lg overflow-hidden mb-4 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-gray-500 text-sm">
           Gallery image {active + 1}
           <button className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/80 w-10 h-10 rounded flex items-center justify-center">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">

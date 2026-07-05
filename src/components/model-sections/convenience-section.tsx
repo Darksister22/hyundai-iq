@@ -59,7 +59,7 @@ export default function ConvenienceSection({ locale, model }: Props) {
   return (
     <section id="convenience" ref={ref} className="scroll-mt-36">
       {/* full-bleed bg with heading */}
-      <div className="relative h-[60vh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end">
+      <div className="relative h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end">
         <div className="conv-intro max-w-[1400px] mx-auto px-8 w-full pb-12 text-white">
           <p className="text-sm opacity-80 mb-2">
             {isAr ? "الراحة" : "Convenience"}

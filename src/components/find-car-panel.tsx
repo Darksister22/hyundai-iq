@@ -53,26 +53,28 @@ export default function FindCarPanel({
     category === "all" ? models : models.filter((m) => m.category === category);
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const handleClose = () => {
+    setClosing(true);
+    onClose();
+  };
+  useEffect(() => { //mount on page. No more than one render. 
+    if (!open) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+    setClosing(false);
+  }, [open]);
 
-  // open → mount; close → play close timeline then unmount
-  useEffect(() => {
-    if (open) {
-      setMounted(true);
-      setClosing(false);
-      return;
-    }
-    if (!mounted) return;
+  useEffect(() => { //Close / unmount.
+    if (open || !mounted) return;
     tlRef.current?.kill();
     const tl = gsap.timeline({ onComplete: () => setMounted(false) });
     tlRef.current = tl;
     tl.to(gridRef.current, { y: 16, opacity: 0, duration: 0.25, ease: "power2.in" })
       .to(catsRef.current, { y: -12, opacity: 0, duration: 0.2, ease: "power2.in" }, "-=0.05")
       .to(panelRef.current, { height: 0, duration: 0.4, ease: "power3.inOut" }, "-=0.05");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, mounted]);
 
-  // play open timeline once mounted
-  useEffect(() => {
+  useEffect(() => { //Play open animation and expand panel.
     if (!mounted || !open) return;
     tlRef.current?.kill();
     const tl = gsap.timeline();
@@ -84,19 +86,12 @@ export default function FindCarPanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted]);
 
-  // close on: click-away, Escape, route change, refresh/unload
-  useEffect(() => {
+  useEffect(() => { //Close on click away / ecs press
     if (!open) return;
-
-    // click outside the panel content
     const onDown = (e: MouseEvent | TouchEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        handleClose();
-      }
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) handleClose();
     };
-    // Escape key
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
-
     document.addEventListener("mousedown", onDown);
     document.addEventListener("touchstart", onDown);
     document.addEventListener("keydown", onKey);
@@ -107,7 +102,6 @@ export default function FindCarPanel({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-
   // group fade when switching category (fixed panel height, so no re-measure)
   const onCategory = (id: Category) => {
     if (id === category) return;
@@ -128,10 +122,7 @@ export default function FindCarPanel({
   };
 
   // trigger the spin, then close
-  const handleClose = () => {
-    setClosing(true);
-    onClose();
-  };
+
 
   if (!mounted) return null;
 
