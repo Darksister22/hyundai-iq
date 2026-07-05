@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@fontsource-variable/cairo";
+@import "@fontsource-variable/cairo/index.css";
 
 /* hyundai brand colors as CSS custom properties */
 :root {
@@ -18,20 +18,17 @@
 
 /* base resets */
 body {
-  background: var(--hd-bg);
+    background: var(--hd-bg);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;   /* stops full-bleed sideways shift on mobile */
 }
 
 html {
   scrollbar-gutter: stable;
+  overflow-x: hidden;
 }
 
-html,
-body {
-  overflow-x: hidden;
-  width: 100%;
-  height: 100%;
-}
+
 
 /* RTL-aware utilities — these flip automatically with dir="rtl" */
 /* use logical properties in custom CSS: */
@@ -52,6 +49,6 @@ body {
 }
 
 @theme {
-  --font-sans: "Cairo Variable", sans-serif;   /* makes font-sans / body use Cairo */
+  --font-sans: "Cairo Variable", sans-serif;
+  /* makes font-sans / body use Cairo */
 }
-
