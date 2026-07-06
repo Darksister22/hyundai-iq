@@ -13,18 +13,25 @@ export default function ParallaxImage({
   const drift = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false); // track broken/missing image
 
-  useEffect(() => {
-    if (!drift.current) return;
-    const mobile = window.matchMedia("(max-width: 767px)").matches;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(drift.current,
-        { yPercent: mobile ? -10 : -18 },
-        { yPercent: mobile ? 10 : 18, ease: "none",
-          scrollTrigger: { trigger: drift.current, start: "top bottom", end: "bottom top", scrub: true } });
-    });
-    ScrollTrigger.refresh();
-    return () => ctx.revert();
-  }, []);
+useEffect(() => {
+  if (!drift.current) return;
+  const mobile = window.matchMedia("(max-width: 767px)").matches;
+  const ctx = gsap.context(() => {
+    gsap.fromTo(drift.current,
+      { yPercent: mobile ? -10 : -18 },
+      {
+        yPercent: mobile ? 10 : 18,
+        ease: "none",
+        scrollTrigger: {
+          trigger: drift.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,          // back to simple scrub
+        },
+      });
+  });
+  return () => ctx.revert();     // no ScrollTrigger.refresh() here
+}, []);
 
   // show image only if src exists AND hasn't failed to load
   const showImage = src && !failed;
