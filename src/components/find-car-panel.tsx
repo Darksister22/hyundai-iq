@@ -145,18 +145,19 @@ export default function FindCarPanel({
             {/* mobile: X on its own row above; desktop: X pinned to edge of centered slider */}
             <div ref={catsRef} className="mb-12">
               {/* close button — own row on mobile (flex end), absolute on desktop */}
-              <div className="flex justify-end mb-4 md:mb-0 md:h-0">
-                <button
-                  onClick={handleClose}
-                  aria-label="Close"
-                  className={`text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${isAr ? "md:left-0" : "md:right-0"
-                    } ${closing ? "rotate-180" : "rotate-0"}`}
-                >
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </div>
+<div className="flex justify-end mb-4 md:mb-0 md:h-0 relative z-10">
+  <button
+    onClick={onClose}                     
+    aria-label="Close"
+    className={`relative z-10 text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${
+      isAr ? "md:left-0" : "md:right-0"
+    }`}
+  >
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  </button>
+</div>
 
               {/* category slider — scrollable on mobile so pills never collide with the X */}
               <div className="relative flex items-center justify-center">

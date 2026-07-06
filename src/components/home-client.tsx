@@ -146,6 +146,7 @@ export default function HomeClient({
                     <p className="hero-anim text-xs uppercase tracking-[3px] opacity-60 mb-3">
                       {locale === "ar" ? "البداية الآن" : "Next Starts Now"}
                     </p>
+                
                     <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
                       {slide.name}
                     </h1>
@@ -178,6 +179,7 @@ export default function HomeClient({
             </h2>
             <p className="text-gray-500">{dict.exploreModelsDesc}</p>
           </div>
+          
 
           {/* category tabs */}
           <div ref={tabsRef} className="flex justify-center gap-2 mb-10">
@@ -185,8 +187,8 @@ export default function HomeClient({
               <button
                 key={label}
                 className={`px-6 py-2 rounded-full text-sm border transition-colors ${i === 0
-                    ? "bg-[#002C5F] text-white border-[#002C5F]"
-                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                  ? "bg-[#002C5F] text-white border-[#002C5F]"
+                  : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
                   }`}
               >
                 {label}
