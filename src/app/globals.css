@@ -23,6 +23,7 @@ body {
   overflow-x: hidden;
   /* stops full-bleed sideways shift on mobile */
   width: 100%;
+  min-height: 100svh;
 }
 
 html {
