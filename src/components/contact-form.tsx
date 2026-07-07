@@ -56,7 +56,6 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
   const [consent, setConsent] = useState(false); // required privacy consent
   const [submitted, setSubmitted] = useState(false);
 
-  // append newly-picked files, capped at MAX_FILES
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const picked = Array.from(e.target.files);
@@ -99,12 +98,9 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
       onSubmit={handleSubmit}
       className="bg-white rounded-xl border border-gray-200 p-8"
     >
-      {/* ── Your information ── */}
       <h2 className="text-sm font-semibold text-gray-700 mb-5">
         {dict.yourInfo}
       </h2>
-
-      {/* Gender radios */}
       <div className="mb-6">
         <span className="block text-sm text-gray-600 mb-2">{dict.gender}</span>
         <div className="flex gap-6">
@@ -124,8 +120,6 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
           ))}
         </div>
       </div>
-
-      {/* First + last name */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Field label={dict.firstName} required>
           <input type="text" required className={inputCls} />
@@ -134,8 +128,6 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
           <input type="text" required className={inputCls} />
         </Field>
       </div>
-
-      {/* Email + phone */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <Field label={dict.email} required>
           <input type="email" required className={inputCls} />
@@ -162,7 +154,6 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
         </Field>
       </div>
 
-      {/* Inquiry type */}
       <div className="mt-6">
         <Field label={dict.inquiryType} required>
           <select required defaultValue="" className={inputCls}>
@@ -178,7 +169,6 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
         </Field>
       </div>
 
-      {/* Comments with live character counter */}
       <div className="mt-6">
         <label className="block text-sm text-gray-600 mb-2">
           {dict.comments}
@@ -195,7 +185,6 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
         </p>
       </div>
 
-      {/* Attachments */}
       <div className="mt-6">
         <span className="block text-sm text-gray-600 mb-2">
           {dict.attachments}
@@ -235,14 +224,13 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
         )}
       </div>
 
-      {/* ── Marketing / consent ── */}
+      {/* Marketing / consent */}
       <div className="mt-8 pt-6 border-t border-gray-200">
         <h3 className="text-sm font-semibold text-gray-700 mb-2">
           {dict.marketingTitle}
         </h3>
         <p className="text-xs text-gray-500 mb-4">{dict.marketingIntro}</p>
 
-        {/* required consent — gates the submit button */}
         <label className="flex items-start gap-2 text-sm text-gray-700 mb-3 cursor-pointer">
           <input
             type="checkbox"

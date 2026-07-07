@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react"; // + useState
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -26,11 +26,11 @@ useEffect(() => {
           trigger: drift.current,
           start: "top bottom",
           end: "bottom top",
-          scrub: true,          // back to simple scrub
+          scrub: true,          
         },
       });
   });
-  return () => ctx.revert();     // no ScrollTrigger.refresh() here
+  return () => ctx.revert();     
 }, []);
 
   // show image only if src exists AND hasn't failed to load

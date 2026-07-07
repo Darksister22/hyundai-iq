@@ -84,7 +84,7 @@ export default function HomeClient({
         });
       }
 
-      // ─── Filter tabs slide in ───
+      // Filter tabs slide in
       if (tabsRef.current) {
         gsap.from(tabsRef.current.children, {
           y: 20,
@@ -101,7 +101,7 @@ export default function HomeClient({
         });
       }
 
-      // ─── Model cards staggered reveal ───
+      //Model cards staggered reveal
       if (gridRef.current) {
         gsap.from(gridRef.current.children, {
           y: 50,
@@ -125,9 +125,8 @@ export default function HomeClient({
   const tabs = [dict.allCars, dict.sedan, dict.suv, dict.electric, dict.mpv];
 
   return (
-    // overflow-x-hidden guards against any full-bleed sub-pixel overflow
     <div ref={rootRef} className="flex flex-col">
-      {/* ─── Hero carousel — full screen under the floating header ─── */}
+      {/* Hero carousel */}
       <div className="-mt-[72px]">
         <section ref={heroRef} className="relative h-[100svh] overflow-hidden">
           <Swiper
@@ -170,7 +169,7 @@ export default function HomeClient({
         </section>
       </div>
 
-      {/* ─── Model grid ─── */}
+      {/* Model grid */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div ref={headingRef} className="text-center mb-12">
@@ -230,12 +229,10 @@ export default function HomeClient({
         </div>
       </section>
 
-      {/* ─── Who we are — FULL-BLEED image (RTL-safe), CTA + heading below ─── */}
+      {/* Who we are */}
       <section className="py-24 overflow-hidden">
         <div className="relative full-bleed">
           <ParallaxImage src="/images/founder.webp" className="h-[70svh] min-h-[460px] w-full" />
-
-          {/* CTA now positions against THIS wrapper */}
           <Link
             href={`/${locale}/about-hyundai`}
             className="absolute -bottom-5 start-8 inline-flex items-center gap-2 bg-[#002C5F] text-white text-sm font-semibold px-6 py-3 rounded shadow-lg hover:bg-[#003d7a] transition-colors"
@@ -254,7 +251,7 @@ export default function HomeClient({
         </div>
       </section>
 
-      {/* ─── Tagline banner — full-bleed, non-clickable ─── */}
+      {/* Tagline banner */}
       <section className="relative full-bleed overflow-hidden mb-16">
         <ParallaxImage
           src="/images/IONIQ_9_3.webp"
@@ -262,7 +259,6 @@ export default function HomeClient({
         />
         {/* gradient for text legibility */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-        {/* tagline only — no link */}
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex items-center">
           <h2 className="text-3xl md:text-5xl font-bold text-white">
             {locale === "ar" ? "الآن نمضي قدماً" : "Now we move forward"}

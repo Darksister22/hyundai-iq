@@ -31,7 +31,7 @@ export default function Reveal({
             trigger: ref.current,
             start: "top 85%",
             end: "bottom 15%",
-            toggleActions: "play reverse play reverse", // in/out both directions
+            toggleActions: "play reverse play reverse", 
           },
         }
       );

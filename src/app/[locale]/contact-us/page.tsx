@@ -15,14 +15,13 @@ export default async function ContactPage({
 
   return (
     <>
-      {/* ── Hero banner: placeholder for an image, with breadcrumb + title overlaid ── */}
-      <section className="relative h-[492px] -mt-[72px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">        {/* TODO: replace this placeholder block with the banner image, e.g.
-            <Image src="/images/contact-banner.webp" alt="" fill className="object-cover" priority /> */}
+      {/* Hero banner */}
+      <section className="relative h-[492px] -mt-[72px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">       
         <Image
           src="/images/contact-us.webp"
-          alt=""              // decorative; text is overlaid separately
+          alt=""            
           fill
-          priority           // it's above the fold
+          priority          
           className="object-cover"
         />
 
@@ -43,14 +42,12 @@ export default async function ContactPage({
         </div>
       </section>
 
-      {/* ── Form section: form on the right, heading on the left ── */}
+      {/* Form section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            {/* form — first item sits on the right in RTL */}
             <ContactForm locale={locale} dict={t} />
 
-            {/* heading on the opposite side of the form */}
             <aside className="lg:order-first">
               <h2 className="text-2xl font-bold text-[#002C5F]">{t.subtitle}</h2>
             </aside>

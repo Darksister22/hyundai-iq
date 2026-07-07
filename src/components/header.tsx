@@ -42,7 +42,7 @@ export default function Header({ locale, dict }: HeaderProps) {
   const ctaBtn = atTop
     ? "bg-white text-[#002C5F] hover:bg-white/90"          // light button on dark blur
     : "bg-[#002C5F] text-white hover:bg-[#003d7a]";        // dark button on light bg
-  // ── effect 1: header scroll state (runs once) — unchanged ──
+  //header scroll state 
   useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY;
@@ -57,7 +57,7 @@ export default function Header({ locale, dict }: HeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ── effect 2: lock body scroll while the mobile menu is open ──
+  //lock body scroll while the mobile menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -92,13 +92,9 @@ export default function Header({ locale, dict }: HeaderProps) {
             <Link href={`/${locale}/contact-us`} className={`text-sm font-medium transition-colors ${navLink}`}>
               {dict.contactUs}
             </Link>
-
-            {/* language switch */}
             <Link href={switchedPath} className={`text-sm border px-3 py-1 rounded transition-colors ${langBtn}`}>
               {dict.langSwitch}
             </Link>
-
-            {/* request-callback CTA */}
             <Link href={`/${locale}/contact-us`} className={`text-sm font-semibold px-5 py-2 rounded transition-colors ${ctaBtn}`}>
               {dict.requestCallback}
             </Link>
@@ -112,7 +108,7 @@ export default function Header({ locale, dict }: HeaderProps) {
 
         </div>
       </header>
-      {/* ── Mobile overlay menu (slide + fade) ── */}
+      {/* Mobile overlay menu */}
       {menuVisible && (
         <div className="md:hidden fixed inset-0 z-[60]">
           {/* backdrop fades with menuOpen */}
@@ -129,7 +125,7 @@ export default function Header({ locale, dict }: HeaderProps) {
     flex flex-col gap-6 text-gray-800 transition-transform duration-300 ease-out
     ${menuOpen
                 ? "translate-x-0"
-                : "translate-x-full rtl:-translate-x-full"}`}  // closed: off the correct edge per dir
+                : "translate-x-full rtl:-translate-x-full"}`}  
           >
             <button className="self-end text-2xl leading-none text-gray-500" aria-label="close" onClick={() => setMenuOpen(false)}>×</button>
 
@@ -138,7 +134,8 @@ export default function Header({ locale, dict }: HeaderProps) {
               className="text-start"
             >
               {dict.findACar}
-            </button>            <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)}>{dict.aboutUs}</Link>
+            </button>            
+            <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)}>{dict.aboutUs}</Link>
             <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)}>{dict.findUs}</Link>
             <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)}>{dict.contactUs}</Link>
 

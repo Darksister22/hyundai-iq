@@ -121,9 +121,6 @@ export default function FindCarPanel({
     });
   };
 
-  // trigger the spin, then close
-
-
   if (!mounted) return null;
 
   return (
@@ -138,28 +135,25 @@ export default function FindCarPanel({
         className="bg-white shadow-xl overflow-hidden"
         style={{ height: 0 }}
       >
-        {/* fixed-height inner area: same size whether or not there are cars */}
         <div className="h-[78vh] overflow-y-auto scrollbar-hide">
           <div className="max-w-[1400px] mx-auto px-8 pt-8 pb-20">
             {/* category selector (slider) + close */}
-            {/* mobile: X on its own row above; desktop: X pinned to edge of centered slider */}
             <div ref={catsRef} className="mb-12">
               {/* close button — own row on mobile (flex end), absolute on desktop */}
-<div className="flex justify-end mb-4 md:mb-0 md:h-0 relative z-10">
-  <button
-    onClick={onClose}                     
-    aria-label="Close"
-    className={`relative z-10 text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${
-      isAr ? "md:left-0" : "md:right-0"
-    }`}
-  >
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  </button>
-</div>
+              <div className="flex justify-end mb-4 md:mb-0 md:h-0 relative z-10">
+                <button
+                  onClick={onClose}
+                  aria-label="Close"
+                  className={`relative z-10 text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${isAr ? "md:left-0" : "md:right-0"
+                    }`}
+                >
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </div>
 
-              {/* category slider — scrollable on mobile so pills never collide with the X */}
+              {/* category slider */}
               <div className="relative flex items-center justify-center">
                 <div className="inline-flex bg-gray-100 rounded-full p-1 max-w-full overflow-x-auto scrollbar-hide">
                   {categories.map((c) => (
@@ -176,7 +170,7 @@ export default function FindCarPanel({
               </div>
             </div>
 
-            {/* car cards — name top-start, car centered below */}
+            {/* car cards */}
             <div
               ref={gridRef}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -195,7 +189,6 @@ export default function FindCarPanel({
                     {isAr ? m.nameAr : m.nameEn}
                   </h3>
                   <div className="flex-1 flex items-center justify-center overflow-hidden min-h-[220px]">
-                    {/* hover will later swap to hero image; placeholder for now */}
                     <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
                       {m.nameEn}
                     </div>
