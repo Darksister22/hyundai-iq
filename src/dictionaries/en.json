@@ -73,7 +73,21 @@
     "wayBody": "Any great road trip needs the right traveling companions. That's why we look forward to taking these exciting next steps together with you, providing everyone with the mobility solutions they need to enhance their lives. That's progress for humanity.",
     "storyCrumb": "Hyundai Story",
     "progressQuote": "We are here to do what benefits humanity.",
-    "home": "Home"
+    "home": "Home",
+  "historyIntro": "From a pioneering Korean passenger car to a global auto leader — decades of innovation.",
+    "milestonesTitle": "Key Milestones",
+     "milestones": [
+  { "year": "2023", "events": ["Launched the all-new KONA", "Opened Hyundai Motor Group Innovation Center (HMGICS) in Singapore", "Brand value reached USD 20.4 billion"] },
+  { "year": "2021", "events": ["Launched IONIQ 5, the first model on the E-GMP platform", "Unveiled the STARIA multi-purpose vehicle", "Committed to carbon neutrality by 2045"] },
+  { "year": "2020", "events": ["Launched the IONIQ brand dedicated to electric vehicles", "Established Motional, an autonomous driving joint venture"] },
+  { "year": "2013", "events": ["Cumulative global sales surpassed 60 million vehicles", "Expanded the premium lineup"] },
+  { "year": "2010", "events": ["Introduced the 'Fluidic Sculpture' design language", "Ranked among the world's top automakers by volume"] },
+  { "year": "2004", "events": ["Recognized for major gains in vehicle quality rankings"] },
+  { "year": "1998", "events": ["Introduced the industry-leading 10-year / 100,000-mile warranty in the US"] },
+  { "year": "1986", "events": ["Entered the US market with the Excel"] },
+  { "year": "1976", "events": ["Launched the Hyundai Pony, Korea's first mass-produced passenger car", "Began exports, starting with Ecuador"] },
+  { "year": "1967", "events": ["Hyundai Motor Company founded"] }
+]
   },
   "contact": {
     "title": "Contact Us",

@@ -1,8 +1,11 @@
 export type Locale = "en" | "ar";
 
-const dictionaries = {
+// single source of truth for the dictionary shape
+type Dictionary = typeof import("../dictionaries/en.json");
+
+const dictionaries: Record<Locale, () => Promise<Dictionary>> = {
   en: () => import("../dictionaries/en.json").then((m) => m.default),
-  ar: () => import("../dictionaries/ar.json").then((m) => m.default),
+  ar: () => import("../dictionaries/ar.json").then((m) => m.default as unknown as Dictionary),
 };
 
 export const locales: Locale[] = ["en", "ar"];

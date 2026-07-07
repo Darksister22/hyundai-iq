@@ -1,6 +1,7 @@
 import { getDictionary, Locale } from "@/lib/i18n";
 import ParallaxImage from "@/components/parallax-image";
 import Reveal from "@/components/reveal";
+import AboutTabs from "@/components/about-tabs";
 
 export default async function AboutPage({
   params,
@@ -27,74 +28,78 @@ export default async function AboutPage({
           <h1 className="text-3xl md:text-4xl font-bold text-white">{t.title}</h1>
         </div>
       </section>
-      {/* Pill tabs (history / philosophy) TODO: Add history tab */}
-      <div className="flex justify-center -mt-7 relative z-10">
-        <div className="inline-flex bg-white shadow-md rounded-full p-1 text-sm">
-          <span className="px-6 py-2 rounded-full bg-[#002C5F] text-white">{t.philosophyTab}</span>
-          <span className="px-6 py-2 rounded-full text-gray-600">{t.historyTab}</span>
-        </div>
-      </div>
 
-      {/* Intro statement */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-6">
-          <Reveal>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#111] leading-snug">{t.intro}</h2>
-          </Reveal>
-        </div>
-      </section>
+      {/* Tabs (philosophy / history) — client component.
+          Philosophy content is passed in so it stays server-rendered. */}
+      <AboutTabs
+        dict={{
+          philosophyTab: t.philosophyTab,
+          historyTab: t.historyTab,
+          historyIntro: t.historyIntro,
+        }}
+        milestones={t.milestones}
+        philosophy={
+          <>
+            {/* Intro statement */}
+            <section className="py-20">
+              <div className="max-w-4xl mx-auto px-6">
+                <Reveal>
+                  <h2 className="text-3xl md:text-4xl font-bold text-[#111] leading-snug">{t.intro}</h2>
+                </Reveal>
+              </div>
+            </section>
 
-      {/*Overview*/}
-      <Row
-        label={t.overviewLabel}
-        title={t.overviewTitle}
-        body={t.overviewBody}
-        img="/images/philosophy.webp"
+            {/* Overview */}
+            <Row
+              label={t.overviewLabel}
+              title={t.overviewTitle}
+              body={t.overviewBody}
+              img="/images/philosophy.webp"
+            />
+
+            {/* Quote band */}
+            <section className="bg-[#002C5F] text-white py-16 md:py-24">
+              <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-3xl">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-5">{t.progressTitle}</h3>
+                  <p className="text-white/80 leading-relaxed text-sm md:text-base">{t.progressBody}</p>
+                </div>
+                <div className="relative mt-10 md:mt-16">
+                  <span className="absolute -top-6 md:-top-10 start-0 text-white/15 font-bold text-6xl md:text-8xl leading-none">
+                    “
+                  </span>
+                  <p className="text-white/15 font-bold text-3xl md:text-6xl leading-tight ps-10 md:ps-16">
+                    {t.progressQuote}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Founder image + quote */}
+            <section className="py-20">
+              <ParallaxImage
+                src="/images/founder.webp"
+                label="Founder image"
+                className="w-screen relative left-1/2 -translate-x-1/2 h-[560px] mb-10"
+              />
+              <div className="max-w-7xl mx-auto px-6">
+                <div className="bg-gray-50 p-10 md:p-14 relative">
+                  <span className="absolute top-6 end-8 text-[#002C5F] text-4xl">“</span>
+                  <blockquote className="text-2xl md:text-3xl font-bold text-[#002C5F] leading-relaxed max-w-3xl">
+                    {t.quote}
+                  </blockquote>
+                  <cite className="block mt-6 text-sm text-gray-500 not-italic">{t.quoteAuthor}</cite>
+                </div>
+              </div>
+            </section>
+
+            {/* Alternating image + text rows */}
+            <Row title={t.cornerTitle} body={t.cornerBody} img="/images/row1.webp" />
+            <Row title={t.nextTitle} body={t.nextBody} reverse img="/images/row2.webp" />
+            <Row title={t.wayTitle} body={t.wayBody} img="/images/row3.webp" />
+          </>
+        }
       />
-
-      {/* Quote band */}
-      <section className="bg-[#002C5F] text-white py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-5">
-              {t.progressTitle}
-            </h3>
-            <p className="text-white/80 leading-relaxed text-sm md:text-base">
-              {t.progressBody}
-            </p>
-          </div>
-          <div className="relative mt-10 md:mt-16">
-            <span className="absolute -top-6 md:-top-10 start-0 text-white/15 font-bold text-6xl md:text-8xl leading-none">
-              “
-            </span>
-            <p className="text-white/15 font-bold text-3xl md:text-6xl leading-tight ps-10 md:ps-16">
-              {t.progressQuote}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Founder image */}
-      <section className="py-20">
-        <ParallaxImage
-          src="/images/founder.webp"
-          label="Founder image"
-          className="w-screen relative left-1/2 -translate-x-1/2 h-[560px] mb-10"
-        />
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-gray-50 p-10 md:p-14 relative">
-            <span className="absolute top-6 end-8 text-[#002C5F] text-4xl">“</span>
-            <blockquote className="text-2xl md:text-3xl font-bold text-[#002C5F] leading-relaxed max-w-3xl">
-              {t.quote}
-            </blockquote>
-            <cite className="block mt-6 text-sm text-gray-500 not-italic">{t.quoteAuthor}</cite>
-          </div>
-        </div>
-      </section>
-      {/* Alternating image and text rows */}
-      <Row title={t.cornerTitle} body={t.cornerBody} img="/images/row1.webp" />
-      <Row title={t.nextTitle} body={t.nextBody} reverse img="/images/row2.webp" />
-      <Row title={t.wayTitle} body={t.wayBody} img="/images/row3.webp" />
     </>
   );
 }
@@ -104,7 +109,7 @@ function Row({
   label,
   title,
   body,
-  img,           
+  img,
   reverse = false,
 }: {
   label?: string;
