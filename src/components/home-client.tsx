@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
@@ -9,6 +10,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
 import ParallaxImage from "@/components/parallax-image";
+import ModelCard from "@/components/model-card";
 // Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -28,7 +30,7 @@ interface HomeDict {
   whoWeAre: string;
   whoWeAreDesc: string;
   knowMore: string;
-} // pull ar and en locale vars to be used in this page. 
+} // pull ar and en locale vars to be used in this page.
 
 interface HeroSlide {
   name: string;
@@ -49,15 +51,31 @@ export default function HomeClient({
   models,
   heroSlides,
 }: HomeClientProps) {
-  const rootRef = useRef<HTMLDivElement>(null); //Reference for the root of all the element. Changes to it might play with the item's general margins and positions.
-  const headingRef = useRef<HTMLDivElement>(null); //
+  const rootRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState(0);
+
+  // which car card is expanded to state 3 (only one at a time)
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
+
+  // click outside the expanded card collapses it back to state 1/2
+  useEffect(() => {
+    if (!expandedSlug) return;
+    const onDown = (e: MouseEvent) => {
+      const el = e.target as HTMLElement;
+      if (!el.closest(`[data-card-slug="${expandedSlug}"]`)) {
+        setExpandedSlug(null);
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [expandedSlug]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero enterance
       gsap.from(".hero-anim", {
         y: 40,
         opacity: 0,
@@ -67,7 +85,6 @@ export default function HomeClient({
         delay: 0.2,
       });
 
-      //section heading reveal
       if (headingRef.current) {
         gsap.from(headingRef.current.children, {
           y: 30,
@@ -84,9 +101,8 @@ export default function HomeClient({
         });
       }
 
-      // Filter tabs slide in
       if (tabsRef.current) {
-        gsap.from(tabsRef.current.children, {
+        gsap.from(tabsRef.current.querySelectorAll("button"), {
           y: 20,
           opacity: 0,
           duration: 0.5,
@@ -101,21 +117,23 @@ export default function HomeClient({
         });
       }
 
-      //Model cards staggered reveal
       if (gridRef.current) {
-        gsap.from(gridRef.current.children, {
-          y: 50,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: gridRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play reverse play reverse",
-          },
-        });
+        gsap.fromTo(
+          gridRef.current.querySelectorAll(".swiper-slide"),
+          { y: 50, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top 90%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
       }
     }, rootRef);
 
@@ -124,9 +142,14 @@ export default function HomeClient({
 
   const tabs = [dict.allCars, dict.sedan, dict.suv, dict.electric, dict.mpv];
 
+  const filteredModels = models.filter((model) => {
+    const cats = ["all", "sedan", "suv", "electric", "mpv"] as const;
+    const active = cats[activeTab];
+    return active === "all" ? true : model.category === active;
+  });
+
   return (
     <div ref={rootRef} className="flex flex-col">
-      {/* Hero carousel */}
       <div className="-mt-[72px]">
         <section ref={heroRef} className="relative h-[100svh] overflow-hidden">
           <Swiper
@@ -145,7 +168,6 @@ export default function HomeClient({
                     <p className="hero-anim text-xs uppercase tracking-[3px] opacity-60 mb-3">
                       {locale === "ar" ? "البداية الآن" : "Next Starts Now"}
                     </p>
-                
                     <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
                       {slide.name}
                     </h1>
@@ -169,8 +191,7 @@ export default function HomeClient({
         </section>
       </div>
 
-      {/* Model grid */}
-      <section className="py-20">
+      <section className="py-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div ref={headingRef} className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#002C5F] mb-3">
@@ -178,61 +199,60 @@ export default function HomeClient({
             </h2>
             <p className="text-gray-500">{dict.exploreModelsDesc}</p>
           </div>
-          
 
-          {/* category tabs */}
-          <div ref={tabsRef} className="flex justify-center gap-2 mb-10">
-            {tabs.map((label, i) => (
-              <button
-                key={label}
-                className={`px-6 py-2 rounded-full text-sm border transition-colors ${i === 0
-                  ? "bg-[#002C5F] text-white border-[#002C5F]"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+          <div ref={tabsRef} className="flex justify-center mb-10">
+            <div className="inline-flex bg-gray-100 rounded-full p-1">
+              {tabs.map((label, i) => (
+                <button
+                  key={label}
+                  onClick={() => {
+                    setActiveTab(i);
+                    setExpandedSlug(null);
+                  }}
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+                    activeTab === i
+                      ? "bg-white shadow text-[#111]"
+                      : "text-gray-500 hover:text-gray-800"
                   }`}
-              >
-                {label}
-              </button>
-            ))}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* model cards with zoom-on-hover */}
-          <div
-            ref={gridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {models.map((model) => (
-              <Link
-                key={model.slug}
-                href={`/${locale}/models/${model.slug}`}
-                className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
-              >
-                <div className="h-44 overflow-hidden">
-                  <div className="h-full w-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 ease-out group-hover:scale-110">
-                    {model.nameEn} image
-                  </div>
-                </div>
-                <div className="p-5">
-                  <span className="text-xs uppercase tracking-wider text-[#00AAD2] font-semibold">
-                    {model.category}
-                  </span>
-                  <h3 className="text-lg font-bold mt-1">
-                    {locale === "ar" ? model.nameAr : model.nameEn}
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-2 line-clamp-2" />
-                  <span className="inline-block mt-4 text-sm font-semibold text-[#002C5F] group-hover:text-[#00AAD2] transition-colors">
-                    {dict.explore} →
-                  </span>
-                </div>
-              </Link>
-            ))}
+          {/* model cards — carousel, square pagination */}
+          <div ref={gridRef}>
+            <Swiper
+              modules={[Pagination]}
+              slidesPerView="auto"
+              spaceBetween={20}
+              pagination={{ clickable: true }}
+              className="model-swiper !pb-10"
+            >
+              {filteredModels.map((model) => (
+                <SwiperSlide key={model.slug} className="!w-auto">
+                  <ModelCard
+                    locale={locale}
+                    model={model}
+                    exploreLabel={dict.explore}
+                    expanded={expandedSlug === model.slug}
+                    onExpand={(slug) => setExpandedSlug(slug)}
+                    onCollapse={() => setExpandedSlug(null)}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </section>
 
-      {/* Who we are */}
       <section className="py-24 overflow-hidden">
-        <div className="relative full-bleed">
-          <ParallaxImage src="/images/founder.webp" className="h-[70svh] min-h-[460px] w-full" />
+        <div className="relative w-screen mx-[calc(50%-50vw)]">
+          <ParallaxImage
+            src="/images/founder.webp"
+            className="h-[70vh] min-h-[460px] w-full"
+          />
           <Link
             href={`/${locale}/about-hyundai`}
             className="absolute -bottom-5 start-8 inline-flex items-center gap-2 bg-[#002C5F] text-white text-sm font-semibold px-6 py-3 rounded shadow-lg hover:bg-[#003d7a] transition-colors"
@@ -242,7 +262,6 @@ export default function HomeClient({
           </Link>
         </div>
 
-        {/* label + heading in the normal container */}
         <div className="max-w-7xl mx-auto px-6 mt-12">
           <span className="text-sm text-gray-400">{dict.whoWeAre}</span>
           <h2 className="mt-2 text-2xl md:text-4xl font-bold text-[#002C5F] leading-snug max-w-4xl">
@@ -251,13 +270,11 @@ export default function HomeClient({
         </div>
       </section>
 
-      {/* Tagline banner */}
-      <section className="relative full-bleed overflow-hidden mb-16">
+      <section className="relative w-screen mx-[calc(50%-50vw)] overflow-hidden mb-16">
         <ParallaxImage
           src="/images/IONIQ_9_3.webp"
-          className="h-[60svh] min-h-[400px] w-full"
+          className="h-[60vh] min-h-[400px] w-full"
         />
-        {/* gradient for text legibility */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex items-center">
           <h2 className="text-3xl md:text-5xl font-bold text-white">

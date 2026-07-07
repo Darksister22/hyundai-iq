@@ -59,6 +59,24 @@ html {
   background: white;
 }
 
+/* model carousel: square pagination */
+.model-swiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: #c8c8c8;
+  opacity: 1;
+}
+.model-swiper .swiper-pagination-bullet-active {
+  width: 10px;
+  border-radius: 2px;
+  background: #002c5f;
+}
+/* custom spin cursor: dark box with < > arrows */
+.spin-cursor {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='24' viewBox='0 0 36 24'><rect width='36' height='24' rx='4' fill='%23111111'/><path d='M12 7l-5 5 5 5M24 7l5 5-5 5' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") 18 12, ew-resize;
+}
+
 @theme {
   --font-sans: "Cairo Variable", sans-serif;
   /* makes font-sans / body use Cairo */
