@@ -28,7 +28,12 @@ export interface ColorOption {
   gradient: string; // background gradient shown behind this color's spin
   spinFrames: string[];
 }
-
+export interface InteriorOption {
+  nameEn: string;
+  nameAr: string;
+  hex: string;           // swatch color
+  panorama: string;      // 360 image for this trim
+}
 /**
  * Generates an ordered list of spin-frame paths.
  * Matches the "prefix- (1).webp, prefix- (2).webp, ..." naming.
@@ -92,7 +97,7 @@ export interface VehicleModel {
   };
   visualizer: {
     colors: ColorOption[];
-    panorama360?: string;
+    interiorColors?: InteriorOption[];   // ← full option (nameEn/nameAr/hex/panorama)
   };
   performance: {
     heroImage: string;
@@ -184,7 +189,11 @@ export const models: VehicleModel[] = [
         { nameEn: "Phantom Black", nameAr: "أسود فانتوم", hex: "#1C1C1C", gradient: "linear-gradient(180deg, #2A2A2A 0%, #4A4A4A 100%)", spinFrames: spinFrames("/images/models/accent/spin/black-", 36) },
         { nameEn: "Intense Blue", nameAr: "أزرق كثيف", hex: "#1F4E8C", gradient: "linear-gradient(180deg, #1E3F6E 0%, #3E6BA8 100%)", spinFrames: spinFrames("/images/models/accent/spin/blue-", 36) },
       ],
-      panorama360: "/images/models/accent/interior-360.webp",
+      interiorColors: [
+        { nameEn: "White", nameAr: "ابيض", hex: "#EDEDED", panorama: "/images/models/accent/interior-360.webp" },
+        { nameEn: "White", nameAr: "اسود", hex: "#AAAA", panorama: "/images/models/accent/interior-360.webp" }
+
+      ]
     },
     performance: {
       heroImage: "/images/models/accent/perf-hero.webp",

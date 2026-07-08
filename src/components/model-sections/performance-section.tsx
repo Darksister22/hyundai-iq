@@ -30,7 +30,8 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
           { filter: "blur(0px)", y: 0 },
           {
             filter: "blur(12px)",
-            y: -60,
+            y: -30,
+            scale:1.15,
             ease: "none",
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -65,8 +66,7 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div
           ref={bgRef}
-          className="absolute inset-0 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm"
-        >
+  className="absolute -inset-8 scale-110 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm"        >
           Performance driving image (full-bleed)
         </div>
 

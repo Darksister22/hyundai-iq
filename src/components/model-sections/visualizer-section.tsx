@@ -54,9 +54,12 @@ export default function VisualizerSection({
   const isAr = locale === "ar";
   const [tab, setTab] = useState<"exterior" | "interior">("exterior");
   const [colorIdx, setColorIdx] = useState(0);
+  const [intIdx, setIntIdx] = useState(0);                    //  interior trim
   const colors = model.visualizer.colors;
   const color = colors[colorIdx];
-
+  const interiors = model.visualizer.interiorColors ?? [];    //  trims
+  const interior = interiors[intIdx];
+  const panoSrc = interior?.panorama;                          // active trim panorama
   const heading =
     whichColor?.trim() ||
     (isAr ? "أي لون يبدو الأفضل؟" : "Which color looks best?");
@@ -125,13 +128,14 @@ export default function VisualizerSection({
        layered inside it so the car is the centered anchor of the page */
     <section
       id="visualizer"
-      className="scroll-mt-36 relative h-[100svh] min-h-[640px] overflow-hidden"
+      className="scroll-mt-36 relative h-[70svh] min-h-[640px] overflow-hidden"
     >
       {tab === "exterior" ? (
         <div
           className="absolute inset-0 select-none touch-pan-y bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `${stageOverlay(color?.hex)}, url('/images/spinback.png')`,
+            backgroundSize: "cover, 130%",   // overlay covers; photo zoomed 130% to match the bigger car
             cursor: SPIN_CURSOR,
           }}
           onMouseDown={(e) => onDown(e.clientX)}
@@ -171,8 +175,7 @@ export default function VisualizerSection({
                 src={frames[frame]}
                 alt=""
                 draggable={false}
-                className="absolute inset-0 w-full h-full object-contain pointer-events-none scale-[0.56] translate-y-[3%] z-[1]"
-              />
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none scale-[0.78] md:scale-[0.68] translate-y-[2%] z-[1]" />
 
               {/* loading state until frames are cached */}
               {!loaded && (
@@ -191,16 +194,13 @@ export default function VisualizerSection({
           )}
         </div>
       ) : (
-        /* INTERIOR — full-stage Pannellum */
+        /* INTERIOR — full-stage Pannellum, panorama per trim */
         <div className="absolute inset-0 bg-[#1a1a1a]">
-          {model.visualizer.panorama360 ? (
-            <Pannellum360
-              id={`interior-360-${model.slug}`}
-              src={model.visualizer.panorama360}
-            />
+          {panoSrc ? (
+            <Pannellum360 id={`interior-360-${model.slug}-${intIdx}`} src={panoSrc} />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-white/50 text-sm">
-              Interior 360 panorama (add panorama360 image)
+              Interior 360 panorama (add interiorColors)
             </div>
           )}
         </div>
@@ -208,72 +208,65 @@ export default function VisualizerSection({
 
       {/* ---- overlaid controls (both tabs) ---- */}
 
-      {/* exterior/interior toggle — bottom-left, like the reference */}
-      <div className="absolute bottom-6 left-6 md:left-10 z-[3]">
+      {/* exterior/interior toggle */}
+      <div className="absolute bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0 z-[3]">
         <div className="inline-flex bg-white rounded-full p-0.5 shadow-md">
           <button
             onClick={() => setTab("exterior")}
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-              tab === "exterior" ? "bg-[#111] text-white" : "text-gray-500"
-            }`}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${tab === "exterior" ? "bg-[#111] text-white" : "text-gray-500"
+              }`}
           >
             {exteriorLabel}
           </button>
           <button
             onClick={() => setTab("interior")}
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-              tab === "interior" ? "bg-[#111] text-white" : "text-gray-500"
-            }`}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${tab === "interior" ? "bg-[#111] text-white" : "text-gray-500"
+              }`}
           >
             {interiorLabel}
           </button>
         </div>
       </div>
 
-      {/* color caption + swatches — bottom-center under the car */}
-      <div className="absolute bottom-5 inset-x-0 z-[2] flex flex-col items-center pointer-events-none">
-        <p
-          className={`text-sm font-semibold mb-2 ${
-            tab === "interior" ? "text-white" : "text-[#111]"
+<div className="absolute bottom-5 inset-x-0 z-[2] flex flex-col items-center pointer-events-none">
+  <p className={`text-sm font-semibold mb-2 ${tab === "interior" ? "text-white" : "text-[#111]"}`}>
+    {tab === "exterior"
+      ? (isAr ? color?.nameAr : color?.nameEn)
+      : (isAr ? interior?.nameAr : interior?.nameEn)}
+  </p>
+
+  {/* exterior paint swatches (your existing block) */}
+  {tab === "exterior" && (
+    <div className="flex items-center gap-3 pointer-events-auto">
+      {/* ...existing ‹ / swatches / › for colors... */}
+    </div>
+  )}
+
+  {/* interior trim swatches (new, mirrors exterior) */}
+  {tab === "interior" && interiors.length > 0 && (
+    <div className="flex items-center gap-3 pointer-events-auto">
+      <button
+        onClick={() => setIntIdx((i) => (i - 1 + interiors.length) % interiors.length)}
+        className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
+      >‹</button>
+      {interiors.map((c, i) => (
+        <button
+          key={c.hex}
+          onClick={() => setIntIdx(i)}
+          title={isAr ? c.nameAr : c.nameEn}
+          className={`w-7 h-7 rounded border-2 transition-transform ${
+            intIdx === i ? "border-white scale-110" : "border-transparent"
           }`}
-        >
-          {colorName}
-        </p>
-        {tab === "exterior" && (
-          <div className="pointer-events-auto flex items-center gap-3 bg-white/90 backdrop-blur rounded-full px-3 py-2 shadow-md">
-            <button
-              onClick={() =>
-                selectColor((i) => (i - 1 + colors.length) % colors.length)
-              }
-              className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center text-[#111]"
-            >
-              ‹
-            </button>
-            {colors.map((c, i) => (
-              <button
-                key={c.hex}
-                onClick={() => {
-                  selectColor(i);
-                  setFrame(0);
-                }}
-                title={isAr ? c.nameAr : c.nameEn}
-                className={`w-7 h-7 rounded border-2 transition-transform ${
-                  colorIdx === i
-                    ? "border-[#002C5F] scale-110"
-                    : "border-transparent"
-                }`}
-                style={{ backgroundColor: c.hex }}
-              />
-            ))}
-            <button
-              onClick={() => selectColor((i) => (i + 1) % colors.length)}
-              className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center text-[#111]"
-            >
-              ›
-            </button>
-          </div>
-        )}
-      </div>
+          style={{ backgroundColor: c.hex }}
+        />
+      ))}
+      <button
+        onClick={() => setIntIdx((i) => (i + 1) % interiors.length)}
+        className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
+      >›</button>
+    </div>
+  )}
+</div>
     </section>
   );
 }
