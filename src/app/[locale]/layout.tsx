@@ -3,13 +3,14 @@ import type { Viewport } from "next";
 import Header from "@/components/header";
 import "@fontsource-variable/cairo";
 import Footer from "@/components/footer";
+import LoadingScreen from "@/components/loading-screen";
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
-export const viewport:Viewport = {
-  width:"device-width",
-  initialScale : 1,
-  interactiveWidget : "resizes-content"
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  interactiveWidget: "resizes-content"
 }
 
 export default async function LocaleLayout({
@@ -27,6 +28,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir} >
       <body>
+        <LoadingScreen />
         <Header locale={locale} dict={dict.nav} />
         <main className="pt-[72px]">{children}</main>
         <Footer locale={locale} dict={dict.footer} />
