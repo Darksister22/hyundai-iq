@@ -94,9 +94,9 @@ export default function HomeClient({
           ease: "power2.out",
           scrollTrigger: {
             trigger: headingRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play reverse play reverse",
+            start: "top 90%",
+            end: "bottom 1%",
+            toggleActions: "play none none play",
           },
         });
       }

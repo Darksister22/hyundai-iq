@@ -42,17 +42,16 @@ export default function ModelCard({
       onClick={() => {
         if (!expanded) onExpand(model.slug);
       }}
-      className={`group relative shrink-0 rounded-xl bg-gray-50 overflow-hidden transition-all duration-700 ease-out ${
-        expanded
-          ? "w-[560px] h-[440px] cursor-default"
+      className={`group relative shrink-0 rounded-xl bg-gray-50 overflow-hidden transition-all duration-700 ease-out ${expanded
+          ? "w-[92vw] max-w-[560px] h-[440px] max-h-[80svh] cursor-default"   // fits phone; caps at 560 on desktop
           : "w-[260px] h-[360px] cursor-pointer hover:scale-[1.04] hover:z-10 hover:shadow-xl"
-      }`}
+        }`}
     >
       {expanded ? (
         /* ─── STATE 3: expanded ─── */
         <div className="relative w-full h-full p-5 flex flex-col">
           {/* watermark name — TOP of card, behind the car */}
-          <span className="absolute top-4 inset-x-0 text-center text-8xl font-extrabold text-gray-300 pointer-events-none select-none z-0 leading-none">
+          <span className="absolute top-4 inset-x-0 text-center text-6xl md:text-8xl font-extrabold text-gray-300 pointer-events-none select-none z-0 leading-none">
             {name}
           </span>
 
@@ -79,9 +78,8 @@ export default function ModelCard({
                     height="14"
                     viewBox="0 0 24 24"
                     fill="none"
-                    className={`text-[#002C5F] transition-transform ${
-                      colorOpen ? "rotate-180" : ""
-                    }`}
+                    className={`text-[#002C5F] transition-transform ${colorOpen ? "rotate-180" : ""
+                      }`}
                   >
                     <path
                       d="M6 9l6 6 6-6"
@@ -149,8 +147,7 @@ export default function ModelCard({
           {/* spinner sits above watermark (z-10) but below top bar */}
           <div className="relative z-10 flex-1 flex items-center justify-center min-h-0">
             {frames.length > 0 ? (
-              <CarSpinner frames={frames} className="w-full h-full max-h-[220px]" />
-            ) : (
+              <CarSpinner frames={frames} className="w-full h-full max-h-[160px] md:max-h-[220px]" />) : (
               <div className="w-full h-full max-h-[220px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
                 {model.nameEn}
               </div>
