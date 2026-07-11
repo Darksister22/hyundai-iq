@@ -1,14 +1,13 @@
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade, Pagination } from "swiper/modules";
+import { Autoplay, EffectFade, Pagination ,Navigation} from "swiper/modules";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
-import type { VehicleModel } from "@/lib/models-data";
+import type { FindCarCategory, HomeCar, HeroBanner } from "@/lib/find-car-data";
 import ParallaxImage from "@/components/parallax-image";
 import ModelCard from "@/components/model-card";
 // Swiper styles
@@ -32,31 +31,31 @@ interface HomeDict {
   knowMore: string;
 } // pull ar and en locale vars to be used in this page.
 
-interface HeroSlide {
-  name: string;
-  tagline: string;
-  slug: string;
-}
+// "all" or a category id from the DB
+type CategoryFilter = "all" | number;
 
 interface HomeClientProps {
   locale: Locale;
   dict: HomeDict;
-  models: VehicleModel[];
-  heroSlides: HeroSlide[];
+  categories: FindCarCategory[];
+  cars: HomeCar[];
+  banners: HeroBanner[];
 }
 
 export default function HomeClient({
   locale,
   dict,
-  models,
-  heroSlides,
+  categories,
+  cars,
+  banners,
 }: HomeClientProps) {
+  const isAr = locale === "ar";
   const rootRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeCat, setActiveCat] = useState<CategoryFilter>("all");
 
   // which car card is expanded to state 3 (only one at a time)
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -140,54 +139,126 @@ export default function HomeClient({
     return () => ctx.revert();
   }, []);
 
-  const tabs = [dict.allCars, dict.sedan, dict.suv, dict.electric, dict.mpv];
+  // "All Cars" + one tab per DB category, localized with EN fallback
+  const tabs: { id: CategoryFilter; label: string }[] = [
+    { id: "all", label: dict.allCars },
+    ...categories.map((c) => ({
+      id: c.id as CategoryFilter,
+      label: isAr ? c.nameAr ?? c.nameEn : c.nameEn,
+    })),
+  ];
 
-  const filteredModels = models.filter((model) => {
-    const cats = ["all", "sedan", "suv", "electric", "mpv"] as const;
-    const active = cats[activeTab];
-    return active === "all" ? true : model.category === active;
-  });
+  const filteredCars =
+    activeCat === "all" ? cars : cars.filter((c) => c.categoryId === activeCat);
+
+  // Swiper's loop/autoplay misbehave with a single slide
+  
+  const multiSlide = banners.length > 1;
+
+  const bannerTitle = (b: HeroBanner) =>
+    isAr ? b.titleAr ?? b.titleEn : b.titleEn;
+  const bannerTagline = (b: HeroBanner) =>
+    isAr ? b.taglineAr ?? b.taglineEn : b.taglineEn;
+  
 
   return (
     <div ref={rootRef} className="flex flex-col">
       <div className="-mt-[72px]">
         <section ref={heroRef} className="relative h-[100svh] overflow-hidden">
-          <Swiper
-            modules={[Autoplay, EffectFade, Pagination]}
-            effect="fade"
-            fadeEffect={{ crossFade: true }}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            pagination={{ clickable: true }}
-            loop
-            className="h-full"
-          >
-            {heroSlides.map((slide) => (
-              <SwiperSlide key={slide.slug}>
-                <div className="relative h-full bg-[#002C5F] flex items-center">
-                  <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
-                    <p className="hero-anim text-xs uppercase tracking-[3px] opacity-60 mb-3">
-                      {locale === "ar" ? "البداية الآن" : "Next Starts Now"}
-                    </p>
-                    <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
-                      {slide.name}
-                    </h1>
-                    <p className="hero-anim text-base opacity-70 max-w-md mb-8">
-                      {slide.tagline}
-                    </p>
-                    <div className="hero-anim">
-                      <Link
-                        href={`/${locale}/models/${slide.slug}`}
-                        className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
-                      >
-                        {dict.explore}
-                      </Link>
+          {banners.length === 0 ? (
+            /* fallback when the CMS has no banners yet — single static slide */
+            <div className="relative h-full bg-[#002C5F] flex items-center">
+              <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
+                <h1 className="hero-anim text-5xl font-bold leading-tight">
+                  {isAr ? "هيونداي العراق" : "Hyundai Iraq"}
+                </h1>
+              </div>
+            </div>
+          ) : (
+            <Swiper
+              modules={[Autoplay, EffectFade, Pagination, Navigation]}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              autoplay={multiSlide ? { delay: 12000, disableOnInteraction: false } : false}
+              pagination={multiSlide ? { clickable: true } : false}
+              navigation={multiSlide ? { prevEl: ".hero-prev", nextEl: ".hero-next" } : false}
+              loop={multiSlide}
+              className="h-full"
+            >
+              {multiSlide && (
+                                <>
+                                  <button
+                                    aria-label="Previous banner"
+                                    className="hero-prev absolute start-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                                  >
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                                      <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                  </button>
+                                  <button
+                                    aria-label="Next banner"
+                                    className="hero-next absolute end-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                                  >
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                                      <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                  </button>
+                                </>
+                              )}
+              {banners.map((b) => (
+                <SwiperSlide key={b.id}>
+                  <div className="relative h-full bg-[#002C5F] flex items-center">
+                    {/* media background — image or looping muted video */}
+                    {b.mediaUrl &&
+                      (b.mediaType === "video" ? (
+                        <video
+                          src={b.mediaUrl}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={b.mediaUrl}
+                          alt={bannerTitle(b) ?? ""}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ))}
+
+                    {/* readability gradient over the media
+                    <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#002C5F] z-[1]" /> */}
+
+                    <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
+                      {bannerTitle(b) && (
+                        <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
+                          {bannerTitle(b)}
+                        </h1>
+                      )}
+                      {bannerTagline(b) && (
+                        <p className="hero-anim text-base opacity-70 max-w-md mb-8">
+                          {bannerTagline(b)}
+                        </p>
+                      )}
+                      {b.carSlug && (
+                        <div className="hero-anim">
+                          <Link
+                            href={`/${locale}/models/${b.carSlug}`}
+                            className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
+                          >
+                            {dict.explore}
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#002C5F] z-[1]" />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </section>
       </div>
 
@@ -201,21 +272,21 @@ export default function HomeClient({
           </div>
 
           <div ref={tabsRef} className="flex justify-center mb-10">
-            <div className="inline-flex bg-gray-100 rounded-full p-1">
-              {tabs.map((label, i) => (
+            <div className="inline-flex bg-gray-100 rounded-full p-1 max-w-full overflow-x-auto overflow-y-hidden scrollbar-hide">
+              {tabs.map((tab) => (
                 <button
-                  key={label}
+                  key={tab.id}
                   onClick={() => {
-                    setActiveTab(i);
+                    setActiveCat(tab.id);
                     setExpandedSlug(null);
                   }}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
-                    activeTab === i
+                  className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                    activeCat === tab.id
                       ? "bg-white shadow text-[#111]"
                       : "text-gray-500 hover:text-gray-800"
                   }`}
                 >
-                  {label}
+                  {tab.label}
                 </button>
               ))}
             </div>
@@ -230,13 +301,13 @@ export default function HomeClient({
               pagination={{ clickable: true }}
               className="model-swiper !pb-10"
             >
-              {filteredModels.map((model) => (
-                <SwiperSlide key={model.slug} className="!w-auto">
+              {filteredCars.map((car) => (
+                <SwiperSlide key={car.id} className="!w-auto">
                   <ModelCard
                     locale={locale}
-                    model={model}
+                    car={car}
                     exploreLabel={dict.explore}
-                    expanded={expandedSlug === model.slug}
+                    expanded={expandedSlug === car.slug}
                     onExpand={(slug) => setExpandedSlug(slug)}
                     onCollapse={() => setExpandedSlug(null)}
                   />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Locale } from "@/lib/i18n";
+import { supabase } from "@/lib/supabase";
 
 // Typed inline from the dictionary, same convention as Footer.
 // Mirrors the official Hyundai ME contact form fields.
@@ -33,6 +34,7 @@ interface ContactDict {
   privacyConsent: string;
   send: string;
   successMsg: string;
+  errorMsg?: string; // shown if the submission fails
 }
 
 interface ContactFormProps {
@@ -44,6 +46,8 @@ const MAX_CHARS = 5000; // official 5000-character limit
 const MAX_FILES = 2; // official: up to 2 files
 const ACCEPTED = ".pdf,.jpeg,.jpg,.png"; // official: PDF, JPEG, PNG only
 
+const BUCKET = "contact-attachments";
+
 // shared input styling, matches the rest of the site
 const inputCls =
   "w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:border-[#00AAD2] transition-colors";
@@ -54,7 +58,9 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
   const [comments, setComments] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [consent, setConsent] = useState(false); // required privacy consent
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -66,19 +72,76 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
   const removeFile = (index: number) =>
     setFiles((prev) => prev.filter((_, i) => i !== index));
 
-  // frontend-only: no API, just show the success state
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!consent) return; // guard: consent is mandatory
-    setSubmitted(true);
+    if (!consent || submitting) return; // guard: consent is mandatory
+
+    // Read the form BEFORE any await — the event target is not
+    // reliable after the first async boundary.
+    const fd = new FormData(e.currentTarget);
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      // 1. Upload attachments (max 2) and collect public URLs.
+      //    Generated file names avoid issues with Arabic/special
+      //    characters in storage keys; original extension is kept.
+      const attachmentUrls: string[] = [];
+      for (const file of files.slice(0, MAX_FILES)) {
+        const ext = (file.name.split(".").pop() || "bin").toLowerCase();
+        const path = `${crypto.randomUUID()}.${ext}`;
+        const { error: upErr } = await supabase.storage
+          .from(BUCKET)
+          .upload(path, file, { cacheControl: "3600" });
+        if (upErr) throw upErr;
+        const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+        attachmentUrls.push(data.publicUrl);
+      }
+
+      // 2. Insert the submission row. Keys (gender, inquiry_type) are
+      //    stable English identifiers, never translated labels, so the
+      //    dashboard can filter regardless of the visitor's locale.
+      const email = (fd.get("email") as string)?.trim();
+      const rawPhone = ((fd.get("phone") as string) || "").replace(/\D/g, "");
+
+      const { error: insErr } = await supabase
+        .from("contact_submissions")
+        .insert({
+          gender: (fd.get("gender") as string) || null,
+          first_name: ((fd.get("first_name") as string) || "").trim(),
+          last_name: ((fd.get("last_name") as string) || "").trim(),
+          email: email ? email : null, // email is optional
+          phone: `+964${rawPhone}`,
+          inquiry_type: fd.get("inquiry_type") as string,
+          comments: comments.trim() ? comments.trim() : null,
+          attachments: attachmentUrls,
+          consent_marketing: consent,
+          opted_out: fd.get("opted_out") === "on",
+          privacy_ack: fd.get("privacy_ack") === "on",
+        });
+      if (insErr) throw insErr;
+
+      setSubmitted(true);
+    } catch {
+      setError(dict.errorMsg ?? "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  // inquiry dropdown options, built from the dictionary
+  // inquiry dropdown options: stable key for the DB + localized label
   const inquiryOptions = [
-    dict.inquiryGeneral,
-    dict.inquirySales,
-    dict.inquiryService,
-    dict.inquiryComplaint,
+    { key: "general", label: dict.inquiryGeneral },
+    { key: "sales", label: dict.inquirySales },
+    { key: "service", label: dict.inquiryService },
+    { key: "complaint", label: dict.inquiryComplaint },
+  ];
+
+  // gender radios: stable key for the DB + localized label
+  const genderOptions = [
+    { key: "male", label: dict.male },
+    { key: "female", label: dict.female },
   ];
 
   if (submitted) {
@@ -104,33 +167,34 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
       <div className="mb-6">
         <span className="block text-sm text-gray-600 mb-2">{dict.gender}</span>
         <div className="flex gap-6">
-          {[dict.male, dict.female].map((g) => (
+          {genderOptions.map((g) => (
             <label
-              key={g}
+              key={g.key}
               className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer"
             >
               <input
                 type="radio"
                 name="gender"
-                value={g}
+                value={g.key}
                 className="accent-[#002C5F]"
               />
-              {g}
+              {g.label}
             </label>
           ))}
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Field label={dict.firstName} required>
-          <input type="text" required className={inputCls} />
+          <input type="text" name="first_name" required className={inputCls} />
         </Field>
         <Field label={dict.lastName} required>
-          <input type="text" required className={inputCls} />
+          <input type="text" name="last_name" required className={inputCls} />
         </Field>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <Field label={dict.email} required>
-          <input type="email" required className={inputCls} />
+        <Field label={dict.email}>
+          {/* email is optional */}
+          <input type="email" name="email" className={inputCls} />
         </Field>
         <Field label={dict.phone} required>
           {/* +964 = Iraq country code, prefixed before the number */}
@@ -144,6 +208,7 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
             </span>
             <input
               type="tel"
+              name="phone"
               required
               dir="ltr"
               className={`w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-[#00AAD2] transition-colors ${
@@ -156,13 +221,18 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
 
       <div className="mt-6">
         <Field label={dict.inquiryType} required>
-          <select required defaultValue="" className={inputCls}>
+          <select
+            name="inquiry_type"
+            required
+            defaultValue=""
+            className={inputCls}
+          >
             <option value="" disabled>
               {dict.choose}
             </option>
             {inquiryOptions.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
+              <option key={opt.key} value={opt.key}>
+                {opt.label}
               </option>
             ))}
           </select>
@@ -185,7 +255,7 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
         </p>
       </div>
 
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <span className="block text-sm text-gray-600 mb-2">
           {dict.attachments}
         </span>
@@ -201,7 +271,7 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
         </label>
         <p className="text-xs text-gray-400 mt-2">{dict.fileHint}</p>
 
-        {/* selected file chips */}
+        
         {files.length > 0 && (
           <ul className="mt-3 space-y-2">
             {files.map((file, i) => (
@@ -222,7 +292,7 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
             ))}
           </ul>
         )}
-      </div>
+      </div> */}
 
       {/* Marketing / consent */}
       <div className="mt-8 pt-6 border-t border-gray-200">
@@ -247,24 +317,34 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
 
         {/* optional opt-out */}
         <label className="flex items-start gap-2 text-sm text-gray-700 mb-3 cursor-pointer">
-          <input type="checkbox" className="mt-0.5 accent-[#002C5F]" />
+          <input
+            type="checkbox"
+            name="opted_out"
+            className="mt-0.5 accent-[#002C5F]"
+          />
           <span>{dict.optOut}</span>
         </label>
 
         {/* privacy policy acknowledgement */}
         <label className="flex items-start gap-2 text-sm text-gray-700 cursor-pointer">
-          <input type="checkbox" className="mt-0.5 accent-[#002C5F]" />
+          <input
+            type="checkbox"
+            name="privacy_ack"
+            className="mt-0.5 accent-[#002C5F]"
+          />
           <span>{dict.privacyConsent}</span>
         </label>
       </div>
 
+      {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
+
       {/* Submit — disabled until required consent is checked */}
       <button
         type="submit"
-        disabled={!consent}
+        disabled={!consent || submitting}
         className="mt-8 px-8 py-3 bg-[#002C5F] text-white text-sm font-semibold rounded hover:bg-[#003d7a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {dict.send}
+        {submitting ? "…" : dict.send}
       </button>
     </form>
   );

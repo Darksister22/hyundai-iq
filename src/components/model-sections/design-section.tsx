@@ -42,8 +42,13 @@ export default function DesignSection({
         </Reveal>
       </div>
 
-      {/* full-bleed design hero image */}
-<ParallaxImage label="Full Design Section" className="h-[60svh] min-h-[400px]" />
+      {/* full-bleed design hero image (ParallaxImage falls back to its gradient when src is empty) */}
+      <ParallaxImage
+        src={model.design.heroImage || undefined}
+        alt={isAr ? model.design.headingAr : model.design.headingEn}
+        label="Full Design Section"
+        className="h-[60svh] min-h-[400px]"
+      />
 
       {/* exterior / interior toggle + gallery */}
       <div className="max-w-[1400px] mx-auto px-8 py-16">
@@ -80,9 +85,18 @@ export default function DesignSection({
             <SwiperSlide key={i}>
               <div className="group">
                 <div className="h-[420px] rounded-lg overflow-hidden mb-5">
-                  <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105">
-                    {tab} {i + 1}
-                  </div>
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={isAr ? item.captionAr : item.captionEn}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105">
+                      {tab} {i + 1}
+                    </div>
+                  )}
                 </div>
                 <p className="text-lg font-semibold text-[#111] leading-snug max-w-xl">
                   {isAr ? item.captionAr : item.captionEn}

@@ -4,9 +4,16 @@ import Header from "@/components/header";
 import "@fontsource-variable/cairo";
 import Footer from "@/components/footer";
 import LoadingScreen from "@/components/loading-screen";
+import { getFindCarData } from "@/lib/find-car-data";
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
+
+// ISR: the layout (and its Supabase fetch) is re-rendered at most every
+// 5 minutes, so CMS edits appear on the site without a redeploy.
+export const revalidate = 300;
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -24,12 +31,13 @@ export default async function LocaleLayout({
   const locale = (locales.includes(rawLocale as Locale) ? rawLocale : "ar") as Locale; //depending on the locale, use either en/ar
   const dir = getDirection(locale);
   const dict = await getDictionary(locale);
+  const { categories, cars } = await getFindCarData();
 
   return (
     <html lang={locale} dir={dir} >
       <body>
         <LoadingScreen />
-        <Header locale={locale} dict={dict.nav} />
+        <Header locale={locale} dict={dict.nav} categories={categories} cars={cars} />
         <main className="pt-[72px]">{children}</main>
         <Footer locale={locale} dict={dict.footer} />
       </body>

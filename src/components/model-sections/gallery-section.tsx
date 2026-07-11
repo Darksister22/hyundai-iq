@@ -29,7 +29,15 @@ export default function GallerySection({ model, heading }: Props) {
       <div className="max-w-[1400px] mx-auto px-8">
         {/* main image with fullscreen affordance */}
         <div className="relative h-[60svh] min-h-[400px] rounded-lg overflow-hidden mb-4 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-gray-500 text-sm">
-          Gallery image {active + 1}
+          {model.gallery[active] ? (
+            <img
+              src={model.gallery[active]}
+              alt={`Gallery image ${active + 1}`}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <>Gallery image {active + 1}</>
+          )}
           <button className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/80 w-10 h-10 rounded flex items-center justify-center">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path
@@ -51,7 +59,7 @@ export default function GallerySection({ model, heading }: Props) {
           slidesPerView={2.5}
           breakpoints={{ 768: { slidesPerView: 5 }, 1100: { slidesPerView: 6 } }}
         >
-          {model.gallery.map((_, i) => (
+          {model.gallery.map((img, i) => (
             <SwiperSlide key={i}>
               <button
                 onClick={() => setActive(i)}
@@ -59,9 +67,18 @@ export default function GallerySection({ model, heading }: Props) {
                   active === i ? "border-[#002C5F]" : "border-transparent"
                 }`}
               >
-                <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-[10px] text-gray-400 transition-transform duration-500 group-hover:scale-110">
-                  {i + 1}
-                </div>
+                {img ? (
+                  <img
+                    src={img}
+                    alt={`Thumbnail ${i + 1}`}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                ) : (
+                  <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-[10px] text-gray-400 transition-transform duration-500 group-hover:scale-110">
+                    {i + 1}
+                  </div>
+                )}
               </button>
             </SwiperSlide>
           ))}

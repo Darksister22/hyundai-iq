@@ -35,11 +35,22 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
       {rows.map((row, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-opacity duration-500 ${
+          className={`absolute inset-0 transition-opacity duration-500 ${
             active === i ? "opacity-100" : "opacity-0"
           }`}
         >
-          {row.labelEn} image
+          {row.image ? (
+            <img
+              src={row.image}
+              alt={isAr ? row.titleAr : row.titleEn}
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400">
+              {isAr ? row.titleAr : row.titleEn}
+            </div>
+          )}
         </div>
       ))}
     </>

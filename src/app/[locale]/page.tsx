@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
-import { models } from "@/lib/models-data";
+import { getHomeData } from "@/lib/find-car-data";
 import HomeClient from "@/components/home-client";
 
 export default async function HomePage({
@@ -13,19 +13,16 @@ export default async function HomePage({
   const locale = rawLocale as Locale;
   const dict = await getDictionary(locale);
 
-  // first 4 models feed the hero carousel
-  const heroSlides = models.slice(0, 4).map((m) => ({
-    name: locale === "ar" ? m.nameAr : m.nameEn,
-    tagline: locale === "ar" ? m.overview.taglineAr : m.overview.taglineEn,
-    slug: m.slug,
-  }));
+  // categories, cars (specs/seating/spin), and hero banners — one fetch
+  const { categories, cars, banners } = await getHomeData();
 
   return (
     <HomeClient
       locale={locale}
       dict={dict.home}
-      models={models}
-      heroSlides={heroSlides}
+      categories={categories}
+      cars={cars}
+      banners={banners}
     />
   );
 }

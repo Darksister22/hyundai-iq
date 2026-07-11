@@ -14,11 +14,13 @@ export default function HeroSection({ locale, model }: Props) {
 
   return (
 <section className="relative h-[100svh] -mt-[72px] min-h-[560px] w-full overflow-hidden bg-gray-300">      {/* full-bleed exterior image */}
-      <img
-        src={model.hero}
-        alt={locale === "ar" ? model.nameAr : model.nameEn}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      {model.hero && (
+        <img
+          src={model.hero}
+          alt={locale === "ar" ? model.nameAr : model.nameEn}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
 
       {/* dark gradient for text legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />

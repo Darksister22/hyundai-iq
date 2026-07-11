@@ -1,7 +1,7 @@
 "use client";
 
 import type { Locale } from "@/lib/i18n";
-import type { VehicleModel } from "@/lib/models-data";
+import type { CarDetail } from "@/lib/model-detail-data";
 import ModelSubNav, { SubNavSection } from "./model-sections/model-sub-nav";
 import HeroSection from "./model-sections/hero-section";
 import OverviewSection from "./model-sections/overview-section";
@@ -33,25 +33,31 @@ interface ModelDict {
 
 interface Props {
   locale: Locale;
-  model: VehicleModel;
+  model: CarDetail;
   dict: ModelDict;
 }
 
 export default function ModelDetailClient({ locale, model, dict }: Props) {
+  // Visibility is driven PURELY by the CMS feat_* flags: a section with
+  // empty data still renders (as a skeleton with placeholder gradients),
+  // so the structure can be reviewed before content exists. Toggling the
+  // flag off in the CMS is the only thing that hides a section.
   const has = {
-    highlights: model.highlights.length > 0,
-    design: model.design.exterior.length > 0,
-    additional: model.additionalDesign.rows.length > 0,
-    visualizer: model.visualizer.colors.length > 0,
-    performance: model.performance.stats.length > 0,
-    safety: model.safety.cards.length > 0,
-    convenience: model.convenience.cards.length > 0,
-    gallery: model.gallery.length > 0,
+    hero: model.featHero,
+    overview: model.featOverview,
+    highlights: model.featHighlights,
+    design: model.featDesign,
+    additional: model.featAdditional,
+    visualizer: model.featVisualizer,
+    performance: model.featPerformance,
+    safety: model.featSafety,
+    convenience: model.featConvenience,
+    gallery: model.featGallery,
   };
 
   const sections: SubNavSection[] = (
     [
-      { id: "overview", label: dict.overview, on: true },
+      { id: "overview", label: dict.overview, on: has.overview },
       { id: "highlights", label: dict.highlights, on: has.highlights },
       { id: "design", label: dict.design, on: has.design },
       { id: "visualizer", label: dict.view360, on: has.visualizer },
@@ -66,7 +72,7 @@ export default function ModelDetailClient({ locale, model, dict }: Props) {
 
   return (
     <div>
-      <HeroSection locale={locale} model={model} />
+      {has.hero && <HeroSection locale={locale} model={model} />}
 
       <ModelSubNav
         locale={locale}
@@ -75,7 +81,7 @@ export default function ModelDetailClient({ locale, model, dict }: Props) {
         contactLabel={dict.contact}
       />
 
-      <OverviewSection locale={locale} model={model} />
+      {has.overview && <OverviewSection locale={locale} model={model} />}
 
       {has.highlights && (
         <HighlightsSection locale={locale} model={model} heading={dict.highlights} />

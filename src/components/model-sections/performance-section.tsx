@@ -66,8 +66,17 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div
           ref={bgRef}
-  className="absolute -inset-8 scale-110 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm"        >
-          Performance driving image (full-bleed)
+          className="absolute -inset-8 scale-110 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm"
+        >
+          {perf.heroImage ? (
+            <img
+              src={perf.heroImage}
+              alt={isAr ? perf.engineAr : perf.engineEn}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <>Performance driving image (full-bleed)</>
+          )}
         </div>
 
       </div>
@@ -96,9 +105,20 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
       {/* closing image */}
       <div className="relative bg-white py-16">
         <div className="max-w-[1000px] mx-auto px-8">
-          <div className="h-[400px] rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400">
-            Performance closing image
-          </div>
+          {perf.closingImage ? (
+            <div className="h-[400px] rounded-lg overflow-hidden">
+              <img
+                src={perf.closingImage}
+                alt=""
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className="h-[400px] rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400">
+              Performance closing image
+            </div>
+          )}
         </div>
       </div>
     </section>

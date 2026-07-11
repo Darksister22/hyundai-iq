@@ -1,11 +1,17 @@
 import { notFound } from "next/navigation";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
-import { getModelBySlug, getAllSlugs } from "@/lib/models-data";
+import { getCarBySlug, getAllCarSlugs } from "@/lib/model-detail-data";
 import ModelDetailClient from "@/components/model-detail-client";
 
-export function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const slugs = await getAllCarSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
+
+// cars added/edited in the CMS appear without a redeploy:
+// unknown slugs render on first visit (dynamicParams default),
+// existing pages regenerate at most every 5 minutes
+export const revalidate = 300;
 
 export default async function ModelPage({
   params,
@@ -16,7 +22,7 @@ export default async function ModelPage({
   if (!isValidLocale(rawLocale)) notFound();
   const locale = rawLocale as Locale;
 
-  const model = getModelBySlug(slug);
+  const model = await getCarBySlug(slug, locale);
   if (!model) notFound();
 
   const dict = await getDictionary(locale);

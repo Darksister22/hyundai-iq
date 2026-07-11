@@ -69,13 +69,19 @@ export default function SafetySection({ locale, model }: Props) {
         className="flex gap-6 overflow-x-auto px-8 scrollbar-hide max-w-[1400px] mx-auto"
         style={{ scrollbarWidth: "none" }}
       >
-        {model.safety.cards.map((card) => (
-          <div key={card.titleEn} className="group shrink-0 w-[340px]">
+        {model.safety.cards.map((card, i) => (
+          <div key={`${card.titleEn}-${i}`} className="group shrink-0 w-[340px]">
             <div className="h-[220px] rounded-lg overflow-hidden mb-4">
-              <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105">
-                safety image
-              </div>
-              
+              {card.image ? (
+                <img
+                  src={card.image}
+                  alt={isAr ? card.titleAr : card.titleEn}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+              ) : (
+                <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105" />
+              )}
             </div>
             <h3 className="font-bold text-[#111] mb-2">
               {isAr ? card.titleAr : card.titleEn}

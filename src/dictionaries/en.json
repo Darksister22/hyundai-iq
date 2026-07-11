@@ -74,20 +74,97 @@
     "storyCrumb": "Hyundai Story",
     "progressQuote": "We are here to do what benefits humanity.",
     "home": "Home",
-  "historyIntro": "From a pioneering Korean passenger car to a global auto leader — decades of innovation.",
+    "historyIntro": "From a pioneering Korean passenger car to a global auto leader — decades of innovation.",
     "milestonesTitle": "Key Milestones",
-     "milestones": [
-  { "year": "2023", "events": ["Launched the all-new KONA", "Opened Hyundai Motor Group Innovation Center (HMGICS) in Singapore", "Brand value reached USD 20.4 billion"] },
-  { "year": "2021", "events": ["Launched IONIQ 5, the first model on the E-GMP platform", "Unveiled the STARIA multi-purpose vehicle", "Committed to carbon neutrality by 2045"] },
-  { "year": "2020", "events": ["Launched the IONIQ brand dedicated to electric vehicles", "Established Motional, an autonomous driving joint venture"] },
-  { "year": "2013", "events": ["Cumulative global sales surpassed 60 million vehicles", "Expanded the premium lineup"] },
-  { "year": "2010", "events": ["Introduced the 'Fluidic Sculpture' design language", "Ranked among the world's top automakers by volume"] },
-  { "year": "2004", "events": ["Recognized for major gains in vehicle quality rankings"] },
-  { "year": "1998", "events": ["Introduced the industry-leading 10-year / 100,000-mile warranty in the US"] },
-  { "year": "1986", "events": ["Entered the US market with the Excel"] },
-  { "year": "1976", "events": ["Launched the Hyundai Pony, Korea's first mass-produced passenger car", "Began exports, starting with Ecuador"] },
-  { "year": "1967", "events": ["Hyundai Motor Company founded"] }
-]
+    "milestones": [
+      {
+        "year": "2023",
+        "events": [
+          "Launched the All-New KONA, featuring various powertrain models including EV, HEV, and ICE",
+          "HMG initiated the development of a lunar exploration rover model",
+          "Brand value reached USD 20.4 billion",
+          "Introduced the 8th generation midsize sedan, the New SONATA",
+          "Extended FIFA partnership to 2030",
+          "Announced Hyundai Motorway, a mid-to-long-term business financial plan, at the 2023 CEO Investor Day",
+          "Introduced the IONIQ 5 N at the Goodwood Festival",
+          "Signed an asset purchase agreement for the acquisition of identified assets of GM India Talegaon Plant",
+          "Strengthened power semiconductor supply through strategic partnership with Infineon",
+          "Supported 148 vehicles for the FIFA U-17 World Cup Indonesia 2023™",
+          "Constructed brand heritage and an advanced electrification vision through the construction of a new EV-dedicated plant in Ulsan",
+          "Reached a brand value evaluation of $20.4 billion in Interbrand’s Best Global Brands 2023."
+        ]
+      },
+      {
+        "year": "2021",
+        "events": [
+          "Launched IONIQ 5, the first model on the E-GMP platform",
+          "Unveiled the STARIA multi-purpose vehicle",
+          "Committed to carbon neutrality by 2045"
+        ]
+      },
+      {
+        "year": "2022",
+        "events": [
+          "Participated in CES 2022, under the theme ‘Expanding Human Reach’ ",
+          "Partnered with Unity to build Meta-Factory",
+          "Partnered with IonQ to use quantum computing to advance effectiveness of next-gen batteries",
+          "Expanded collaboration with Shell drive transition to clean mobility and carbon reduction",
+          "Signed an MOU with the Iveco Group"
+        ]
+      },
+      {
+        "year": "2020",
+        "events": [
+          "Launched the IONIQ brand dedicated to electric vehicles",
+          "Established Motional, an autonomous driving joint venture"
+        ]
+      },
+      {
+        "year": "2013",
+        "events": [
+          "Cumulative global sales surpassed 60 million vehicles",
+          "Expanded the premium lineup"
+        ]
+      },
+      {
+        "year": "2010",
+        "events": [
+          "Introduced the 'Fluidic Sculpture' design language",
+          "Ranked among the world's top automakers by volume"
+        ]
+      },
+      {
+        "year": "2004",
+        "events": [
+          "Recognized for major gains in vehicle quality rankings"
+        ]
+      },
+      {
+        "year": "1998",
+        "events": [
+          "Introduced the industry-leading 10-year / 100,000-mile warranty in the US"
+        ]
+      },
+      {
+        "year": "1986",
+        "events": [
+          "Entered the US market with the Excel"
+        ]
+      },
+      {
+        "year": "1976",
+        "events": [
+          "Launched the Hyundai Pony, Korea's first mass-produced passenger car",
+          "Began exports, starting with Ecuador"
+        ]
+      },
+      {
+        "year": "1967",
+        "events": [
+          "Hyundai Motor Company founded"
+        ]
+      }
+    ]
   },
   "contact": {
     "title": "Contact Us",
@@ -124,7 +201,7 @@
   "findUs": {
     "title": "Find Us",
     "subtitle": "Locate your nearest Hyundai showroom",
-    "home":"Home"
+    "home": "Home"
   },
   "footer": {
     "newsletter": "Sign up for our newsletter",

@@ -2,33 +2,31 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import type { Locale } from "@/lib/i18n";
-import { models, type VehicleModel } from "@/lib/models-data";
-
-interface FindCarDict {
-  allCars: string;
-  sedan: string;
-  suv: string;
-  mpv: string;
-  electric: string;
-}
+import type { FindCarCategory, FindCarCar } from "@/lib/find-car-data";
 
 interface Props {
   locale: Locale;
   open: boolean;
   onClose: () => void;
-  dict: FindCarDict;
+  allCarsLabel: string;          // "All Cars" tab label (from dict)
+  categories: FindCarCategory[]; // DB categories, already ordered by sort_order
+  cars: FindCarCar[];            // DB cars, already ordered by sort_order
   navHeight?: number;
 }
 
-type Category = "all" | "sedan" | "suv" | "mpv" | "electric";
+// "all" or a category id from the DB
+type CategoryFilter = "all" | number;
 
 export default function FindCarPanel({
   locale,
   open,
   onClose,
-  dict,
+  allCarsLabel,
+  categories,
+  cars,
   navHeight = 72,
 }: Props) {
   const isAr = locale === "ar";
@@ -36,62 +34,70 @@ export default function FindCarPanel({
   const catsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  const [category, setCategory] = useState<Category>("all");
+  const [category, setCategory] = useState<CategoryFilter>("all");
   const [mounted, setMounted] = useState(false);
-  // drives the 180° spin on the X when closing
-  const [closing, setClosing] = useState(false);
 
-  const categories: { id: Category; label: string }[] = [
-    { id: "all", label: dict.allCars },
-    { id: "sedan", label: dict.sedan },
-    { id: "suv", label: dict.suv },
-    { id: "mpv", label: dict.mpv },
-    { id: "electric", label: dict.electric },
+  // localized label with English fallback
+  const catLabel = (c: FindCarCategory) => (isAr ? c.nameAr ?? c.nameEn : c.nameEn);
+  const carName = (m: FindCarCar) => (isAr ? m.nameAr ?? m.nameEn : m.nameEn);
+
+  const tabs: { id: CategoryFilter; label: string }[] = [
+    { id: "all", label: allCarsLabel },
+    ...categories.map((c) => ({ id: c.id as CategoryFilter, label: catLabel(c) })),
   ];
 
-  const filtered: VehicleModel[] =
-    category === "all" ? models : models.filter((m) => m.category === category);
+  const filtered: FindCarCar[] =
+    category === "all" ? cars : cars.filter((m) => m.categoryId === category);
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const handleClose = () => {
-    setClosing(true);
-    onClose();
-  };
-  useEffect(() => { //mount on page. No more than one render. 
-    if (!open) return;
+
+  // mount as soon as the panel should open
+  useEffect(() => {
+    if (open) setMounted(true);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-    setClosing(false);
   }, [open]);
 
-  useEffect(() => { //Close / unmount.
-    if (open || !mounted) return;
-    tlRef.current?.kill();
-    const tl = gsap.timeline({ onComplete: () => setMounted(false) });
-    tlRef.current = tl;
-    tl.to(gridRef.current, { y: 16, opacity: 0, duration: 0.25, ease: "power2.in" })
-      .to(catsRef.current, { y: -12, opacity: 0, duration: 0.2, ease: "power2.in" }, "-=0.05")
-      .to(panelRef.current, { height: 0, duration: 0.4, ease: "power3.inOut" }, "-=0.05");
-  }, [open, mounted]);
-
-  useEffect(() => { //Play open animation and expand panel.
-    if (!mounted || !open) return;
+  // Single animation driver for BOTH open and close.
+  // Reacts to any open/mounted change, kills whatever timeline is
+  // currently running, and animates from the panel's current state —
+  // so interrupting a close with a reopen (or vice versa) can never
+  // strand the panel in a dead open=true / mounted=false state.
+  useEffect(() => {
+    if (!mounted) return;
     tlRef.current?.kill();
     const tl = gsap.timeline();
     tlRef.current = tl;
-    tl.fromTo(panelRef.current, { height: 0 }, { height: "auto", duration: 0.45, ease: "power3.inOut" })
-      .fromTo(catsRef.current, { y: -12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, "-=0.1")
-      .fromTo(gridRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, "-=0.05");
-    return () => { tl.kill(); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted]);
 
-  useEffect(() => { //Close on click away / ecs press
+    if (open) {
+      tl.to(panelRef.current, { height: "auto", duration: 0.45, ease: "power3.inOut" })
+        .fromTo(catsRef.current, { y: -12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, "-=0.1")
+        .fromTo(gridRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, "-=0.05");
+    } else {
+      tl.to(gridRef.current, { y: 16, opacity: 0, duration: 0.25, ease: "power2.in" })
+        .to(catsRef.current, { y: -12, opacity: 0, duration: 0.2, ease: "power2.in" }, "-=0.05")
+        .to(panelRef.current, {
+          height: 0,
+          duration: 0.4,
+          ease: "power3.inOut",
+          onComplete: () => setMounted(false),
+        });
+    }
+
+    return () => { tl.kill(); };
+  }, [open, mounted]);
+
+  useEffect(() => { //Close on click away / esc press
     if (!open) return;
     const onDown = (e: MouseEvent | TouchEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) handleClose();
+      const target = e.target as HTMLElement;
+      // clicks inside the panel OR inside the site header (e.g. the
+      // "Find a Car" button) must not trigger the click-away close —
+      // otherwise the header button closes and reopens in one gesture.
+      if (panelRef.current && !panelRef.current.contains(target) && !target.closest("header")) {
+        onClose();
+      }
     };
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("mousedown", onDown);
     document.addEventListener("touchstart", onDown);
     document.addEventListener("keydown", onKey);
@@ -102,8 +108,9 @@ export default function FindCarPanel({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
   // group fade when switching category (fixed panel height, so no re-measure)
-  const onCategory = (id: Category) => {
+  const onCategory = (id: CategoryFilter) => {
     if (id === category) return;
     gsap.to(gridRef.current, {
       opacity: 0,
@@ -155,8 +162,8 @@ export default function FindCarPanel({
 
               {/* category slider */}
               <div className="relative flex items-center justify-center">
-                <div className="inline-flex bg-gray-100 rounded-full p-1 max-w-full overflow-x-auto scrollbar-hide">
-                  {categories.map((c) => (
+                <div className="inline-flex bg-gray-100 rounded-full p-1 max-w-full overflow-x-auto overflow-y-hidden scrollbar-hide">
+                  {tabs.map((c) => (
                     <button
                       key={c.id}
                       onClick={() => onCategory(c.id)}
@@ -177,21 +184,34 @@ export default function FindCarPanel({
             >
               {filtered.map((m) => (
                 <Link
-                  key={m.slug}
+                  key={m.id}
                   href={`/${locale}/models/${m.slug}`}
-                  onClick={handleClose}
+                  onClick={onClose}
                   className="group bg-gray-50 hover:bg-gray-100 rounded-xl p-8 transition-colors flex flex-col"
                 >
                   <h3
                     className={`text-2xl font-bold text-[#111] mb-6 ${isAr ? "text-right" : "text-left"
                       }`}
                   >
-                    {isAr ? m.nameAr : m.nameEn}
+                    {carName(m)}
                   </h3>
                   <div className="flex-1 flex items-center justify-center overflow-hidden min-h-[220px]">
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
-                      {m.nameEn}
-                    </div>
+                    {m.heroImage ? (
+                      <div className="relative w-full h-[220px]">
+                        <Image
+                          src={m.heroImage}
+                          alt={carName(m)}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-contain transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    ) : (
+                      // fallback when the CMS has no hero image yet
+                      <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
+                        {m.nameEn}
+                      </div>
+                    )}
                   </div>
                 </Link>
               ))}

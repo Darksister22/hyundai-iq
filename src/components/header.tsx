@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import FindCarPanel from "@/components/find-car-panel";
 import { useEffect, useRef, useState } from "react";
 import { Locale } from "@/lib/i18n";
+import type { FindCarCategory, FindCarCar } from "@/lib/find-car-data";
 
 interface HeaderProps {
   locale: Locale;
@@ -21,9 +22,11 @@ interface HeaderProps {
     mpv: string;
     electric: string;
   };
+  categories: FindCarCategory[];
+  cars: FindCarCar[];
 }
 
-export default function Header({ locale, dict }: HeaderProps) {
+export default function Header({ locale, dict, categories, cars }: HeaderProps) {
   const pathname = usePathname();
   const switchedPath = pathname.replace(`/${locale}`, `/${dict.langCode}`);
   const [atTop, setAtTop] = useState(true);   // true only at the very top
@@ -78,7 +81,7 @@ export default function Header({ locale, dict }: HeaderProps) {
           <nav className="hidden md:flex items-center gap-8">
             {/* nav links */}
             <button
-              onClick={() => setFindOpen(true)}
+              onClick={() => setFindOpen((o) => !o)}
               className={`text-sm font-medium transition-colors ${navLink}`}
             >
               {dict.findACar}
@@ -148,13 +151,9 @@ export default function Header({ locale, dict }: HeaderProps) {
         locale={locale}
         open={findOpen}
         onClose={() => setFindOpen(false)}
-        dict={{
-          allCars: dict.allCars,
-          sedan: dict.sedan,
-          suv: dict.suv,
-          mpv: dict.mpv,
-          electric: dict.electric,
-        }}
+        allCarsLabel={dict.allCars}
+        categories={categories}
+        cars={cars}
         navHeight={72}
       />
     </>

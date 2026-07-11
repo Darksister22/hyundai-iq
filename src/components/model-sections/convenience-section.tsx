@@ -48,8 +48,19 @@ export default function ConvenienceSection({ locale, model }: Props) {
   return (
     <section id="convenience" ref={ref} className="scroll-mt-36">
       {/* full-bleed bg with heading */}
-      <div className="relative h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end">
-        <div className="conv-intro max-w-[1400px] mx-auto px-8 w-full pb-12 text-white">
+      <div className="relative h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end overflow-hidden">
+        {conv.bgImage && (
+          <>
+            <img
+              src={conv.bgImage}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* dark scrim so the white heading stays readable on any image */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+          </>
+        )}
+        <div className="conv-intro relative max-w-[1400px] mx-auto px-8 w-full pb-12 text-white">
           <p className="text-sm opacity-80 mb-2">
             {isAr ? "الراحة" : "Convenience"}
           </p>
@@ -62,12 +73,14 @@ export default function ConvenienceSection({ locale, model }: Props) {
       {/* sliding card row */}
       <div className="bg-white py-16">
         <div className="conv-row max-w-[1400px] mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {conv.cards.map((card) => (
-            <div key={card.titleEn} className="conv-card group">
+          {conv.cards.map((card, i) => (
+            <div key={`${card.titleEn}-${i}`} className="conv-card group">
               <div className="h-[200px] rounded-lg overflow-hidden mb-4">
                 <ParallaxImage
+                  src={card.image || undefined}
+                  alt={isAr ? card.titleAr : card.titleEn}
                   label={`convenience image`}
-                  className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400"
+                  className="h-full w-full"
                 />
               </div>
               <h3 className="text-lg font-bold text-[#111] mb-2">

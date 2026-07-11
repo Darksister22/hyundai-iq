@@ -3,48 +3,65 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
-import type { VehicleModel } from "@/lib/models-data";
+import type { HomeCar } from "@/lib/find-car-data";
 import CarSpinner from "./car-spinner";
+
 interface Props {
   locale: Locale;
-  model: VehicleModel;
+  car: HomeCar;
   exploreLabel: string;
   expanded: boolean;
   onExpand: (slug: string) => void;
   onCollapse: () => void;
 }
 
+// stat labels aren't stored in the DB — same wording the site used before
+const STAT_LABELS = {
+  maxPower: { en: "Max Power", ar: "القوة القصوى" },
+  maxTorque: { en: "Max Torque", ar: "عزم الدوران" },
+  seating: { en: "Seating", ar: "المقاعد" },
+};
+
 export default function ModelCard({
   locale,
-  model,
+  car,
   exploreLabel,
   expanded,
   onExpand,
   onCollapse,
 }: Props) {
   const isAr = locale === "ar";
-  const name = isAr ? model.nameAr : model.nameEn;
-  const href = `/${locale}/models/${model.slug}`;
+  const name = isAr ? car.nameAr ?? car.nameEn : car.nameEn;
+  const href = `/${locale}/models/${car.slug}`;
 
-  const colors = model.visualizer.colors;
+  const colors = car.colors; // already ordered, frameless colors already dropped
+  const hasSpin = colors.length > 0;
   const [colorIdx, setColorIdx] = useState(0);
   const [colorOpen, setColorOpen] = useState(false);
-  const frames = colors[colorIdx]?.spinFrames ?? [];
-  // first frame doubles as the idle/hover image
-  const idleImage = colors[0]?.spinFrames?.[0];
-  const stats = model.overview.stats.slice(0, 3);
+  const frames = colors[colorIdx]?.frames ?? [];
+  // idle image: first frame of the first color; hero image if no spin data
+  const idleImage = colors[0]?.frames?.[0] ?? car.heroImage ?? null;
+
+  // Max Power / Max Torque / Seating, per locale with EN fallback.
+  // Stats with no value in the DB are simply not rendered.
+  const stats = [
+    { label: STAT_LABELS.maxPower, value: isAr ? car.maxPowerAr ?? car.maxPowerEn : car.maxPowerEn },
+    { label: STAT_LABELS.maxTorque, value: isAr ? car.maxTorqueAr ?? car.maxTorqueEn : car.maxTorqueEn },
+    { label: STAT_LABELS.seating, value: isAr ? car.seatingAr ?? car.seatingEn : car.seatingEn },
+  ].filter((s): s is { label: { en: string; ar: string }; value: string } => !!s.value);
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
     <div
-      data-card-slug={model.slug}
+      data-card-slug={car.slug}
       onClick={() => {
-        if (!expanded) onExpand(model.slug);
+        // no spin frames → no state 3: the card never expands
+        if (!expanded && hasSpin) onExpand(car.slug);
       }}
       className={`group relative shrink-0 rounded-xl bg-gray-50 overflow-hidden transition-all duration-700 ease-out ${expanded
           ? "w-[92vw] max-w-[560px] h-[440px] max-h-[80svh] cursor-default"   // fits phone; caps at 560 on desktop
-          : "w-[260px] h-[360px] cursor-pointer hover:scale-[1.04] hover:z-10 hover:shadow-xl"
+          : `w-[260px] h-[360px] hover:scale-[1.04] hover:z-10 hover:shadow-xl ${hasSpin ? "cursor-pointer" : "cursor-default"}`
         }`}
     >
       {expanded ? (
@@ -68,10 +85,12 @@ export default function ModelCard({
                 >
                   <span
                     className="w-5 h-5 rounded"
-                    style={{ backgroundColor: colors[colorIdx].hex }}
+                    style={{ backgroundColor: colors[colorIdx].hex ?? "#ccc" }}
                   />
                   <span className="text-sm font-semibold text-[#002C5F]">
-                    {isAr ? colors[colorIdx].nameAr : colors[colorIdx].nameEn}
+                    {isAr
+                      ? colors[colorIdx].nameAr ?? colors[colorIdx].nameEn
+                      : colors[colorIdx].nameEn}
                   </span>
                   <svg
                     width="14"
@@ -95,7 +114,7 @@ export default function ModelCard({
                   <div className="absolute top-full mt-2 bg-white shadow-lg rounded-lg p-1 z-40 min-w-[160px]">
                     {colors.map((c, i) => (
                       <button
-                        key={c.hex}
+                        key={`${c.hex ?? ""}-${i}`}
                         onClick={(e) => {
                           stop(e);
                           setColorIdx(i);
@@ -106,10 +125,10 @@ export default function ModelCard({
                       >
                         <span
                           className="w-4 h-4 rounded shrink-0"
-                          style={{ backgroundColor: c.hex }}
+                          style={{ backgroundColor: c.hex ?? "#ccc" }}
                         />
                         <span className="text-xs text-gray-700">
-                          {isAr ? c.nameAr : c.nameEn}
+                          {isAr ? c.nameAr ?? c.nameEn : c.nameEn}
                         </span>
                       </button>
                     ))}
@@ -149,7 +168,7 @@ export default function ModelCard({
             {frames.length > 0 ? (
               <CarSpinner frames={frames} className="w-full h-full max-h-[160px] md:max-h-[220px]" />) : (
               <div className="w-full h-full max-h-[220px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
-                {model.nameEn}
+                {car.nameEn}
               </div>
             )}
           </div>
@@ -158,9 +177,9 @@ export default function ModelCard({
           <div className="relative z-10 flex items-end justify-between">
             <div className="flex gap-8">
               {stats.map((s) => (
-                <div key={s.labelEn}>
+                <div key={s.label.en}>
                   <p className="text-xs text-gray-400 mb-1">
-                    {isAr ? s.labelAr : s.labelEn}
+                    {isAr ? s.label.ar : s.label.en}
                   </p>
                   <p className="text-base font-bold text-[#111]">{s.value}</p>
                 </div>
@@ -189,27 +208,30 @@ export default function ModelCard({
                 src={idleImage}
                 alt={name}
                 draggable={false}
+                loading="lazy"
                 className="w-full h-40 object-contain transition-transform duration-500 group-hover:scale-105"
               />
             ) : (
               <div className="w-full h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
-                {model.nameEn}
+                {car.nameEn}
               </div>
             )}
           </div>
 
-          {/* hover-only: expand icon top-end */}
-          <div className="absolute top-4 end-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-500">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
+          {/* hover-only: expand icon top-end — only when state 3 exists */}
+          {hasSpin && (
+            <div className="absolute top-4 end-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-500">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          )}
 
           {/* hover-only: explore bottom-end */}
           <Link
