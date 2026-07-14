@@ -66,7 +66,7 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div
           ref={bgRef}
-          className="absolute -inset-8 scale-110 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm"
+          className="absolute -inset-8 scale-110 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm overflow-hidden"
         >
           {perf.heroImage ? (
             <img

@@ -37,7 +37,13 @@ export default function ConvenienceSection({ locale, model }: Props) {
         duration: 0.7,
         stagger: 0.12,
         ease: "power2.out",
-        scrollTrigger: { trigger: ".conv-row", start: "top 85%", toggleActions: "play reverse play reverse" },
+        clearProps: "transform",
+        scrollTrigger: {
+          trigger: ".conv-row",
+          start: "top 85%",
+          toggleActions: "play reverse play reverse",
+
+        },
       });
 
 
@@ -46,7 +52,7 @@ export default function ConvenienceSection({ locale, model }: Props) {
   }, [isAr]);
 
   return (
-    <section id="convenience" ref={ref} className="scroll-mt-36">
+    <section id="convenience" ref={ref} className="scroll-mt-36 overflow-x-clip">
       {/* full-bleed bg with heading */}
       <div className="relative h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end overflow-hidden">
         {conv.bgImage && (

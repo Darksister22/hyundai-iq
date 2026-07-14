@@ -128,7 +128,7 @@ export default function VisualizerSection({
        layered inside it so the car is the centered anchor of the page */
     <section
       id="visualizer"
-      className="scroll-mt-36 relative h-[70svh] min-h-[640px] overflow-hidden"
+      className="scroll-mt-36 relative overflow-hidden h-[78vw] min-h-[400px] md:h-[70svh] md:min-h-[640px] md:max-h-none"
     >
       {tab === "exterior" ? (
         <div
