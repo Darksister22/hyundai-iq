@@ -22,26 +22,6 @@ interface FooterProps {
 export default function Footer({ locale, dict }: FooterProps) {
   return (
     <footer className="bg-[#111] text-white">
-      {/* newsletter */}
-      <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="text-lg font-semibold">{dict.newsletter}</h3>
-            <p className="text-sm text-white/50 mt-1">{dict.newsletterDesc}</p>
-          </div>
-          <div className="flex gap-3">
-            <input
-              type="email"
-              placeholder={dict.emailPlaceholder}
-              className="px-4 py-3 bg-white/10 border border-white/20 rounded text-sm text-white placeholder:text-white/40 w-64"
-            />
-            <button className="px-6 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors">
-              {dict.subscribe}
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* link columns */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
