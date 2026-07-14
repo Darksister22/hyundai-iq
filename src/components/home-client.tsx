@@ -169,7 +169,7 @@ export default function HomeClient({
             /* fallback when the CMS has no banners yet — single static slide */
             <div className="relative h-full bg-[#002C5F] flex items-center">
               <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
-                <h1 className="hero-anim text-5xl font-bold leading-tight">
+                <h1 className=" font-head hero-anim text-5xl font-bold leading-tight">
                   {isAr ? "هيونداي العراق" : "Hyundai Iraq"}
                 </h1>
               </div>
