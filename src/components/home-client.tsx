@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,useCallback } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade, Pagination ,Navigation} from "swiper/modules";
+import { Autoplay, EffectFade, Pagination, Navigation } from "swiper/modules";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { FindCarCategory, HomeCar, HeroBanner } from "@/lib/find-car-data";
 import ParallaxImage from "@/components/parallax-image";
 import ModelCard from "@/components/model-card";
+// Add near the other refs:
+import type { Swiper as SwiperClass } from "swiper";
 // Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -56,6 +58,10 @@ export default function HomeClient({
   const gridRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const [activeCat, setActiveCat] = useState<CategoryFilter>("all");
+  const modelSwiperRef = useRef<SwiperClass | null>(null);
+const handleCardSettled = useCallback(() => {
+  modelSwiperRef.current?.update();
+}, []);
 
   // which car card is expanded to state 3 (only one at a time)
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -152,14 +158,14 @@ export default function HomeClient({
     activeCat === "all" ? cars : cars.filter((c) => c.categoryId === activeCat);
 
   // Swiper's loop/autoplay misbehave with a single slide
-  
+
   const multiSlide = banners.length > 1;
 
   const bannerTitle = (b: HeroBanner) =>
     isAr ? b.titleAr ?? b.titleEn : b.titleEn;
   const bannerTagline = (b: HeroBanner) =>
     isAr ? b.taglineAr ?? b.taglineEn : b.taglineEn;
-  
+
 
   return (
     <div ref={rootRef} className="flex flex-col">
@@ -186,25 +192,25 @@ export default function HomeClient({
               className="h-full"
             >
               {multiSlide && (
-                                <>
-                                  <button
-                                    aria-label="Previous banner"
-                                    className="hero-prev absolute start-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
-                                  >
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
-                                      <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                  </button>
-                                  <button
-                                    aria-label="Next banner"
-                                    className="hero-next absolute end-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
-                                  >
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
-                                      <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                  </button>
-                                </>
-                              )}
+                <>
+                  <button
+                    aria-label="Previous banner"
+                    className="hero-prev absolute start-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                      <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                  <button
+                    aria-label="Next banner"
+                    className="hero-next absolute end-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                      <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                </>
+              )}
               {banners.map((b) => (
                 <SwiperSlide key={b.id}>
                   <div className="relative h-full bg-[#002C5F] flex items-center">
@@ -280,11 +286,10 @@ export default function HomeClient({
                     setActiveCat(tab.id);
                     setExpandedSlug(null);
                   }}
-                  className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                    activeCat === tab.id
+                  className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCat === tab.id
                       ? "bg-white shadow text-[#111]"
                       : "text-gray-500 hover:text-gray-800"
-                  }`}
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -302,7 +307,7 @@ export default function HomeClient({
               className="model-swiper !pb-10"
             >
               {filteredCars.map((car) => (
-                <SwiperSlide key={car.id} className="!w-auto">
+                <SwiperSlide key={car.id} className="!w-auto !h-[65svh] flex items-center">
                   <ModelCard
                     locale={locale}
                     car={car}
@@ -310,6 +315,7 @@ export default function HomeClient({
                     expanded={expandedSlug === car.slug}
                     onExpand={(slug) => setExpandedSlug(slug)}
                     onCollapse={() => setExpandedSlug(null)}
+                    onTransitionSettled={handleCardSettled}
                   />
                 </SwiperSlide>
               ))}
@@ -349,7 +355,7 @@ export default function HomeClient({
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex items-center">
           <h2 className="text-3xl md:text-5xl font-bold text-white">
-            {locale === "ar" ? "الآن نمضي قدماً" : "Now we move forward"}
+            {locale === "ar" ? "الآن نمضي قدماً" : "Next Starts Now"}
           </h2>
         </div>
       </section>

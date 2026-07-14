@@ -77,17 +77,11 @@ html {
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0
-  }
-
-  to {
-    opacity: 1
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @theme {
-
   --font-sans: var(--font-text), var(--font-ar), Tahoma, sans-serif;
   --font-head: var(--font-head), var(--font-ar), Tahoma, sans-serif;
 }
@@ -98,5 +92,12 @@ html {
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .model-swiper [data-card-slug],
+  .model-swiper [data-card-slug] * {
+    transition-duration: 0.01ms !important;
   }
 }

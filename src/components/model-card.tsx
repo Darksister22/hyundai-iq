@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
+import gsap from "gsap";
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
 import type { HomeCar } from "@/lib/find-car-data";
@@ -13,6 +14,7 @@ interface Props {
   expanded: boolean;
   onExpand: (slug: string) => void;
   onCollapse: () => void;
+  onTransitionSettled?: () => void; // fired once the size animation finishes
 }
 
 // stat labels aren't stored in the DB — same wording the site used before
@@ -29,6 +31,7 @@ export default function ModelCard({
   expanded,
   onExpand,
   onCollapse,
+  onTransitionSettled, // ← THIS was the missing line causing your TS error
 }: Props) {
   const isAr = locale === "ar";
   const name = isAr ? car.nameAr ?? car.nameEn : car.nameEn;
@@ -42,8 +45,6 @@ export default function ModelCard({
   // idle image: first frame of the first color; hero image if no spin data
   const idleImage = colors[0]?.frames?.[0] ?? car.heroImage ?? null;
 
-  // Max Power / Max Torque / Seating, per locale with EN fallback.
-  // Stats with no value in the DB are simply not rendered.
   const stats = [
     { label: STAT_LABELS.maxPower, value: isAr ? car.maxPowerAr ?? car.maxPowerEn : car.maxPowerEn },
     { label: STAT_LABELS.maxTorque, value: isAr ? car.maxTorqueAr ?? car.maxTorqueEn : car.maxTorqueEn },
@@ -51,22 +52,112 @@ export default function ModelCard({
   ].filter((s): s is { label: { en: string; ar: string }; value: string } => !!s.value);
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isFirst = useRef(true);
+  const settledRef = useRef(onTransitionSettled);
+  settledRef.current = onTransitionSettled;
 
+  useLayoutEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const target = expanded ? { width: Math.min(window.innerWidth * 0.92, 560), height: 440 } : { width: 260, height: 360 };
+    if (isFirst.current) {
+      isFirst.current = false;
+      gsap.set(el, target);
+      return
+    }
+    const tween = gsap.to(el, {
+      ...target,
+      duration: 0.65,
+      ease: "power4.out",
+      overwrite: "auto",
+      onComplete: () => settledRef.current?.(),
+    });
+    return () => {
+      tween.kill();
+    }
+  }, [expanded]);
   return (
+
     <div
+      ref={cardRef}
       data-card-slug={car.slug}
       onClick={() => {
-        // no spin frames → no state 3: the card never expands
         if (!expanded && hasSpin) onExpand(car.slug);
       }}
-      className={`group relative shrink-0 rounded-xl bg-gray-50 overflow-hidden transition-all duration-700 ease-out ${expanded
-          ? "w-[92vw] max-w-[560px] h-[440px] max-h-[80svh] cursor-default"   // fits phone; caps at 560 on desktop
-          : `w-[260px] h-[360px] hover:scale-[1.04] hover:z-10 hover:shadow-xl ${hasSpin ? "cursor-pointer" : "cursor-default"}`
+      className={`group relative shrink-0 rounded-xl bg-gray-50 overflow-hidden
+        transition-shadow duration-300
+        ${expanded
+          ? "cursor-default shadow-xl z-10"
+          : `hover:shadow-xl hover:z-10 ${hasSpin ? "cursor-pointer" : "cursor-default"}`
         }`}
     >
-      {expanded ? (
-        /* ─── STATE 3: expanded ─── */
-        <div className="relative w-full h-full p-5 flex flex-col">
+      {/* Hover scale lives on an INNER wrapper with its own short transition, so it
+          can never be swept into the 650ms width/height curve (that scale-up on
+          collapse was the "jump"). Disabled entirely while expanded. */}
+      <div
+        className={`absolute inset-0 transition-transform duration-300 ease-out ${expanded ? "" : "group-hover:scale-[1.04]"
+          }`}
+      >
+        {/* ─── STATE 1 (idle) + STATE 2 (hover) — always mounted, cross-faded ─── */}
+        <div
+          aria-hidden={expanded}
+          className={`absolute inset-0 transition-opacity duration-300 ${expanded ? "opacity-0 pointer-events-none" : "opacity-100 delay-[250ms]"
+            }`}
+        >
+          <h3 className="absolute top-6 inset-x-0 text-center text-xl font-bold text-[#111] px-4">
+            {name}
+          </h3>
+
+          <div className="absolute inset-0 flex items-center justify-center p-6 pt-16">
+            {idleImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={idleImage}
+                alt={name}
+                draggable={false}
+                loading="lazy"
+                className="w-full h-40 object-contain"
+              />
+            ) : (
+              <div className="w-full h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
+                {car.nameEn}
+              </div>
+            )}
+          </div>
+
+          {/* hover-only: expand icon top-end — only when state 3 exists */}
+          {hasSpin && (
+            <div className="absolute top-4 end-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-500">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          )}
+
+          {/* hover-only: explore bottom-end */}
+          <Link
+            href={href}
+            onClick={stop}
+            className="absolute bottom-4 end-4 flex items-center gap-1 text-sm font-semibold text-[#002C5F] hover:text-[#00AAD2] opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            {exploreLabel}
+            <span aria-hidden>›</span>
+          </Link>
+        </div>
+
+        {/* ─── STATE 3: expanded — always mounted, cross-faded ─── */}
+        <div
+          aria-hidden={!expanded}
+          className={`absolute inset-0 p-5 flex flex-col transition-opacity duration-300 ${expanded ? "opacity-100 delay-[250ms]" : "opacity-0 pointer-events-none"
+            }`}
+        >
           {/* watermark name — TOP of card, behind the car */}
           <span className="absolute top-4 inset-x-0 text-center text-6xl md:text-8xl font-extrabold text-gray-300 pointer-events-none select-none z-0 leading-none">
             {name}
@@ -139,7 +230,7 @@ export default function ModelCard({
               <span />
             )}
 
-            {/* minimize icon — spins on toggle */}
+            {/* minimize icon */}
             <button
               onClick={(e) => {
                 stop(e);
@@ -166,7 +257,8 @@ export default function ModelCard({
           {/* spinner sits above watermark (z-10) but below top bar */}
           <div className="relative z-10 flex-1 flex items-center justify-center min-h-0">
             {frames.length > 0 ? (
-              <CarSpinner frames={frames} className="w-full h-full max-h-[160px] md:max-h-[220px]" />) : (
+              <CarSpinner frames={frames} className="w-full h-full max-h-[160px] md:max-h-[220px]" />
+            ) : (
               <div className="w-full h-full max-h-[220px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
                 {car.nameEn}
               </div>
@@ -195,55 +287,7 @@ export default function ModelCard({
             </Link>
           </div>
         </div>
-      ) : (
-        /* ─── STATE 1 (idle) + STATE 2 (hover) ─── */
-        <>
-          <h3 className="absolute top-6 inset-x-0 text-center text-xl font-bold text-[#111] px-4">
-            {name}
-          </h3>
-
-          <div className="absolute inset-0 flex items-center justify-center p-6 pt-16">
-            {idleImage ? (
-              <img
-                src={idleImage}
-                alt={name}
-                draggable={false}
-                loading="lazy"
-                className="w-full h-40 object-contain transition-transform duration-500 group-hover:scale-105"
-              />
-            ) : (
-              <div className="w-full h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
-                {car.nameEn}
-              </div>
-            )}
-          </div>
-
-          {/* hover-only: expand icon top-end — only when state 3 exists */}
-          {hasSpin && (
-            <div className="absolute top-4 end-4 opacity-0 group-hover:opacity-100 transition-opacity text-gray-500">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          )}
-
-          {/* hover-only: explore bottom-end */}
-          <Link
-            href={href}
-            onClick={stop}
-            className="absolute bottom-4 end-4 flex items-center gap-1 text-sm font-semibold text-[#002C5F] hover:text-[#00AAD2] opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            {exploreLabel}
-            <span aria-hidden>›</span>
-          </Link>
-        </>
-      )}
+      </div>
     </div>
   );
 }
