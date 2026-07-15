@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
 import Pannellum360 from "./pannellum-360";
+import Image from "next/image";
 
 interface Props {
   locale: Locale;
@@ -22,27 +23,7 @@ const SPIN_CURSOR = `url("data:image/svg+xml,${SPIN_CURSOR_SVG}") 20 14, ew-resi
 
 
 
-/* very light stage: a whisper of the selected color at the top that fades
-   to pure white before the car line — like the reference page */
-function stageBackground(c?: { gradient?: string; hex?: string }): string {
-  const g = c?.gradient;
-  if (g && g.includes("gradient")) return g;
-  const base = c?.hex || g || "#9A9C9E";
-  return `linear-gradient(180deg,
-    color-mix(in srgb, ${base} 26%, white) 0%,
-    color-mix(in srgb, ${base} 10%, white) 38%,
-    #ffffff 68%,
-    #ffffff 100%)`;
-}
-/* per-color gradient wash layered OVER the background image.
-   Gradient is semi-transparent so the image shows through. */
-function stageOverlay(hex?: string): string {
-  const base = hex || "#2c4a7c";
-  return `linear-gradient(180deg,
-    ${base}cc 0%,
-    color-mix(in srgb, ${base} 45%, transparent) 55%,
-    transparent 100%)`;
-}
+
 
 export default function VisualizerSection({
   locale,
@@ -132,12 +113,8 @@ export default function VisualizerSection({
     >
       {tab === "exterior" ? (
         <div
-          className="absolute inset-0 select-none touch-pan-y bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `${stageOverlay(color?.hex)}, url('/images/spinback.png')`,
-            backgroundSize: "cover, 130%",   // overlay covers; photo zoomed 130% to match the bigger car
-            cursor: SPIN_CURSOR,
-          }}
+          className="absolute inset-0 select-none touch-pan-y bg-white"
+          style={{ cursor: SPIN_CURSOR }}
           onMouseDown={(e) => onDown(e.clientX)}
           onMouseMove={(e) => onMove(e.clientX)}
           onMouseUp={onUp}
@@ -159,23 +136,29 @@ export default function VisualizerSection({
                 </p>
               </div>
 
-              {/* platform ellipse — very light grey, wide and shallow,
-                  car wheels rest on its upper third */}
-              {/* <div
-                aria-hidden
-                className="absolute left-1/2 top-[56%] -translate-x-1/2 w-[72%] max-w-[1250px] aspect-[3.4/1] rounded-[50%] pointer-events-none"
-                style={{
-                  background:
-                    "radial-gradient(50% 50% at 50% 50%, #ececec 0%, #f2f2f2 55%, rgba(242,242,242,0) 74%)",
-                }}
-              /> */}
 
               {/* the car — centered, above the heading text */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 translate-y-[8%]
+                w-[85%] max-w-[560px] md:max-w-[680px] aspect-[2/1] pointer-events-none select-none z-0">
+                <Image
+                  src="/images/spinback.png"
+                  alt=""
+                  aria-hidden
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 85vw, 680px"
+                  priority
+                />
+              </div>
+
+              {/* eslint-disable-next-line @next/next/no-img-element -- hot-swapped per drag frame; next/image would fire an optimize request per frame */}
               <img
                 src={frames[frame]}
                 alt=""
                 draggable={false}
-                className="absolute inset-0 w-full h-full object-contain pointer-events-none scale-[0.78] md:scale-[0.68] translate-y-[2%] z-[1]" />
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none
+                  scale-[0.92] md:scale-[0.68] translate-y-[6%] md:translate-y-[2%] z-[1]"
+              />
 
               {/* loading state until frames are cached */}
               {!loaded && (
@@ -206,7 +189,6 @@ export default function VisualizerSection({
         </div>
       )}
 
-      {/* ---- overlaid controls (both tabs) ---- */}
 
       {/* exterior/interior toggle */}
       <div className="absolute bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 md:left-6 md:translate-x-0 z-[3]">
@@ -228,45 +210,64 @@ export default function VisualizerSection({
         </div>
       </div>
 
-<div className="absolute bottom-5 inset-x-0 z-[2] flex flex-col items-center pointer-events-none">
-  <p className={`text-sm font-semibold mb-2 ${tab === "interior" ? "text-white" : "text-[#111]"}`}>
-    {tab === "exterior"
-      ? (isAr ? color?.nameAr : color?.nameEn)
-      : (isAr ? interior?.nameAr : interior?.nameEn)}
-  </p>
+      <div className="absolute bottom-5 inset-x-0 z-[2] flex flex-col items-center pointer-events-none">
+        <p className={`text-sm font-semibold mb-2 ${tab === "interior" ? "text-white" : "text-[#111]"}`}>
+          {tab === "exterior"
+            ? (isAr ? color?.nameAr : color?.nameEn)
+            : (isAr ? interior?.nameAr : interior?.nameEn)}
+        </p>
 
-  {/* exterior paint swatches (your existing block) */}
-  {tab === "exterior" && (
-    <div className="flex items-center gap-3 pointer-events-auto">
-      {/* ...existing ‹ / swatches / › for colors... */}
-    </div>
-  )}
+        {/* exterior paint swatches*/}
+        {tab === "exterior" && (
+          <div className="flex items-center gap-3 pointer-events-auto">
+            <button
+              onClick={() => selectColor((i) => (i - 1 + colors.length) % colors.length)}
+              aria-label="Previous color"
+              className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
+            >‹</button>
 
-  {/* interior trim swatches (new, mirrors exterior) */}
-  {tab === "interior" && interiors.length > 0 && (
-    <div className="flex items-center gap-3 pointer-events-auto">
-      <button
-        onClick={() => setIntIdx((i) => (i - 1 + interiors.length) % interiors.length)}
-        className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
-      >‹</button>
-      {interiors.map((c, i) => (
-        <button
-          key={c.hex}
-          onClick={() => setIntIdx(i)}
-          title={isAr ? c.nameAr : c.nameEn}
-          className={`w-7 h-7 rounded border-2 transition-transform ${
-            intIdx === i ? "border-white scale-110" : "border-transparent"
-          }`}
-          style={{ backgroundColor: c.hex }}
-        />
-      ))}
-      <button
-        onClick={() => setIntIdx((i) => (i + 1) % interiors.length)}
-        className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
-      >›</button>
-    </div>
-  )}
-</div>
+            {colors.map((c, i) => (
+              <button
+                key={`${c.hex ?? c.nameEn}-${i}`}
+                onClick={() => selectColor(i)}
+                title={isAr ? c.nameAr : c.nameEn}
+                className={`w-7 h-7 rounded border-2 transition-transform ${colorIdx === i ? "border-[#111] scale-110" : "border-transparent"
+                  }`}
+                style={{ backgroundColor: c.hex ?? "#ccc" }}
+              />
+            ))}
+
+            <button
+              onClick={() => selectColor((i) => (i + 1) % colors.length)}
+              aria-label="Next color"
+              className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
+            >›</button>    </div>
+        )}
+
+        {/* interior trim swatches */}
+        {tab === "interior" && interiors.length > 0 && (
+          <div className="flex items-center gap-3 pointer-events-auto">
+            <button
+              onClick={() => setIntIdx((i) => (i - 1 + interiors.length) % interiors.length)}
+              className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
+            >‹</button>
+            {interiors.map((c, i) => (
+              <button
+                key={c.hex}
+                onClick={() => setIntIdx(i)}
+                title={isAr ? c.nameAr : c.nameEn}
+                className={`w-7 h-7 rounded border-2 transition-transform ${intIdx === i ? "border-white scale-110" : "border-transparent"
+                  }`}
+                style={{ backgroundColor: c.hex }}
+              />
+            ))}
+            <button
+              onClick={() => setIntIdx((i) => (i + 1) % interiors.length)}
+              className="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center"
+            >›</button>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

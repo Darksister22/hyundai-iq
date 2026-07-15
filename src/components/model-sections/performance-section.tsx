@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
+import Image from "next/image";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -31,7 +32,7 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
           {
             filter: "blur(12px)",
             y: -30,
-            scale:1.15,
+            scale: 1.15,
             ease: "none",
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -98,27 +99,13 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
                 <p className="text-3xl md:text-4xl font-bold">{stat.value}</p>
               </div>
             ))}
+            <img
+              src={perf.closingImage}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
           </div>
-        </div>
-      </div>
-
-      {/* closing image */}
-      <div className="relative bg-white py-16">
-        <div className="max-w-[1000px] mx-auto px-8">
-          {perf.closingImage ? (
-            <div className="h-[400px] rounded-lg overflow-hidden">
-              <img
-                src={perf.closingImage}
-                alt=""
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ) : (
-            <div className="h-[400px] rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400">
-              Performance closing image
-            </div>
-          )}
         </div>
       </div>
     </section>

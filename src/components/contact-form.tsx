@@ -44,7 +44,6 @@ interface ContactFormProps {
 
 const MAX_CHARS = 5000; // official 5000-character limit
 const MAX_FILES = 2; // official: up to 2 files
-const ACCEPTED = ".pdf,.jpeg,.jpg,.png"; // official: PDF, JPEG, PNG only
 
 const BUCKET = "contact-attachments";
 
@@ -56,21 +55,15 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
   const isAr = locale === "ar";
 
   const [comments, setComments] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
+  const [files] = useState<File[]>([]);
   const [consent, setConsent] = useState(false); // required privacy consent
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const picked = Array.from(e.target.files);
-    setFiles((prev) => [...prev, ...picked].slice(0, MAX_FILES));
-    e.target.value = ""; // allow re-selecting the same filename later
-  };
 
-  const removeFile = (index: number) =>
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

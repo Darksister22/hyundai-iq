@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
+import Image from "next/image";
 import Reveal from "../reveal";
 
 interface Props {
@@ -19,7 +20,7 @@ export default function SafetySection({ locale, model }: Props) {
     const el = scrollRef.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
-    setProgress(max > 0 ? el.scrollLeft / max : 0);
+    setProgress(max > 0 ? Math.abs(el.scrollLeft) / max : 0);
   };
 
   useEffect(() => {
@@ -33,16 +34,20 @@ export default function SafetySection({ locale, model }: Props) {
   const dragging = useRef(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const onHandleMove = (clientX: number) => {
-    if (!dragging.current || !trackRef.current || !scrollRef.current) return;
-    const rect = trackRef.current.getBoundingClientRect();
-    let p = (clientX - rect.left) / rect.width;
-    p = Math.max(0, Math.min(1, p));
-    const el = scrollRef.current;
-    el.scrollLeft = p * (el.scrollWidth - el.clientWidth);
-  };
 
-  useEffect(() => {
+useEffect(() => {
+    // Inlined so the effect owns its logic — no stale-closure or missing-dep warning.
+    const onHandleMove = (clientX: number) => {
+      if (!dragging.current || !trackRef.current || !scrollRef.current) return;
+      const rect = trackRef.current.getBoundingClientRect();
+      let p = (clientX - rect.left) / rect.width; // 0 at physical left, 1 at physical right
+      p = Math.max(0, Math.min(1, p));
+      const prog = isAr ? 1 - p : p; // RTL: right edge = progress 0
+      const el = scrollRef.current;
+      const max = el.scrollWidth - el.clientWidth;
+      el.scrollLeft = (isAr ? -1 : 1) * prog * max; // RTL scrollLeft is negative
+    };
+
     const move = (e: MouseEvent) => onHandleMove(e.clientX);
     const up = () => (dragging.current = false);
     window.addEventListener("mousemove", move);
@@ -51,7 +56,7 @@ export default function SafetySection({ locale, model }: Props) {
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseup", up);
     };
-  }, []);
+  }, [isAr]); // re-bind if locale direction changes
 
   return (
     <section id="safety" className="bg-white py-20 scroll-mt-36">
@@ -103,8 +108,7 @@ export default function SafetySection({ locale, model }: Props) {
             onMouseDown={() => (dragging.current = true)}
             className="absolute -top-3 w-9 h-6 bg-black rounded flex items-center justify-center cursor-ew-resize"
             style={{
-              left: `calc(${progress * 100}% - 18px)`,
-            }}
+              left: `calc(${(isAr ? 1 - progress : progress) * 100}% - 18px)`,            }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path

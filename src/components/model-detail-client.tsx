@@ -71,7 +71,7 @@ export default function ModelDetailClient({ locale, model, dict }: Props) {
     .map(({ id, label }) => ({ id, label }));
 
   return (
-    <div>
+    <div className="[bg-white &>section:not(:first-of-type)]:mt-2">
       {has.hero && <HeroSection locale={locale} model={model} />}
 
       <ModelSubNav
