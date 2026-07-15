@@ -215,5 +215,25 @@
     "privacyPolicy": "Privacy Policy",
     "legalTerms": "Legal Disclaimer",
     "rights": "© 2026 Hyundai Iraq. All rights reserved."
+  },
+    "customerPromise": {
+    "breadcrumbHome": "Home",
+    "breadcrumbService": "Hyundai Service",
+    "title": "Our Promise to Customers",
+    "subtitle": "Hyundai offers a range of service programs designed to suit and satisfy our valued customers.",
+    "tagline": "Our steadfast commitment to providing the best service to our valued customers is set out in our \u201cCustomer Promise.\u201d We regard every customer as important and do everything we can to serve them in the best possible way through truly exceptional service.",
+    "listHeading": "These are our promises to our valued customers",
+    "listIntro": "We care about all our customers and commit to the following:",
+    "promises": [
+      "Listening attentively and following through on every request with energy and diligence",
+      "Maintaining a clean, safe, and welcoming environment",
+      "Scheduling an appointment that suits our customers",
+      "Greeting and attending to you the moment you arrive, professionally and warmly",
+      "Providing an accurate estimate of the time and cost required",
+      "Obtaining your prior approval before carrying out any additional work",
+      "Explaining all completed repairs in detail and reviewing the costs",
+      "Guaranteeing your car is returned at the agreed time, clean and tidy",
+      "Following up within 3 business days to ensure your satisfaction"
+    ]
   }
 }
