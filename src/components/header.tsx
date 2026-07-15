@@ -5,6 +5,7 @@ import FindCarPanel from "@/components/find-car-panel";
 import { useEffect, useRef, useState } from "react";
 import { Locale } from "@/lib/i18n";
 import type { FindCarCategory, FindCarCar } from "@/lib/find-car-data";
+import Image from "next/image";
 
 interface HeaderProps {
   locale: Locale;
@@ -38,7 +39,6 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
   const navLink = atTop
     ? "text-white/90 hover:text-white"
     : "text-gray-800 hover:text-[#00AAD2]";
-  const logoColor = atTop ? "text-white" : "text-[#002C5F]";
   const langBtn = atTop
     ? "text-white border-white/60 hover:bg-white/10"
     : "text-gray-500 border-gray-300";
@@ -75,9 +75,39 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
           } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
       >
         <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
-          <Link href={`/${locale}`} className="text-xl font-bold text-[#002C5F]">
-            HYUNDAI
+          <Link href={`/${locale}`} className="flex items-center gap-3">
+            <span className="relative inline-block h-6">
+              <Image
+                src='/svglogo/HyundaiLogoWhite.svg'
+                alt="Hyundai"
+                width={180}
+                height={30}
+                priority
+                className="h-6 w-auto"
+              />
+              <Image
+                src='/svglogo/HyundaiLogoBlue.svg'
+                alt="Hyundai"
+                width={180}
+                height={30}
+                aria-hidden
+                className={`h-6 w-auto absolute inset-0 transition-opacity duration-300 ${atTop ? "opacity-0" : "opacity-100"}`}
+              />
+            </span>
+            <span className={`h-6 w-px ${atTop ? "bg-white/40" : "bg-gray-300"}`} />
+            <span className={`inline-flex items-center rounded px-2 py-1 transition-colors ${atTop ? "bg-transparent" : "bg-[#002C5F]"}`}>
+              <Image
+                src="/svglogo/AloulaHorizontal.svg"
+                alt="Aloula"
+                height={120}
+                width={30}
+                priority
+                className="h-8 w-auto"
+              />
+            </span>
           </Link>
+
+
           <nav className="hidden md:flex items-center gap-8">
             {/* nav links */}
             <button
@@ -128,7 +158,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
     flex flex-col gap-6 text-gray-800 transition-transform duration-300 ease-out
     ${menuOpen
                 ? "translate-x-0"
-                : "translate-x-full rtl:-translate-x-full"}`}  
+                : "translate-x-full rtl:-translate-x-full"}`}
           >
             <button className="self-end text-2xl leading-none text-gray-500" aria-label="close" onClick={() => setMenuOpen(false)}>×</button>
 
@@ -137,7 +167,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
               className="text-start"
             >
               {dict.findACar}
-            </button>            
+            </button>
             <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)}>{dict.aboutUs}</Link>
             <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)}>{dict.findUs}</Link>
             <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)}>{dict.contactUs}</Link>

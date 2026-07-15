@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Locale } from "@/lib/i18n";
 import { models } from "@/lib/models-data";
+import Image from "next/image";
 
 interface FooterProps {
   locale: Locale;
@@ -83,6 +84,13 @@ export default function Footer({ locale, dict }: FooterProps) {
             </ul>
           </div>
         </div>
+        <Image 
+        src='svglogo/AloulaVertical.svg'
+        alt="Al-Oula Motors"
+        width={160}
+        height={44}
+        className="block mr-auto h-20 w-auto mt-16"
+        />
       </div>
 
       {/* legal bar */}
