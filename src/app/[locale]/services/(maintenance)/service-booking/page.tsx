@@ -5,9 +5,10 @@ import { getDictionary, Locale } from "@/lib/i18n"; // ← adjust to your loader
 export default async function ServiceBookingPage({
   params,
 }: {
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+    const { locale: rawLocale } = await params;
+  const locale = rawLocale as Locale;
   const dict = (await getDictionary(locale)).serviceBooking;
   
 const { data, error } = await supabase

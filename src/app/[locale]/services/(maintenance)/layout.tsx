@@ -8,9 +8,10 @@ export default async function AftersalesLayout({
   params,
 }: {
   children: ReactNode;
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale: rawLocale } = await params;
+  const locale = rawLocale as Locale;
   const dict = (await getDictionary(locale)).serviceBooking;
 
   return (

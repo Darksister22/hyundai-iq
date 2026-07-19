@@ -30,10 +30,11 @@ function loc(locale: Locale, ar: string | null, en: string | null): string | nul
 export default async function CallCenterPage({
   params,
 }: {
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-  const dict = (await getDictionary(locale)).serviceBooking;
+  const { locale: rawLocale } = await params;
+  const locale = rawLocale as Locale;
+    const dict = (await getDictionary(locale)).serviceBooking;
 
   const { data: row } = await supabase
     .from("call_center_info")
