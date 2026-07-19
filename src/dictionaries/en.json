@@ -38,6 +38,8 @@
     "whoWeAreDesc": "From pioneering automaker in Korea to global auto industry leader"
   },
   "model": {
+        "formErrorPhone": "Please enter a valid Iraqi mobile number, e.g. 0770 123 4567",
+    "formErrorEmail": "Please enter a valid email address",
     "highlights": "Highlights",
     "atAGlance": "at a glance",
     "engine": "Engine",

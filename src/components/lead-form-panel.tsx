@@ -24,6 +24,8 @@ export interface LeadFormDict {
   formSubmitting: string;
   formSuccess: string;
   formError: string;
+  formErrorPhone: string;
+  formErrorEmail: string;
   formClose: string;
 }
 
@@ -49,17 +51,20 @@ export default function LeadFormPanel({
   dict,
 }: Props) {
   const isAr = locale === "ar";
+
   const [state, setState] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
+  const [hp, setHp] = useState(""); // honeypot — bots fill hidden fields
 
   const title = variant === "price" ? dict.requestPriceOffer : dict.requestTestDrive;
 
-  // lock background scroll while the panel is open, and close on Escape
+  // lock background scroll while open, and close on Escape
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -74,31 +79,70 @@ export default function LeadFormPanel({
     };
   }, [open, onClose]);
 
+  const reset = () => {
+    setName(""); setPhone(""); setEmail(""); setCity(""); setDate("");
+    setErrorMsg("");
+    setState("idle");
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setState("sending");
+    if (state === "sending") return; // guard against double-submit
 
-    // strip a leading zero before the country code: 07XX… → +9647XX…
-    const national = phone.trim().replace(/\D/g, "").replace(/^0+/, "");
+    // Honeypot: a real user never sees this field. Fake success so bots
+    // don't learn they were caught.
+    if (hp) {
+      setState("success");
+      return;
+    }
+
+    // Iraqi mobiles are written locally as 07XX XXX XXXX. E.164 drops the
+    // leading zero: +9647XXXXXXXX. Strip non-digits first so spaces and
+    // dashes the user typed don't break the check.
+    const national = phone.replace(/\D/g, "").replace(/^0+/, "");
+    if (!/^7\d{8,9}$/.test(national)) {
+      setErrorMsg(dict.formErrorPhone);
+      setState("error");
+      return;
+    }
+
+    const cleanEmail = email.trim();
+    if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setErrorMsg(dict.formErrorEmail);
+      setState("error");
+      return;
+    }
+
+    setState("sending");
+    setErrorMsg("");
 
     const { error } = await supabase.from("model_leads").insert({
-      lead_type: variant,
+      // must match the table's check constraint: 'price' | 'test_drive'
+      lead_type: variant === "price" ? "price" : "test_drive",
       model_slug: modelSlug,
       model_name: modelName,
       full_name: name.trim(),
       phone: `+964${national}`,
-      email: email.trim() || null,
+      email: cleanEmail || null,
       city,
       preferred_date: date || null,
       locale,
+      // status omitted on purpose — the RLS policy requires the default 'new'
     });
 
-    setState(error ? "error" : "success");
+    if (error) {
+      console.error("[model_leads] insert failed:", error.message);
+      setErrorMsg(dict.formError);
+      setState("error");
+      return;
+    }
+
+    setState("success");
   };
 
-  const reset = () => {
-    setName(""); setPhone(""); setEmail(""); setCity(""); setDate("");
-    setState("idle");
+  // clears a validation error as soon as the user starts fixing it
+  const clearError = () => {
+    if (state === "error") setState("idle");
   };
 
   return (
@@ -156,8 +200,24 @@ export default function LeadFormPanel({
             </div>
           ) : (
             <form onSubmit={submit} className="flex flex-col gap-4">
+              {/* honeypot — hidden from users, irresistible to bots */}
+              <input
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
+
               <Field label={dict.formName} required>
-                <input value={name} onChange={(e) => setName(e.target.value)} required className={INPUT} />
+                <input
+                  value={name}
+                  onChange={(e) => { setName(e.target.value); clearError(); }}
+                  required
+                  className={INPUT}
+                />
               </Field>
 
               <Field label={dict.formPhone} required>
@@ -167,20 +227,31 @@ export default function LeadFormPanel({
                   </span>
                   <input
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => { setPhone(e.target.value); clearError(); }}
                     required
                     inputMode="tel"
+                    placeholder="0770 123 4567"
                     className={`${INPUT} rounded-s-none`}
                   />
                 </div>
               </Field>
 
               <Field label={`${dict.formEmail} (${dict.formOptional})`}>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={INPUT} />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); clearError(); }}
+                  className={INPUT}
+                />
               </Field>
 
               <Field label={dict.formCity} required>
-                <select value={city} onChange={(e) => setCity(e.target.value)} required className={INPUT}>
+                <select
+                  value={city}
+                  onChange={(e) => { setCity(e.target.value); clearError(); }}
+                  required
+                  className={INPUT}
+                >
                   <option value="">{dict.formChoose}</option>
                   {IRAQI_GOVERNORATES.map((g) => (
                     <option key={g.en} value={g.en}>{isAr ? g.ar : g.en}</option>
@@ -193,15 +264,15 @@ export default function LeadFormPanel({
                 <input
                   type="date"
                   value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  onChange={(e) => { setDate(e.target.value); clearError(); }}
                   required
                   min={new Date().toISOString().split("T")[0]}
                   className={INPUT}
                 />
               </Field>
 
-              {state === "error" && (
-                <p className="text-sm text-red-600">{dict.formError}</p>
+              {state === "error" && errorMsg && (
+                <p role="alert" className="text-sm text-red-600">{errorMsg}</p>
               )}
 
               <button
