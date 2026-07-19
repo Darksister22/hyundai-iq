@@ -304,7 +304,7 @@ const handleCardSettled = useCallback(() => {
               className="model-swiper !pb-10"
             >
               {filteredCars.map((car) => (
-                <SwiperSlide key={car.id} className="!w-auto !h-[35svh] flex items-center">
+                <SwiperSlide key={car.id} className="!w-auto !h-[47svh] flex items-center">
                   <ModelCard
                     locale={locale}
                     car={car}

@@ -84,12 +84,12 @@ export default function Footer({ locale, dict }: FooterProps) {
             </ul>
           </div>
         </div>
-        <Image 
-        src='svglogo/AloulaVertical.svg'
-        alt="Al-Oula Motors"
-        width={160}
-        height={44}
-        className="block mr-auto h-20 w-auto mt-16"
+        <Image
+          src='svglogo/AloulaVertical.svg'
+          alt="Al-Oula Motors"
+          width={160}
+          height={44}
+          className="block mr-auto h-20 w-auto mt-16"
         />
       </div>
 
@@ -98,8 +98,12 @@ export default function Footer({ locale, dict }: FooterProps) {
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 gap-4">
           <span>{dict.rights}</span>
           <div className="flex gap-6">
-            <span>{dict.privacyPolicy}</span>
-            <span>{dict.legalTerms}</span>
+            <Link
+              href={`/${locale}/privacy-policy`}
+              className="hover:text-white/60 transition-colors"
+            >
+              {dict.privacyPolicy}
+            </Link>            <span>{dict.legalTerms}</span>
           </div>
         </div>
       </div>

@@ -16,7 +16,8 @@
     "connectService": "Connect to a Service",
     "serviceBooking": "Service Booking",
     "afterSales": "After-Sales Service",
-    "partsAccessories": "Parts & Accessories"
+    "partsAccessories": "Parts & Accessories",
+    "customerPromise":"Customer Promise"
   },
   "home": {
     "exploreModels": "Explore featured models",
@@ -299,6 +300,84 @@
     "callCenterHeading": "Hyundai is always available to hear your inquiries",
     "telephoneNo": "Telephone No",
     "workingHours": "Working Hours"
+  },
+  "privacyPolicy": {
+    "breadcrumbHome": "Home",
+    "breadcrumbLegal": "Legal",
+    "title": "Privacy Policy",
+    "intro": "By using our website, you agree to this Privacy Policy and to how we handle your data.",
+    "company": "Hyundai Iraq — Al-Oula Motor",
+    "lastUpdated": "Last updated: [DATE]",
+    "languageNote": "This Privacy Policy is available in Arabic and English. In the event of any conflict, the Arabic version prevails.",
+    "tocTitle": "On this page",
+    "sections": [
+      {
+        "heading": "1) Who we are and how to contact us",
+        "body": "[PLACEHOLDER — legal entity name, role as data controller, commercial registration number, registered address, and contact channels to be supplied by the client.]",
+        "items": ["General enquiries: [EMAIL]", "Privacy enquiries: [EMAIL]", "Postal address: [ADDRESS]"]
+      },
+      {
+        "heading": "2) What this policy covers",
+        "body": "[PLACEHOLDER — describes what is collected, why, how, who it is shared with, how long it is kept, international transfers, your rights, and how to complain.]",
+        "items": []
+      },
+      {
+        "heading": "3) What we collect",
+        "body": "[PLACEHOLDER] We collect information directly from you, automatically, and from third parties.",
+        "items": [
+          "Identity and contact details (name, email, phone, city/governorate).",
+          "Enquiry details (model of interest, subject, message, preferred contact method and language).",
+          "Vehicle and service booking details (model, year, VIN, plate, mileage).",
+          "Device and technical data (IP address, browser and OS, language, time zone).",
+          "Usage data (pages viewed, clicks, time on page, referring pages, errors).",
+          "Cookie identifiers — see the cookies section below."
+        ]
+      },
+      {
+        "heading": "4) Why we use your data",
+        "body": "[PLACEHOLDER — purposes and legal bases. Requires legal review for the applicable jurisdiction.]",
+        "items": [
+          "Responding to enquiries and providing customer support.",
+          "Processing service bookings and vehicle maintenance requests.",
+          "Operating, securing, and improving the website.",
+          "Marketing communications, where you have consented.",
+          "Surveys and feedback.",
+          "Legal and compliance obligations."
+        ]
+      },
+      {
+        "heading": "5) Cookies and similar technologies",
+        "body": "[PLACEHOLDER] We use cookies to operate the site, keep it secure, and understand how it is used.",
+        "items": [
+          "Strictly necessary (always on).",
+          "Performance and analytics.",
+          "Functional (such as language preference).",
+          "Optional marketing cookies, where enabled."
+        ]
+      },
+      {
+        "heading": "6) Who we share data with",
+        "body": "[PLACEHOLDER] We do not sell your personal data. We share it only where necessary.",
+        "items": [
+          "Internally, with the business units handling your request.",
+          "Service providers acting on our behalf under contract.",
+          "In the event of a business restructuring or transfer.",
+          "Where required by law, or to protect our rights and users."
+        ]
+      },
+      { "heading": "7) International transfers", "body": "[PLACEHOLDER — where recipients are outside Iraq and what safeguards apply.]", "items": [] },
+      { "heading": "8) How long we keep your data", "body": "[PLACEHOLDER — retention periods per data category.]", "items": [] },
+      { "heading": "9) How we protect your data", "body": "[PLACEHOLDER — administrative, technical, and physical safeguards.]", "items": [] },
+      {
+        "heading": "10) Your rights",
+        "body": "[PLACEHOLDER — subject to applicable law, you may have the following rights.]",
+        "items": ["Access", "Correction", "Deletion", "Restriction or objection", "Data portability", "Withdrawal of consent"]
+      },
+      { "heading": "11) Children's privacy", "body": "[PLACEHOLDER] This website is not directed at children.", "items": [] },
+      { "heading": "12) Third-party links", "body": "[PLACEHOLDER] Our site links to other websites governed by their own policies.", "items": [] },
+      { "heading": "13) Updates to this policy", "body": "[PLACEHOLDER] We will post a new effective date at the top of this page.", "items": [] },
+      { "heading": "14) How to complain", "body": "[PLACEHOLDER] Please contact us first at [EMAIL] so we can address your concern.", "items": [] }
+    ]
   }
  
 }

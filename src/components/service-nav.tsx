@@ -7,7 +7,7 @@
 //                        category tabs (gray-100 track, white shadow pill
 //                        on the active tab — no sliding indicator)
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Locale } from "@/lib/i18n";
@@ -46,29 +46,30 @@ export function ServiceTabs({ locale, dict }: { locale: Locale; dict: NavDict })
 
   // Local index so the highlight flips the moment the user presses,
   // instead of waiting for the server round-trip to change the pathname.
-  const [index, setIndex] = useState(active);
-
+  const [pending, setPending] = useState<number | null>(null);
+  const [lastActive, setLastActive] = useState(active);
   // Sync back to the real route: covers back/forward buttons, direct URL
   // entry, and snaps the highlight back if a navigation never completes.
-  useEffect(() => {
-    setIndex(active);
-  }, [active]);
+  if (active !== lastActive) {
+    setLastActive(active);
+    setPending(null);   // real route caught up; drop the optimistic value
+  }
+  const index = pending ?? active;
 
   const tabs = [
     { href: `/${locale}/services/service-booking`, label: dict.pillBooking },
-    { href: `/${locale}/services/call-center`,     label: dict.pillCallCenter },
+    { href: `/${locale}/services/call-center`, label: dict.pillCallCenter },
   ];
 
   return (
-    <div className="inline-flex bg-gray-100 rounded-full p-1 max-w-full overflow-x-auto overflow-y-hidden scrollbar-hide">
+    <div className="inline-flex bg-white shadow-md rounded-full p-1 text-sm">
       {tabs.map((t, i) => (
         <Link
           key={t.href}
           href={t.href}
-          onClick={() => setIndex(i)}
-          className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-            index === i ? "bg-white shadow text-[#111]" : "text-gray-500 hover:text-gray-800"
-          }`}
+          onClick={() => setPending(i)}
+          className={`px-6 py-2 rounded-full whitespace-nowrap transition-colors ${index === i ? "bg-[#002C5F] text-white" : "text-gray-600 hover:text-gray-900"
+            }`}
         >
           {t.label}
         </Link>

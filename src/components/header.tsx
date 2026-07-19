@@ -26,6 +26,8 @@ interface HeaderProps {
     serviceBooking: string;
     afterSales: string;
     partsAccessories: string;
+    customerPromise:string;
+
   };
   categories: FindCarCategory[];
   cars: FindCarCar[];
@@ -56,6 +58,8 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
     { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
     { href: `/${locale}/services/after-sales`, label: dict.afterSales },
     { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
+    { href: `/${locale}/services/customer-promise`, label: dict.customerPromise },
+
   ];
 
   const navLink = solid
@@ -297,7 +301,6 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
             <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)}>{dict.aboutUs}</Link>
             <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)}>{dict.findUs}</Link>
             <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)}>{dict.contactUs}</Link>
-
             <Link href={switchedPath} onClick={() => setMenuOpen(false)} className="text-sm text-gray-500 border border-gray-300 px-3 py-1 rounded w-fit">{dict.langSwitch}</Link>
             <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)} className="text-sm font-semibold bg-[#002C5F] text-white px-5 py-2 rounded text-center">{dict.requestCallback}</Link>
           </nav>
