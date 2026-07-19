@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Locale } from "@/lib/i18n";
 import type { FindCarCategory, FindCarCar } from "@/lib/find-car-data";
 import Image from "next/image";
-
+import { CalendarCheck, Wrench, Cog, BadgeCheck } from "lucide-react";
 interface HeaderProps {
   locale: Locale;
   dict: {
@@ -26,8 +26,11 @@ interface HeaderProps {
     serviceBooking: string;
     afterSales: string;
     partsAccessories: string;
-    customerPromise:string;
-
+    customerPromise: string;
+    serviceBookingDesc: string;
+    afterSalesDesc: string;
+    partsAccessoriesDesc: string;
+    customerPromiseDesc: string
   };
   categories: FindCarCategory[];
   cars: FindCarCar[];
@@ -49,46 +52,62 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
   const [svcMobileOpen, setSvcMobileOpen] = useState(false); // mobile services accordion
 
   // the header renders its solid (white) look when scrolled OR hovered
-  // OR while the services dropdown is open — so the white panel never
-  // hangs off a transparent bar
+  // OR while the services dropdown is open
   const solid = !atTop || hovered || svcOpen;
 
-  // the three service destinations — single source for desktop + mobile
+  // the service destinations — single source for desktop + mobile
   const serviceLinks = [
-    { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
-    { href: `/${locale}/services/after-sales`, label: dict.afterSales },
-    { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
-    { href: `/${locale}/services/customer-promise`, label: dict.customerPromise },
-
+    {
+      href: `/${locale}/services/service-booking`,
+      label: dict.serviceBooking,
+      desc: dict.serviceBookingDesc,
+      Icon: CalendarCheck,
+    },
+    {
+      href: `/${locale}/services/after-sales`,
+      label: dict.afterSales,
+      desc: dict.afterSalesDesc,
+      Icon: Wrench,
+    },
+    {
+      href: `/${locale}/services/parts-accessories`,
+      label: dict.partsAccessories,
+      desc: dict.partsAccessoriesDesc,
+      Icon: Cog,
+    },
+    {
+      href: `/${locale}/services/customer-promise`,
+      label: dict.customerPromise,
+      desc: dict.customerPromiseDesc,
+      Icon: BadgeCheck,
+    },
   ];
 
   const navLink = solid
-    ? "text-gray-800 hover:text-[#00AAD2]"
-    : "text-white/90 hover:text-white";
+    ? "text-gray-700 hover:text-[#002C5F]"
+    : "text-white/85 hover:text-white";
   const langBtn = solid
-    ? "text-gray-500 border-gray-300"
-    : "text-white border-white/60 hover:bg-white/10";
-  const ctaBtn = solid
-    ? "bg-[#002C5F] text-white hover:bg-[#003d7a]"         // dark button on light bg
-    : "bg-white text-[#002C5F] hover:bg-white/90";         // light button on dark blur
+    ? "text-gray-600 hover:bg-gray-100"
+    : "text-white/90 hover:bg-white/15";
+  const divider = solid ? "bg-gray-200" : "bg-white/25";
+
   //header scroll state
   useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY;
-      setAtTop(current < 20);                  // frosted/transparent iff at top
-      setSvcOpen(false);                       // collapse services list (animated)
+      setAtTop(current < 20);
+      setSvcOpen(false);
       if (current < 80 && !subnavStuck.current) setHidden(false);
-      else if (current > lastScroll.current) setHidden(true);   // scroll down → hide
-      else if (current < lastScroll.current && !subnavStuck.current) setHidden(false); // scroll up → show
+      else if (current > lastScroll.current) setHidden(true);
+      else if (current < lastScroll.current && !subnavStuck.current) setHidden(false);
       lastScroll.current = current;
     };
-    onScroll();                                // set initial state
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // while a model page's sub nav is stuck to the top, the header stays
-  // hidden even on scroll-up — the sub nav owns the top edge
+  // while a model page's sub nav is stuck to the top, the header stays hidden
   useEffect(() => {
     const onStuck = (e: Event) => {
       const stuck = (e as CustomEvent<boolean>).detail;
@@ -123,15 +142,19 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${solid
-          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200" // solid: scrolled, hovered, or dropdown open
-          : "bg-gray/30 backdrop-blur-xl"                                    // transparent + blur otherwise
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-200"
+          : "bg-black/10 backdrop-blur-xl border-b border-white/10"
           } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
       >
-        <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
-          <Link href={`/${locale}`} className="flex items-center gap-3">
+        {/* wider container than the old max-w-7xl — the extra ~180px is what
+            gives the nav room to breathe. Height stays 72px (load-bearing). */}
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
+
+          {/* ---------- zone 1: logo ---------- */}
+          <Link href={`/${locale}`} className="flex items-center shrink-0">
             <span className="relative inline-block h-6">
               <Image
-                src='/svglogo/HyundaiLogoWhite.svg'
+                src="/svglogo/HyundaiLogoWhite.svg"
                 alt="Hyundai"
                 width={180}
                 height={30}
@@ -139,7 +162,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                 className="h-6 w-auto"
               />
               <Image
-                src='/svglogo/HyundaiLogoBlue.svg'
+                src="/svglogo/HyundaiLogoBlue.svg"
                 alt="Hyundai"
                 width={180}
                 height={30}
@@ -149,12 +172,11 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
             </span>
           </Link>
 
-
-          <nav className="hidden md:flex items-center gap-8">
-            {/* nav links */}
+          {/* ---------- zone 2: primary nav (lg and up) ---------- */}
+          <nav className="hidden lg:flex items-center gap-1">
             <button
               onClick={() => setFindOpen((o) => !o)}
-              className={`text-sm font-medium transition-colors ${navLink}`}
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}
             >
               {dict.findACar}
             </button>
@@ -163,7 +185,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
             <div ref={svcRef} className="relative">
               <button
                 onClick={() => setSvcOpen((o) => !o)}
-                className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${navLink}`}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}
               >
                 {dict.connectService}
                 <svg
@@ -185,127 +207,191 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
 
               {/* fall-down panel: always mounted, animated via transform + opacity */}
               <div
-                className={`absolute top-full mt-4 start-0 min-w-[260px] origin-top
-                  bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-100
-                  py-3 transition-all duration-300 ease-out
+                className={`absolute top-full mt-3 start-0 w-[38rem] max-w-[calc(100vw-3rem)] origin-top
+                  bg-white rounded-2xl shadow-[0_16px_50px_rgba(0,0,0,0.14)] border border-gray-100
+                  p-3 transition-all duration-300 ease-out
                   ${svcOpen
                     ? "opacity-100 translate-y-0 scale-y-100 visible"
                     : "opacity-0 -translate-y-3 scale-y-95 invisible pointer-events-none"
                   }`}
               >
-                {serviceLinks.map((s) => (
-                  <Link
-                    key={s.href}
-                    href={s.href}
-                    onClick={() => setSvcOpen(false)}
-                    className="block px-6 py-3 text-[15px] text-gray-700 hover:text-[#002C5F] hover:bg-gray-50/80 transition-colors"
-                  >
-                    {s.label}
-                  </Link>
-                ))}
+                <div className="grid grid-cols-2 gap-1">
+                  {serviceLinks.map(({ href, label, desc, Icon }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={() => setSvcOpen(false)}
+                      className="group flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
+                    >
+                      {/* icon tile — tints navy on hover */}
+                      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-[#002C5F] transition-colors group-hover:bg-[#002C5F] group-hover:text-white">
+                        <Icon size={18} strokeWidth={1.8} />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-semibold text-gray-900 group-hover:text-[#002C5F] transition-colors">
+                          {label}
+                        </span>
+                        <span className="block text-xs text-gray-500 leading-snug mt-0.5">
+                          {desc}
+                        </span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <Link href={`/${locale}/about-hyundai`} className={`text-sm font-medium transition-colors ${navLink}`}>
+            <Link href={`/${locale}/about-hyundai`} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}>
               {dict.aboutUs}
             </Link>
-            <Link href={`/${locale}/find-us`} className={`text-sm font-medium transition-colors ${navLink}`}>
+            <Link href={`/${locale}/find-us`} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}>
               {dict.findUs}
             </Link>
-            <Link href={`/${locale}/contact-us`} className={`text-sm font-medium transition-colors ${navLink}`}>
+            <Link href={`/${locale}/contact-us`} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}>
               {dict.contactUs}
             </Link>
-            <Link href={switchedPath} className={`text-sm border px-3 py-1 rounded transition-colors ${langBtn}`}>
+          </nav>
+
+          {/* ---------- zone 3: actions, separated by a rule ---------- */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
+            {/* divider marks where navigation ends and actions begin */}
+            <span className={`h-5 w-px transition-colors ${divider}`} aria-hidden />
+
+            {/* language toggle — borderless chip instead of the old outlined box */}
+            <Link
+              href={switchedPath}
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${langBtn}`}
+            >
               {dict.langSwitch}
             </Link>
-            <Link href={`/${locale}/contact-us`} className={`text-sm font-semibold px-5 py-2 rounded transition-colors ${ctaBtn}`}>
-              {dict.requestCallback}
-            </Link>
-          </nav>
-          <button
-            className="md:hidden text-2xl text-current"
-            aria-label="menu"
-            onClick={() => { setMenuVisible(true); requestAnimationFrame(() => setMenuOpen(true)); }}        >
-            ☰
-          </button>
+          </div>
 
+          {/* hamburger — now shown below lg, not below md */}
+          <button
+            className={`lg:hidden p-2 -me-2 rounded-md transition-colors ${solid ? "text-gray-800" : "text-white"}`}
+            aria-label="menu"
+            onClick={() => { setMenuVisible(true); requestAnimationFrame(() => setMenuOpen(true)); }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
         </div>
       </header>
+
       {/* Mobile overlay menu */}
       {menuVisible && (
-        <div className="md:hidden fixed inset-0 z-[60]">
+        <div className="lg:hidden fixed inset-0 z-[60]">
           {/* backdrop fades with menuOpen */}
           <div
-            className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"
-              }`}
+            className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"}`}
             onClick={() => setMenuOpen(false)}
           />
 
           {/* panel slides from the end (start edge in RTL); translate-x-full when closed */}
           <nav
             onTransitionEnd={() => { if (!menuOpen) setMenuVisible(false); }}
-            className={`absolute inset-y-0 end-0 w-72 max-w-[80vw] bg-white shadow-2xl p-6
-    flex flex-col gap-6 text-gray-800 transition-transform duration-300 ease-out
-    ${menuOpen
-                ? "translate-x-0"
-                : "translate-x-full rtl:-translate-x-full"}`}
+            className={`absolute inset-y-0 end-0 w-[20rem] max-w-[85%] bg-white shadow-2xl
+              flex flex-col text-gray-800 transition-transform duration-300 ease-out
+              ${menuOpen ? "translate-x-0" : "translate-x-full rtl:-translate-x-full"}`}
           >
-            <button className="self-end text-2xl leading-none text-gray-500" aria-label="close" onClick={() => setMenuOpen(false)}>×</button>
-
-            <button
-              onClick={() => { setMenuOpen(false); setFindOpen(true); }}
-              className="text-start"
-            >
-              {dict.findACar}
-            </button>
-
-            {/* Connect to a Service — accordion */}
-            <div>
+            {/* panel header — mirrors the 72px bar so the close sits where the burger was */}
+            <div className="h-[72px] px-6 flex items-center justify-between border-b border-gray-100 shrink-0">
+              <Image
+                src="/svglogo/HyundaiLogoBlue.svg"
+                alt="Hyundai"
+                width={180}
+                height={30}
+                className="h-5 w-auto"
+              />
               <button
-                onClick={() => setSvcMobileOpen((o) => !o)}
-                className="w-full flex items-center justify-between text-start"
+                className="p-2 -me-2 text-gray-400 hover:text-gray-700 transition-colors"
+                aria-label="close"
+                onClick={() => setMenuOpen(false)}
               >
-                {dict.connectService}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className={`transition-transform ${svcMobileOpen ? "rotate-180" : ""}`}
-                >
-                  <path
-                    d="M6 9l6 6 6-6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </button>
-              {svcMobileOpen && (
-                <div className="mt-3 ps-4 flex flex-col gap-3 border-s-2 border-gray-100">
-                  {serviceLinks.map((s) => (
-                    <Link
-                      key={s.href}
-                      href={s.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="text-sm text-gray-600"
-                    >
-                      {s.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
             </div>
 
-            <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)}>{dict.aboutUs}</Link>
-            <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)}>{dict.findUs}</Link>
-            <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)}>{dict.contactUs}</Link>
-            <Link href={switchedPath} onClick={() => setMenuOpen(false)} className="text-sm text-gray-500 border border-gray-300 px-3 py-1 rounded w-fit">{dict.langSwitch}</Link>
-            <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)} className="text-sm font-semibold bg-[#002C5F] text-white px-5 py-2 rounded text-center">{dict.requestCallback}</Link>
+            {/* scrollable link list */}
+            <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-1">
+              <button
+                onClick={() => { setMenuOpen(false); setFindOpen(true); }}
+                className="text-start py-3 text-base font-medium"
+              >
+                {dict.findACar}
+              </button>
+
+              {/* Connect to a Service — accordion */}
+              <div>
+                <button
+                  onClick={() => setSvcMobileOpen((o) => !o)}
+                  className="w-full flex items-center justify-between text-start py-3 text-base font-medium"
+                >
+                  {dict.connectService}
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className={`text-gray-400 transition-transform ${svcMobileOpen ? "rotate-180" : ""}`}
+                  >
+                    <path
+                      d="M6 9l6 6 6-6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+                {svcMobileOpen && (
+                  <div className="mb-2 ps-4 flex flex-col border-s-2 border-gray-100">
+                    {serviceLinks.map(({ href, label, desc, Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-start gap-3 py-2.5"
+                      >
+                        <Icon size={16} strokeWidth={1.8} className="mt-0.5 shrink-0 text-[#002C5F]" />
+                        <span className="min-w-0">
+                          <span className="block text-sm text-gray-800">{label}</span>
+                          <span className="block text-xs text-gray-400 leading-snug">{desc}</span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)} className="py-3 text-base font-medium">
+                {dict.aboutUs}
+              </Link>
+              <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)} className="py-3 text-base font-medium">
+                {dict.findUs}
+              </Link>
+              <Link href={`/${locale}/contact-us`} onClick={() => setMenuOpen(false)} className="py-3 text-base font-medium">
+                {dict.contactUs}
+              </Link>
+            </div>
+
+            {/* pinned footer actions */}
+            <div className="px-6 py-6 border-t border-gray-100 flex flex-col gap-3 shrink-0">
+              <Link
+                href={switchedPath}
+                onClick={() => setMenuOpen(false)}
+                className="text-sm text-gray-600 border border-gray-300 px-4 py-2 rounded-full w-fit hover:bg-gray-50 transition-colors"
+              >
+                {dict.langSwitch}
+              </Link>
+            </div>
           </nav>
         </div>
       )}
+
       <FindCarPanel
         locale={locale}
         open={findOpen}

@@ -17,7 +17,11 @@
     "serviceBooking": "حجز موعد صيانة",
     "afterSales": "خدمات ما بعد البيع",
     "partsAccessories": "قطع الغيار والإكسسوارات",
-    "customerPromise":"وعدنا للعملاء"
+    "customerPromise":"وعدنا للعملاء",
+    "serviceBookingDesc": "احجز موعد صيانة عبر الإنترنت",
+    "afterSalesDesc": "شبكة خدمة ما بعد البيع في العراق",
+    "partsAccessoriesDesc": "قطع غيار وكماليات هيونداي الأصلية",
+    "customerPromiseDesc": "التزاماتنا تجاه كل عميل"
   },
   "home": {
     "exploreModels": "استعرض الطرازات المميزة",

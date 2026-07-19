@@ -17,7 +17,11 @@
     "serviceBooking": "Service Booking",
     "afterSales": "After-Sales Service",
     "partsAccessories": "Parts & Accessories",
-    "customerPromise":"Customer Promise"
+    "customerPromise":"Customer Promise",
+    "serviceBookingDesc": "Book a maintenance appointment online",
+    "afterSalesDesc": "Our service network across Iraq",
+    "partsAccessoriesDesc": "Genuine Hyundai parts and accessories",
+    "customerPromiseDesc": "Our commitments to every customer"
   },
   "home": {
     "exploreModels": "Explore featured models",
