@@ -450,155 +450,65 @@
       {
         "id": "genuine-parts",
         "label": "Genuine Parts",
-        "heading": "Guaranteed to fit. Guaranteed to perform. Guaranteed genuine.",
-        "intro": "Hyundai genuine parts are engineered for your specific vehicle and tested against demanding real-world conditions for quality, durability and long service life.",
-        "sections": [
-          {
-            "label": "Built for your car",
-            "text": "Every genuine part is designed to the same standards as the components your vehicle left the factory with, so fitment, tolerances and performance match exactly."
-          },
-          {
-            "label": "Warranty",
-            "text": "Hyundai genuine parts are covered by a [WARRANTY PERIOD] warranty — please confirm the terms applicable in Iraq."
-          }
-        ],
-        "guarantees": [
-          "The fit",
-          "The performance",
-          "The authenticity"
-        ],
-        "guaranteeImages": [
-          "/images/parts/guarantee-fit.webp",
-          "/images/parts/guarantee-performance.webp",
-          "/images/parts/guarantee-genuine.webp"
-        ],
+        "heading": "Guaranteed to fit, Guaranteed to perform, Guaranteed Genuine",
+        "body": "Hyundai Genuine Parts are tested under various simulated extreme conditions to ensure quality, reliability, and durability. They are also backed by a 12-month / 20,000 km warranty, giving you added peace of mind. Hyundai Genuine Parts always prove to be a sound investment for your vehicle. Specifically designed and tested to meet Australian Design Rules, all Hyundai Genuine Parts are manufactured to the highest Hyundai standards.",
+        "guarantees": ["to fit", "to perform", "Genuine"],
+        "guaranteeImages": ["/images/parts/guarantee-fit.webp", "/images/parts/guarantee-performance.webp", "/images/parts/guarantee-genuine.webp"],
         "images": []
       },
       {
         "id": "air-filter",
         "label": "Air Filter",
-        "heading": "The engine air filter removes dust and airborne particles from incoming air and reduces intake noise.",
-        "intro": "",
-        "sections": [
-          {
-            "label": "Function",
-            "text": "Your engine needs a precise mix of fuel and air to run. Air enters the system through the air filter, which traps dirt and fine particles before they can reach and damage internal components."
-          },
-          {
-            "label": "Why genuine",
-            "text": "Filter quality cannot be judged by appearance alone. A Hyundai genuine air filter is engineered specifically for your model's intake system. For safe, efficient running, always ask for the genuine part."
-          }
-        ],
+        "heading": "The engine air filter removes dust and other foreign matter from the air and reduces air intake noise.",
+        "body": "Function and Mechanism: The engine needs an exact mixture of fuel and air in order to run. All of the air enters the system first through the air filter. This catches the dirt and other foreign particles in the air, preventing them from entering the system and possibly damaging the engine. Air Filter: The quality of the Air Filter cannot be judged merely by appearance. Only genuine Hyundai Air Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Air Filter.",
         "guarantees": [],
-        "images": [
-          "/images/parts/air-filter-1.webp",
-          "/images/parts/air-filter-2.webp"
-        ]
+        "guaranteeImages": [],
+        "images": ["/images/parts/air-filter-1.webp", "/images/parts/air-filter-2.webp"]
       },
       {
         "id": "brake-pad",
-        "label": "Brake Pads",
-        "heading": "Brake pads convert your car's momentum into heat — the single most safety-critical wear item on the vehicle.",
-        "intro": "",
-        "sections": [
-          {
-            "label": "Function",
-            "text": "When you press the pedal, the pads clamp against the brake discs. The friction material is designed to deliver consistent stopping power across a wide temperature range."
-          },
-          {
-            "label": "Why genuine",
-            "text": "Genuine pads are matched to your car's disc material, weight and braking system. Non-genuine friction material can lengthen stopping distances, increase noise and wear discs unevenly."
-          }
-        ],
+        "label": "Brake Pad",
+        "heading": "The brake pad grips the disc Brake to produce a stopping force.",
+        "body": "Function and Mechanism : Brake pads are steel backing plates with friction materials bound to the surface that faces the disc brake rotor. It transmits the pressure applied to the brake pedal to the wheels and stops or decelerates the motion of the vehicle. Brake Pad : Brake pads are steel backing plates with friction materials bound to the surface that faces the disc brake rotor. It transmits the pressure applied to the brake pedal to the wheels and stops or decelerates the motion of the vehicle. The quality of the Brake Pad cannot be judged merely by appearance. Only genuine Hyundai Brake Pad is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Brake Pad.",
         "guarantees": [],
-        "images": [
-          "/images/parts/brake-pad-1.webp",
-          "/images/parts/brake-pad-2.webp"
-        ]
+        "guaranteeImages": [],
+        "images": ["/images/parts/brake-pad-1.webp", "/images/parts/brake-pad-2.webp"]
       },
       {
         "id": "cabin-air-filter",
         "label": "Cabin Air Filter",
-        "heading": "The cabin air filter cleans the air entering the passenger compartment through the climate control system.",
-        "intro": "",
-        "sections": [
-          {
-            "label": "Function",
-            "text": "It traps dust, pollen, soot and other airborne particles before they reach the cabin, and helps keep the air conditioning system clean and efficient."
-          },
-          {
-            "label": "Why genuine",
-            "text": "A clogged filter reduces airflow and strains the blower motor. Genuine filters are sized precisely for your ventilation housing so unfiltered air cannot bypass the element."
-          }
-        ],
+        "heading": "The cabin air filter cleans the air that comes into the interior through the heating, ventilation and air conditioning system.",
+        "body": "Function and Mechanism Dust captured in any cabin air filter causes a gradual reduction in airflow over the working life of the part, resulting in a loss of engine performance and poor fuel consumption. Its function is also to provide optimal air flow to the engine. Cabin Air Filter Dust captured in any cabin air filter causes a gradual reduction in airflow over the working life of the part, resulting in a loss of engine performance and poor fuel consumption. Its function is also to provide optimal air flow to the engine. The quality of the Cabin Air Filter cannot be judged merely by appearance. Only genuine Hyundai Cabin Air Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Cabin Air Filter.",
         "guarantees": [],
-        "images": [
-          "/images/parts/cabin-air-filter-1.webp",
-          "/images/parts/cabin-air-filter-2.webp"
-        ]
+        "guaranteeImages": [],
+        "images": ["/images/parts/cabin-air-filter-1.webp", "/images/parts/cabin-air-filter-2.webp"]
       },
       {
         "id": "fuel-filter",
         "label": "Fuel Filter",
-        "heading": "The fuel filter removes contaminants from fuel before it reaches the injection system.",
-        "intro": "",
-        "sections": [
-          {
-            "label": "Function",
-            "text": "Modern injection systems work at very high pressure with fine tolerances. The filter captures rust, dirt and water that would otherwise damage injectors and the fuel pump."
-          },
-          {
-            "label": "Why genuine",
-            "text": "Genuine filters meet the flow rate and filtration rating your engine's fuel system was calibrated for. An incorrect filter can starve the engine or let contaminants through."
-          }
-        ],
+        "heading": "The fuel filter prevents the fuel pump from clogging and malfunctioning by removing impurities such as dust and steel particles.",
+        "body": "Function and Mechanism The fuel filter prevents abrasion inside cylinders, particularly in the upper sections. If the fuel filter is not replaced regularly, it may become clogged with contaminants and cause a restriction in the fuel flow, causing a significant drop in engine performance. Fuel Filter The fuel filter prevents abrasion inside cylinders, particularly in the upper sections. If the fuel filter is not replaced regularly, it may become clogged with contaminants and cause a restriction in the fuel flow, causing a significant drop in engine performance. The quality of the Fuel Filter cannot be judged merely by appearance. Only genuine Hyundai Fuel Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Fuel Filter.",
         "guarantees": [],
-        "images": [
-          "/images/parts/fuel-filter-1.webp",
-          "/images/parts/fuel-filter-2.webp"
-        ]
+        "guaranteeImages": [],
+        "images": ["/images/parts/fuel-filter-1.webp", "/images/parts/fuel-filter-2.webp"]
       },
       {
         "id": "oil-filter",
         "label": "Oil Filter",
-        "heading": "The oil filter keeps engine oil clean so it can protect moving parts throughout its service interval.",
-        "intro": "",
-        "sections": [
-          {
-            "label": "Function",
-            "text": "Oil picks up metal particles and combustion by-products as it circulates. The filter removes them continuously, keeping the oil able to lubricate and cool."
-          },
-          {
-            "label": "Why genuine",
-            "text": "Genuine oil filters use filtration media and a bypass valve matched to your engine's oil pressure and viscosity, maintaining protection even during cold starts."
-          }
-        ],
+        "heading": "The inner filter paper strains the engine oil and removes contaminants, keeping the engine oil clean.",
+        "body": "Function and Mechanism As the oil circulates through the engine, it becomes contaminated over time. An oil filter will remove these impurities, in order to ensure smooth engine operation. Oil Filter As the oil circulates through the engine, it becomes contaminated over time. An oil filter will remove these impurities, in order to ensure smooth engine operation. The quality of the Oil Filter cannot be judged merely by appearance. Only genuine Hyundai Oil Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Oil Filter.",
         "guarantees": [],
-        "images": [
-          "/images/parts/oil-filter-1.webp",
-          "/images/parts/oil-filter-2.webp"
-        ]
+        "guaranteeImages": [],
+        "images": ["/images/parts/oil-filter-1.webp", "/images/parts/oil-filter-2.webp"]
       },
       {
         "id": "timing-belt",
         "label": "Timing Belt",
-        "heading": "The timing belt keeps the crankshaft and camshaft synchronised so the valves open at exactly the right moment.",
-        "intro": "",
-        "sections": [
-          {
-            "label": "Function",
-            "text": "It drives the camshaft from the crankshaft, holding valve timing precise across the entire rev range."
-          },
-          {
-            "label": "Why genuine",
-            "text": "A timing belt is a scheduled replacement item, not a wear-until-failure part. On many engines a failure causes severe internal damage. Genuine belts match the exact length, tooth profile and compound your engine requires — replace at the interval in your service book."
-          }
-        ],
+        "heading": "A timing belt controls the camshafts in your engine, opening and closing valves at just the right time for smooth operation.",
+        "body": "Function and Mechanism The timing belt must be properly calibrated in order to move in sequence with the motion of the pistons. Regardless of what type of motor is present in your vehicle, a failure in the timing belt will cause the engine to suddenly stop. Timing belts are present in engines with overhead cams and are essential to keep these cams turning at the right time in order to keep the engine running. Timing Belt The timing belt must be properly calibrated in order to move in sequence with the motion of the pistons. Regardless of what type of motor is present in your vehicle, a failure in the timing belt will cause the engine to suddenly stop. timing belts are present in engines with overhead cams and are essential to keep these cams turning at the right time in order to keep the engine running. The quality of the Timing Belt cannot be judged merely by appearance. Only genuine Hyundai Timing Belt is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Timing Belt.",
         "guarantees": [],
-        "images": [
-          "/images/parts/timing-belt-1.webp",
-          "/images/parts/timing-belt-2.webp"
-        ]
+        "guaranteeImages": [],
+        "images": ["/images/parts/timing-belt-1.webp", "/images/parts/timing-belt-2.webp"]
       }
     ]
   },

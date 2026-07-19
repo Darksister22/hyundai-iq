@@ -2,9 +2,8 @@ export interface PartTab {
   id: string;
   label: string;
   heading: string;
-  intro: string;
-  sections: { label: string; text: string }[];
+  body: string;
+  images: string[];
   guarantees: string[];
   guaranteeImages: string[];
-  images: string[];
 }
