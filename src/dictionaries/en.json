@@ -17,7 +17,7 @@
     "serviceBooking": "Service Booking",
     "afterSales": "After-Sales Service",
     "partsAccessories": "Parts & Accessories",
-    "customerPromise":"Customer Promise",
+    "customerPromise": "Customer Promise",
     "serviceBookingDesc": "Book a maintenance appointment online",
     "afterSalesDesc": "Our service network across Iraq",
     "partsAccessoriesDesc": "Genuine Hyundai parts and accessories",
@@ -176,7 +176,6 @@
       }
     ]
   },
-  
   "contact": {
     "title": "Contact Us",
     "subtitle": "We'd love to hear from you.",
@@ -227,7 +226,7 @@
     "legalTerms": "Legal Disclaimer",
     "rights": "© 2026 Hyundai Iraq. All rights reserved."
   },
-    "customerPromise": {
+  "customerPromise": {
     "breadcrumbHome": "Home",
     "breadcrumbService": "Hyundai Service",
     "title": "Our Promise to Customers",
@@ -247,7 +246,6 @@
       "Following up within 3 business days to ensure your satisfaction"
     ]
   },
-  
   "serviceBooking": {
     "breadcrumbHome": "Home",
     "breadcrumbService": "Hyundai Service",
@@ -318,7 +316,11 @@
       {
         "heading": "1) Who we are and how to contact us",
         "body": "[PLACEHOLDER — legal entity name, role as data controller, commercial registration number, registered address, and contact channels to be supplied by the client.]",
-        "items": ["General enquiries: [EMAIL]", "Privacy enquiries: [EMAIL]", "Postal address: [ADDRESS]"]
+        "items": [
+          "General enquiries: [EMAIL]",
+          "Privacy enquiries: [EMAIL]",
+          "Postal address: [ADDRESS]"
+        ]
       },
       {
         "heading": "2) What this policy covers",
@@ -369,19 +371,206 @@
           "Where required by law, or to protect our rights and users."
         ]
       },
-      { "heading": "7) International transfers", "body": "[PLACEHOLDER — where recipients are outside Iraq and what safeguards apply.]", "items": [] },
-      { "heading": "8) How long we keep your data", "body": "[PLACEHOLDER — retention periods per data category.]", "items": [] },
-      { "heading": "9) How we protect your data", "body": "[PLACEHOLDER — administrative, technical, and physical safeguards.]", "items": [] },
+      {
+        "heading": "7) International transfers",
+        "body": "[PLACEHOLDER — where recipients are outside Iraq and what safeguards apply.]",
+        "items": []
+      },
+      {
+        "heading": "8) How long we keep your data",
+        "body": "[PLACEHOLDER — retention periods per data category.]",
+        "items": []
+      },
+      {
+        "heading": "9) How we protect your data",
+        "body": "[PLACEHOLDER — administrative, technical, and physical safeguards.]",
+        "items": []
+      },
       {
         "heading": "10) Your rights",
         "body": "[PLACEHOLDER — subject to applicable law, you may have the following rights.]",
-        "items": ["Access", "Correction", "Deletion", "Restriction or objection", "Data portability", "Withdrawal of consent"]
+        "items": [
+          "Access",
+          "Correction",
+          "Deletion",
+          "Restriction or objection",
+          "Data portability",
+          "Withdrawal of consent"
+        ]
       },
-      { "heading": "11) Children's privacy", "body": "[PLACEHOLDER] This website is not directed at children.", "items": [] },
-      { "heading": "12) Third-party links", "body": "[PLACEHOLDER] Our site links to other websites governed by their own policies.", "items": [] },
-      { "heading": "13) Updates to this policy", "body": "[PLACEHOLDER] We will post a new effective date at the top of this page.", "items": [] },
-      { "heading": "14) How to complain", "body": "[PLACEHOLDER] Please contact us first at [EMAIL] so we can address your concern.", "items": [] }
+      {
+        "heading": "11) Children's privacy",
+        "body": "[PLACEHOLDER] This website is not directed at children.",
+        "items": []
+      },
+      {
+        "heading": "12) Third-party links",
+        "body": "[PLACEHOLDER] Our site links to other websites governed by their own policies.",
+        "items": []
+      },
+      {
+        "heading": "13) Updates to this policy",
+        "body": "[PLACEHOLDER] We will post a new effective date at the top of this page.",
+        "items": []
+      },
+      {
+        "heading": "14) How to complain",
+        "body": "[PLACEHOLDER] Please contact us first at [EMAIL] so we can address your concern.",
+        "items": []
+      }
+    ]
+  },
+  "partsAccessories": {
+    "guaranteePrefix": "We guarantee",
+    "breadcrumbHome": "Home",
+    "breadcrumbService": "Hyundai Service",
+    "breadcrumbParts": "Parts & Accessories",
+    "bannerTitle": "Genuine Parts",
+    "bannerSubtitle": "The Hyundai genuine parts range lets you build your car around the way you drive.",
+    "tabs": [
+{
+        "id": "genuine-parts",
+        "label": "Genuine Parts",
+        "heading": "Guaranteed to fit. Guaranteed to perform. Guaranteed genuine.",
+        "intro": "Hyundai genuine parts are engineered for your specific vehicle and tested against demanding real-world conditions for quality, durability and long service life.",
+        "sections": [
+          { "label": "Built for your car", "text": "Every genuine part is designed to the same standards as the components your vehicle left the factory with, so fitment, tolerances and performance match exactly." },
+          { "label": "Warranty", "text": "Hyundai genuine parts are covered by a [WARRANTY PERIOD] warranty — please confirm the terms applicable in Iraq." }
+        ],
+        "guarantees": ["The fit", "The performance", "The authenticity"],
+        "guaranteeImages": [
+          "/images/parts/guarantee-fit.webp",
+          "/images/parts/guarantee-performance.webp",
+          "/images/parts/guarantee-genuine.webp"
+        ],
+        "images": []
+      },
+      {
+        "id": "air-filter",
+        "label": "Air Filter",
+        "heading": "The engine air filter removes dust and airborne particles from incoming air and reduces intake noise.",
+        "intro": "",
+        "sections": [
+          {
+            "label": "Function",
+            "text": "Your engine needs a precise mix of fuel and air to run. Air enters the system through the air filter, which traps dirt and fine particles before they can reach and damage internal components."
+          },
+          {
+            "label": "Why genuine",
+            "text": "Filter quality cannot be judged by appearance alone. A Hyundai genuine air filter is engineered specifically for your model's intake system. For safe, efficient running, always ask for the genuine part."
+          }
+        ],
+        "guarantees": [],
+        "images": [
+          "/images/parts/air-filter-1.webp",
+          "/images/parts/air-filter-2.webp"
+        ]
+      },
+      {
+        "id": "brake-pad",
+        "label": "Brake Pads",
+        "heading": "Brake pads convert your car's momentum into heat — the single most safety-critical wear item on the vehicle.",
+        "intro": "",
+        "sections": [
+          {
+            "label": "Function",
+            "text": "When you press the pedal, the pads clamp against the brake discs. The friction material is designed to deliver consistent stopping power across a wide temperature range."
+          },
+          {
+            "label": "Why genuine",
+            "text": "Genuine pads are matched to your car's disc material, weight and braking system. Non-genuine friction material can lengthen stopping distances, increase noise and wear discs unevenly."
+          }
+        ],
+        "guarantees": [],
+        "images": [
+          "/images/parts/brake-pad-1.webp",
+          "/images/parts/brake-pad-2.webp"
+        ]
+      },
+      {
+        "id": "cabin-air-filter",
+        "label": "Cabin Air Filter",
+        "heading": "The cabin air filter cleans the air entering the passenger compartment through the climate control system.",
+        "intro": "",
+        "sections": [
+          {
+            "label": "Function",
+            "text": "It traps dust, pollen, soot and other airborne particles before they reach the cabin, and helps keep the air conditioning system clean and efficient."
+          },
+          {
+            "label": "Why genuine",
+            "text": "A clogged filter reduces airflow and strains the blower motor. Genuine filters are sized precisely for your ventilation housing so unfiltered air cannot bypass the element."
+          }
+        ],
+        "guarantees": [],
+        "images": [
+          "/images/parts/cabin-air-filter-1.webp",
+          "/images/parts/cabin-air-filter-2.webp"
+        ]
+      },
+      {
+        "id": "fuel-filter",
+        "label": "Fuel Filter",
+        "heading": "The fuel filter removes contaminants from fuel before it reaches the injection system.",
+        "intro": "",
+        "sections": [
+          {
+            "label": "Function",
+            "text": "Modern injection systems work at very high pressure with fine tolerances. The filter captures rust, dirt and water that would otherwise damage injectors and the fuel pump."
+          },
+          {
+            "label": "Why genuine",
+            "text": "Genuine filters meet the flow rate and filtration rating your engine's fuel system was calibrated for. An incorrect filter can starve the engine or let contaminants through."
+          }
+        ],
+        "guarantees": [],
+        "images": [
+          "/images/parts/fuel-filter-1.webp",
+          "/images/parts/fuel-filter-2.webp"
+        ]
+      },
+      {
+        "id": "oil-filter",
+        "label": "Oil Filter",
+        "heading": "The oil filter keeps engine oil clean so it can protect moving parts throughout its service interval.",
+        "intro": "",
+        "sections": [
+          {
+            "label": "Function",
+            "text": "Oil picks up metal particles and combustion by-products as it circulates. The filter removes them continuously, keeping the oil able to lubricate and cool."
+          },
+          {
+            "label": "Why genuine",
+            "text": "Genuine oil filters use filtration media and a bypass valve matched to your engine's oil pressure and viscosity, maintaining protection even during cold starts."
+          }
+        ],
+        "guarantees": [],
+        "images": [
+          "/images/parts/oil-filter-1.webp",
+          "/images/parts/oil-filter-2.webp"
+        ]
+      },
+      {
+        "id": "timing-belt",
+        "label": "Timing Belt",
+        "heading": "The timing belt keeps the crankshaft and camshaft synchronised so the valves open at exactly the right moment.",
+        "intro": "",
+        "sections": [
+          {
+            "label": "Function",
+            "text": "It drives the camshaft from the crankshaft, holding valve timing precise across the entire rev range."
+          },
+          {
+            "label": "Why genuine",
+            "text": "A timing belt is a scheduled replacement item, not a wear-until-failure part. On many engines a failure causes severe internal damage. Genuine belts match the exact length, tooth profile and compound your engine requires — replace at the interval in your service book."
+          }
+        ],
+        "guarantees": [],
+        "images": [
+          "/images/parts/timing-belt-1.webp",
+          "/images/parts/timing-belt-2.webp"
+        ]
+      }
     ]
   }
- 
 }
