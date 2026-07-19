@@ -60,7 +60,21 @@
     "overview": "نظرة عامة",
     "contact": "تواصل معنا",
     "whichColor": "ما هو لونك المفضل؟",
-    "downloadBrochure": "تحميل البروشور"
+    "downloadBrochure": "تحميل البروشور",
+    "requestPriceOffer": "اطلب عرض سعر",
+    "formYourCar": "سيارتك",
+    "formName": "الاسم الكامل",
+    "formPhone": "رقم الهاتف",
+    "formEmail": "البريد الإلكتروني",
+    "formOptional": "اختياري",
+    "formCity": "المدينة",
+    "formChoose": "اختر",
+    "formDate": "التاريخ المفضل",
+    "formSubmit": "إرسال الطلب",
+    "formSubmitting": "جارٍ الإرسال…",
+    "formSuccess": "شكراً لك — سنتواصل معك قريباً.",
+    "formError": "حدث خطأ ما. يُرجى المحاولة مرة أخرى.",
+    "formClose": "إغلاق"
   },
   "about": {
     "title": "نبذة عن هيونداي",

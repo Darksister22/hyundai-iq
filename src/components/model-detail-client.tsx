@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { CarDetail } from "@/lib/model-detail-data";
 import ModelSubNav, { SubNavSection } from "./model-sections/model-sub-nav";
@@ -13,8 +14,10 @@ import PerformanceSection from "./model-sections/performance-section";
 import SafetySection from "./model-sections/safety-section";
 import ConvenienceSection from "./model-sections/convenience-section";
 import GallerySection from "./model-sections/gallery-section";
+import LeadFormPanel, { type LeadVariant, type LeadFormDict } from "./lead-form-panel";
 
-interface ModelDict {
+// extends LeadFormDict so the form's labels come through the same dict object
+interface ModelDict extends LeadFormDict {
   downloadBrochure: string;
   highlights: string;
   design: string;
@@ -39,6 +42,9 @@ interface Props {
 }
 
 export default function ModelDetailClient({ locale, model, dict }: Props) {
+  // null = closed; otherwise which lead form is showing
+  const [lead, setLead] = useState<LeadVariant | null>(null);
+
   // Visibility is driven PURELY by the CMS feat_* flags: a section with
   // empty data still renders (as a skeleton with placeholder gradients),
   // so the structure can be reviewed before content exists. Toggling the
@@ -71,17 +77,31 @@ export default function ModelDetailClient({ locale, model, dict }: Props) {
     .filter((s) => s.on)
     .map(({ id, label }) => ({ id, label }));
 
+  const modelName = locale === "ar" ? model.nameAr : model.nameEn;
+
   return (
-    <div className="[bg-white &>section:not(:first-of-type)]:mt-2">
-      {has.hero && <HeroSection locale={locale} model={model} />}
+    <div className="bg-white [&>section:not(:first-of-type)]:mt-2">
+      {has.hero && (
+        <HeroSection
+          locale={locale}
+          model={model}
+          priceLabel={dict.requestPriceOffer}
+          testDriveLabel={dict.requestTestDrive}
+          onRequestPrice={() => setLead("price")}
+          onRequestTestDrive={() => setLead("testDrive")}
+        />
+      )}
 
       <ModelSubNav
         locale={locale}
-        modelName={locale === "ar" ? model.nameAr : model.nameEn}
+        modelName={modelName}
         sections={sections}
-        contactLabel={dict.contact}
         brochureUrl={model.brochureUrl}
         brochureLabel={dict.downloadBrochure}
+        priceLabel={dict.requestPriceOffer}
+        testDriveLabel={dict.requestTestDrive}
+        onRequestPrice={() => setLead("price")}
+        onRequestTestDrive={() => setLead("testDrive")}
       />
 
       {has.overview && <OverviewSection locale={locale} model={model} />}
@@ -124,6 +144,18 @@ export default function ModelDetailClient({ locale, model, dict }: Props) {
       {has.gallery && (
         <GallerySection locale={locale} model={model} heading={dict.gallery} />
       )}
+
+      {/* fixed-position panel — nesting here doesn't affect where it renders */}
+      <LeadFormPanel
+        open={lead !== null}
+        variant={lead ?? "price"}
+        onClose={() => setLead(null)}
+        locale={locale}
+        modelSlug={model.slug}
+        modelName={modelName}
+        modelImage={model.hero}
+        dict={dict}
+      />
     </div>
   );
 }

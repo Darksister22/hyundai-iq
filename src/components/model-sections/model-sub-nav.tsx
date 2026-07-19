@@ -13,18 +13,24 @@ interface Props {
   locale: Locale;
   modelName: string;
   sections: SubNavSection[];
-  contactLabel: string;
   brochureUrl?: string | null;
   brochureLabel?: string;
+    onRequestPrice: () => void;
+  onRequestTestDrive: () => void;
+  priceLabel: string;
+  testDriveLabel: string;
 }
 
 export default function ModelSubNav({
   locale,
   modelName,
   sections,
-  contactLabel,
   brochureUrl,
   brochureLabel,
+  onRequestPrice,
+  onRequestTestDrive,
+  priceLabel,
+  testDriveLabel,
 }: Props) {
   const [active, setActive] = useState(sections[0]?.id ?? "");
   const [open, setOpen] = useState(false);
@@ -165,26 +171,24 @@ export default function ModelSubNav({
           </div>
 
           {/* row 2 — action buttons: filled navy brochure + outlined contact */}
+          {/* row 2 — brochure download + the two lead CTAs */}
           <div className="flex items-stretch gap-3 md:gap-4">
             {showBrochure && (
-              <a
-                href={brochureHref!}
-                className="flex-1 md:flex-none flex items-center justify-center
-                h-10 md:h-9 px-3 md:px-5 bg-[#002C5F] text-white
-                text-sm font-semibold hover:bg-[#00234c] transition-colors rounded "
-              >
-                {brochureLabel}
-              </a>
-            )}
+              <a href={brochureHref!} className="flex-1 md:flex-none flex items-center justify-center h-10 md:h-9 px-3 md:px-5 bg-white border border-[#002C5F] text-[#002C5F] text-sm font-semibold hover:bg-[#002C5F] hover:text-white transition-colors rounded">{brochureLabel}</a>            )}
 
-            <Link
-              href={`/${locale}/contact-us`}
-              className="flex-1 md:flex-none flex items-center justify-center
-              h-10 md:h-9 px-3 md:px-5 border border-[#002C5F] text-[#002C5F]
-              text-sm font-semibold hover:bg-[#002C5F] hover:text-white transition-colors rounded"
+            <button
+              onClick={onRequestTestDrive}
+              className="flex-1 md:flex-none flex items-center justify-center h-10 md:h-9 px-3 md:px-5 border border-[#002C5F] text-[#002C5F] text-sm font-semibold hover:bg-[#002C5F] hover:text-white transition-colors rounded"
             >
-              {contactLabel}
-            </Link>
+              {testDriveLabel}
+            </button>
+
+            <button
+              onClick={onRequestPrice}
+              className="flex-1 md:flex-none flex items-center justify-center h-10 md:h-9 px-3 md:px-5 bg-[#002C5F] text-white text-sm font-semibold hover:bg-[#00234c] transition-colors rounded"
+            >
+              {priceLabel}
+            </button>
           </div>
         </div>
       </div>

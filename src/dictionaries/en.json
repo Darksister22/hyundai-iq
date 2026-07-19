@@ -60,7 +60,21 @@
     "overview": "Overview",
     "contact": "Contact",
     "whichColor": "Which color is yours?",
-    "downloadBrochure": "Download Brochure"
+    "downloadBrochure": "Download Brochure",
+      "requestPriceOffer": "Request a price offer",
+    "formYourCar": "Your car",
+    "formName": "Full name",
+    "formPhone": "Phone number",
+    "formEmail": "Email",
+    "formOptional": "optional",
+    "formCity": "City",
+    "formChoose": "Choose",
+    "formDate": "Preferred date",
+    "formSubmit": "Submit request",
+    "formSubmitting": "Sending…",
+    "formSuccess": "Thank you — we'll be in touch shortly.",
+    "formError": "Something went wrong. Please try again.",
+    "formClose": "Close"
   },
   "about": {
     "title": "About Hyundai",
