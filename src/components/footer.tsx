@@ -17,6 +17,11 @@ interface FooterProps {
     privacyPolicy: string;
     legalTerms: string;
     rights: string;
+    serviceBooking: string;
+    callCenter: string;
+    afterSales: string;
+    partsAccessories: string;
+    customerPromise: string;
   };
 }
 
@@ -41,12 +46,22 @@ export default function Footer({ locale, dict }: FooterProps) {
               ))}
             </ul>
           </div>
-          <div>
+<div>
             <h4 className="text-sm font-semibold mb-4">{dict.services}</h4>
             <ul className="space-y-2">
-              <li>
-                <span className="text-sm text-white/50">—</span>
-              </li>
+              {[
+                { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
+                { href: `/${locale}/services/call-center`, label: dict.callCenter },
+                { href: `/${locale}/services/after-sales`, label: dict.afterSales },
+                { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
+                { href: `/${locale}/customer-promise`, label: dict.customerPromise },
+              ].map((s) => (
+                <li key={s.href}>
+                  <Link href={s.href} className="text-sm text-white/50 hover:text-white transition-colors">
+                    {s.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>

@@ -224,7 +224,12 @@
     "story": "Hyundai Story",
     "privacyPolicy": "Privacy Policy",
     "legalTerms": "Legal Disclaimer",
-    "rights": "© 2026 Hyundai Iraq. All rights reserved."
+    "rights": "© 2026 Hyundai Iraq. All rights reserved.",
+    "serviceBooking": "Service Booking",
+    "callCenter": "Call Center",
+    "afterSales": "After-Sales Network",
+    "partsAccessories": "Parts & Accessories",
+    "customerPromise": "Customer Promise"
   },
   "customerPromise": {
     "breadcrumbHome": "Home",
@@ -428,16 +433,26 @@
     "bannerTitle": "Genuine Parts",
     "bannerSubtitle": "The Hyundai genuine parts range lets you build your car around the way you drive.",
     "tabs": [
-{
+      {
         "id": "genuine-parts",
         "label": "Genuine Parts",
         "heading": "Guaranteed to fit. Guaranteed to perform. Guaranteed genuine.",
         "intro": "Hyundai genuine parts are engineered for your specific vehicle and tested against demanding real-world conditions for quality, durability and long service life.",
         "sections": [
-          { "label": "Built for your car", "text": "Every genuine part is designed to the same standards as the components your vehicle left the factory with, so fitment, tolerances and performance match exactly." },
-          { "label": "Warranty", "text": "Hyundai genuine parts are covered by a [WARRANTY PERIOD] warranty — please confirm the terms applicable in Iraq." }
+          {
+            "label": "Built for your car",
+            "text": "Every genuine part is designed to the same standards as the components your vehicle left the factory with, so fitment, tolerances and performance match exactly."
+          },
+          {
+            "label": "Warranty",
+            "text": "Hyundai genuine parts are covered by a [WARRANTY PERIOD] warranty — please confirm the terms applicable in Iraq."
+          }
         ],
-        "guarantees": ["The fit", "The performance", "The authenticity"],
+        "guarantees": [
+          "The fit",
+          "The performance",
+          "The authenticity"
+        ],
         "guaranteeImages": [
           "/images/parts/guarantee-fit.webp",
           "/images/parts/guarantee-performance.webp",
@@ -572,5 +587,121 @@
         ]
       }
     ]
+  },
+  "afterSales": {
+    "breadcrumbHome": "Home",
+    "breadcrumbService": "Hyundai Service",
+    "breadcrumbAfterSales": "After-Sales Network",
+    "bannerTitle": "Working Hours",
+    "bannerSubtitle": "Al-Oula Motor after-sales — branch addresses and contact numbers",
+    "introTitle": "Hyundai is always at your service",
+    "introBody": "We are ready to provide the information and support you need to resolve your enquiry quickly and effectively.",
+    "hoursTitle": "Opening hours",
+    "saturday": "Saturday",
+    "sunThu": "Sunday to Thursday",
+    "friday": "Friday",
+    "closed": "Closed",
+    "groups": [
+      {
+        "title": "Hyundai Service Centers",
+        "branches": [
+          {
+            "name": "Service Center — Baghdad, Al-Mansour",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 9:00 PM",
+            "friday": "Closed"
+          },
+          {
+            "name": "Service Center — Basra, Al-Jazair",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 8:30 PM",
+            "friday": "Closed"
+          },
+          {
+            "name": "Service Center — Erbil, 60m Road",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 9:00 PM",
+            "friday": "Closed"
+          },
+          {
+            "name": "Service Center — Najaf, Kufa Road",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 8:30 PM",
+            "friday": "Closed"
+          }
+        ]
+      },
+      {
+        "title": "Hyundai Express Service",
+        "branches": [
+          {
+            "name": "Express Service — Baghdad, Karrada",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 9:00 PM",
+            "friday": "Closed"
+          },
+          {
+            "name": "Express Service — Baghdad, Al-Jadriya",
+            "saturday": "8:00 AM - 10:00 PM",
+            "sunThu": "8:00 AM - 10:00 PM",
+            "friday": "4:00 PM - 10:00 PM"
+          },
+          {
+            "name": "Express Service — Erbil, Ankawa",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 9:00 PM",
+            "friday": "Closed"
+          }
+        ]
+      },
+      {
+        "title": "Hyundai Genuine Parts",
+        "branches": [
+          {
+            "name": "Parts — Baghdad, Al-Mansour",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 9:00 PM",
+            "friday": "Closed"
+          },
+          {
+            "name": "Parts — Basra, Al-Jazair",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 8:30 PM",
+            "friday": "Closed"
+          },
+          {
+            "name": "Parts — Najaf, Kufa Road",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 8:30 PM",
+            "friday": "Closed"
+          }
+        ]
+      },
+      {
+        "title": "Hyundai Body & Paint",
+        "branches": [
+          {
+            "name": "Body & Paint — Baghdad, Al-Doura",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 9:00 PM",
+            "friday": "Closed"
+          },
+          {
+            "name": "Body & Paint — Erbil, 60m Road",
+            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
+            "sunThu": "8:30 AM - 8:30 PM",
+            "friday": "Closed"
+          }
+        ]
+      }
+    ],
+    "contactTitle": "Get in touch",
+    "phoneLabel": "Customer care number",
+    "phone": "+964 000 000 0000",
+    "emailLabel": "Customer care email",
+    "email": "care@example.com",
+    "findTitle": "Service center network",
+    "findCta": "Find your nearest service center",
+    "contactCta": "Contact us"
   }
 }
