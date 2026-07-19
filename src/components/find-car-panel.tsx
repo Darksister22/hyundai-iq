@@ -6,6 +6,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import type { Locale } from "@/lib/i18n";
 import type { FindCarCategory, FindCarCar } from "@/lib/find-car-data";
+import { usePathname } from "next/navigation";
 
 interface Props {
   locale: Locale;
@@ -33,9 +34,11 @@ export default function FindCarPanel({
   const panelRef = useRef<HTMLDivElement>(null);
   const catsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-
+  const pathname = usePathname();
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [mounted, setMounted] = useState(false);
+
+    if (open && !mounted) setMounted(true);
 
   // localized label with English fallback
   const catLabel = (c: FindCarCategory) => (isAr ? c.nameAr ?? c.nameEn : c.nameEn);
@@ -50,18 +53,10 @@ export default function FindCarPanel({
     category === "all" ? cars : cars.filter((m) => m.categoryId === category);
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-
   // mount as soon as the panel should open
-  useEffect(() => {
-    if (open) setMounted(true);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-  }, [open]);
 
-  // Single animation driver for BOTH open and close.
-  // Reacts to any open/mounted change, kills whatever timeline is
-  // currently running, and animates from the panel's current state —
-  // so interrupting a close with a reopen (or vice versa) can never
-  // strand the panel in a dead open=true / mounted=false state.
+
+  
   useEffect(() => {
     if (!mounted) return;
     tlRef.current?.kill();
@@ -85,6 +80,20 @@ export default function FindCarPanel({
 
     return () => { tl.kill(); };
   }, [open, mounted]);
+
+  useEffect(() => {
+    tlRef.current?.kill();
+    onClose(); // parent sets open = false
+
+    if (panelRef.current) {
+      tlRef.current = gsap.timeline().to(panelRef.current, {
+        height: 0,
+        duration: 0,
+        onComplete: () => setMounted(false), // callback, not effect body
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   useEffect(() => { //Close on click away / esc press
     if (!open) return;

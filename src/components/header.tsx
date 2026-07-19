@@ -143,17 +143,6 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                 className={`h-6 w-auto absolute inset-0 transition-opacity duration-300 ${solid ? "opacity-100" : "opacity-0"}`}
               />
             </span>
-            <span className={`h-6 w-px ${solid ? "bg-gray-300" : "bg-white/40"}`} />
-            <span className={`inline-flex items-center rounded px-2 py-1 transition-colors ${solid ? "bg-[#002C5F]" : "bg-transparent"}`}>
-              <Image
-                src="/svglogo/AloulaHorizontal.svg"
-                alt="Aloula"
-                height={120}
-                width={30}
-                priority
-                className="h-8 w-auto"
-              />
-            </span>
           </Link>
 
 
