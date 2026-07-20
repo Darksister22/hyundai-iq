@@ -3,6 +3,7 @@
     "findACar": "Find a Car",
     "aboutUs": "About Us",
     "findUs": "Find Us",
+    "aftersalesOffers": "Sales Offers",
     "contactUs": "Contact Us",
     "offers": "Offers",
     "requestCallback": "Request a Callback",
@@ -35,10 +36,59 @@
     "configure": "Configure",
     "knowMore": "Know more",
     "whoWeAre": "Who we are",
-    "whoWeAreDesc": "From pioneering automaker in Korea to global auto industry leader"
+    "whoWeAreDesc": "From pioneering automaker in Korea to global auto industry leader",
+    "homeServices": {
+      "eyebrow": "Main Services",
+      "heading": "Explore Hyundai Services",
+      "callCenter": "Call Center",
+      "afterSales": "After Sales Network",
+      "serviceBooking": "Service Booking"
+    }
+  },
+  "offers": {
+    "breadcrumbHome": "Home",
+    "breadcrumbOffers": "Offers",
+    "bannerTitle": "Offers",
+    "bannerSubtitle": "Current offers across the Hyundai range.",
+    "offerDetailsCta": "Offer Details",
+    "offerDetailsHeading": "Offer Details:",
+    "discoverMore": "Discover more",
+    "formTitle": "Register your interest",
+    "formOffer": "Which offer are you interested in?",
+    "formName": "Full name",
+    "formPhone": "Phone number",
+    "formEmail": "Email",
+    "formOptional": "optional",
+    "formCity": "City",
+    "formChoose": "Choose",
+    "formDate": "Preferred date",
+    "formSubmit": "Submit",
+    "formSubmitting": "Sending…",
+    "formSuccess": "Thank you — we'll be in touch shortly."
+  },
+  "aftersalesOffers": {
+    "breadcrumbHome": "Home",
+    "breadcrumbOffers": "After-Sales Offers",
+    "bannerTitle": "After-Sales Offers",
+    "bannerSubtitle": "Service and parts offers for your Hyundai.",
+    "offerDetailsCta": "Offer Details",
+    "offerDetailsHeading": "Offer Details:",
+    "discoverMore": "Discover more",
+    "formTitle": "Register your interest",
+    "formOffer": "Which offer are you interested in?",
+    "formName": "Full name",
+    "formPhone": "Phone number",
+    "formEmail": "Email",
+    "formOptional": "optional",
+    "formCity": "City",
+    "formChoose": "Choose",
+    "formDate": "Preferred date",
+    "formSubmit": "Submit",
+    "formSubmitting": "Sending…",
+    "formSuccess": "Thank you — we'll be in touch shortly."
   },
   "model": {
-        "formErrorPhone": "Please enter a valid Iraqi mobile number, e.g. 0770 123 4567",
+    "formErrorPhone": "Please enter a valid Iraqi mobile number, e.g. 0770 123 4567",
     "formErrorEmail": "Please enter a valid email address",
     "highlights": "Highlights",
     "atAGlance": "at a glance",
@@ -63,7 +113,7 @@
     "contact": "Contact",
     "whichColor": "Which color is yours?",
     "downloadBrochure": "Download Brochure",
-      "requestPriceOffer": "Request a price offer",
+    "requestPriceOffer": "Request a price offer",
     "formYourCar": "Your car",
     "formName": "Full name",
     "formPhone": "Phone number",
@@ -230,6 +280,8 @@
     "home": "Home"
   },
   "footer": {
+    "offers": "Offers",
+    "aftersalesOffers": "After Sales Offers",
     "newsletter": "Sign up for our newsletter",
     "newsletterDesc": "Stay updated on new models, offers, and Hyundai news",
     "emailPlaceholder": "Email address",
@@ -454,8 +506,16 @@
         "label": "Genuine Parts",
         "heading": "Guaranteed to fit, Guaranteed to perform, Guaranteed Genuine",
         "body": "Hyundai Genuine Parts are tested under various simulated extreme conditions to ensure quality, reliability, and durability. They are also backed by a 12-month / 20,000 km warranty, giving you added peace of mind. Hyundai Genuine Parts always prove to be a sound investment for your vehicle. Specifically designed and tested to meet Australian Design Rules, all Hyundai Genuine Parts are manufactured to the highest Hyundai standards.",
-        "guarantees": ["to fit", "to perform", "Genuine"],
-        "guaranteeImages": ["/images/parts/guarantee-fit.webp", "/images/parts/guarantee-performance.webp", "/images/parts/guarantee-genuine.webp"],
+        "guarantees": [
+          "to fit",
+          "to perform",
+          "Genuine"
+        ],
+        "guaranteeImages": [
+          "/images/parts/guarantee-fit.webp",
+          "/images/parts/guarantee-performance.webp",
+          "/images/parts/guarantee-genuine.webp"
+        ],
         "images": []
       },
       {
@@ -465,7 +525,10 @@
         "body": "Function and Mechanism: The engine needs an exact mixture of fuel and air in order to run. All of the air enters the system first through the air filter. This catches the dirt and other foreign particles in the air, preventing them from entering the system and possibly damaging the engine. Air Filter: The quality of the Air Filter cannot be judged merely by appearance. Only genuine Hyundai Air Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Air Filter.",
         "guarantees": [],
         "guaranteeImages": [],
-        "images": ["/images/parts/air-filter-1.webp", "/images/parts/air-filter-2.webp"]
+        "images": [
+          "/images/parts/air-filter-1.webp",
+          "/images/parts/air-filter-2.webp"
+        ]
       },
       {
         "id": "brake-pad",
@@ -474,7 +537,10 @@
         "body": "Function and Mechanism : Brake pads are steel backing plates with friction materials bound to the surface that faces the disc brake rotor. It transmits the pressure applied to the brake pedal to the wheels and stops or decelerates the motion of the vehicle. Brake Pad : Brake pads are steel backing plates with friction materials bound to the surface that faces the disc brake rotor. It transmits the pressure applied to the brake pedal to the wheels and stops or decelerates the motion of the vehicle. The quality of the Brake Pad cannot be judged merely by appearance. Only genuine Hyundai Brake Pad is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Brake Pad.",
         "guarantees": [],
         "guaranteeImages": [],
-        "images": ["/images/parts/brake-pad-1.webp", "/images/parts/brake-pad-2.webp"]
+        "images": [
+          "/images/parts/brake-pad-1.webp",
+          "/images/parts/brake-pad-2.webp"
+        ]
       },
       {
         "id": "cabin-air-filter",
@@ -483,7 +549,10 @@
         "body": "Function and Mechanism Dust captured in any cabin air filter causes a gradual reduction in airflow over the working life of the part, resulting in a loss of engine performance and poor fuel consumption. Its function is also to provide optimal air flow to the engine. Cabin Air Filter Dust captured in any cabin air filter causes a gradual reduction in airflow over the working life of the part, resulting in a loss of engine performance and poor fuel consumption. Its function is also to provide optimal air flow to the engine. The quality of the Cabin Air Filter cannot be judged merely by appearance. Only genuine Hyundai Cabin Air Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Cabin Air Filter.",
         "guarantees": [],
         "guaranteeImages": [],
-        "images": ["/images/parts/cabin-air-filter-1.webp", "/images/parts/cabin-air-filter-2.webp"]
+        "images": [
+          "/images/parts/cabin-air-filter-1.webp",
+          "/images/parts/cabin-air-filter-2.webp"
+        ]
       },
       {
         "id": "fuel-filter",
@@ -492,7 +561,10 @@
         "body": "Function and Mechanism The fuel filter prevents abrasion inside cylinders, particularly in the upper sections. If the fuel filter is not replaced regularly, it may become clogged with contaminants and cause a restriction in the fuel flow, causing a significant drop in engine performance. Fuel Filter The fuel filter prevents abrasion inside cylinders, particularly in the upper sections. If the fuel filter is not replaced regularly, it may become clogged with contaminants and cause a restriction in the fuel flow, causing a significant drop in engine performance. The quality of the Fuel Filter cannot be judged merely by appearance. Only genuine Hyundai Fuel Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Fuel Filter.",
         "guarantees": [],
         "guaranteeImages": [],
-        "images": ["/images/parts/fuel-filter-1.webp", "/images/parts/fuel-filter-2.webp"]
+        "images": [
+          "/images/parts/fuel-filter-1.webp",
+          "/images/parts/fuel-filter-2.webp"
+        ]
       },
       {
         "id": "oil-filter",
@@ -501,7 +573,10 @@
         "body": "Function and Mechanism As the oil circulates through the engine, it becomes contaminated over time. An oil filter will remove these impurities, in order to ensure smooth engine operation. Oil Filter As the oil circulates through the engine, it becomes contaminated over time. An oil filter will remove these impurities, in order to ensure smooth engine operation. The quality of the Oil Filter cannot be judged merely by appearance. Only genuine Hyundai Oil Filter is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Oil Filter.",
         "guarantees": [],
         "guaranteeImages": [],
-        "images": ["/images/parts/oil-filter-1.webp", "/images/parts/oil-filter-2.webp"]
+        "images": [
+          "/images/parts/oil-filter-1.webp",
+          "/images/parts/oil-filter-2.webp"
+        ]
       },
       {
         "id": "timing-belt",
@@ -510,7 +585,10 @@
         "body": "Function and Mechanism The timing belt must be properly calibrated in order to move in sequence with the motion of the pistons. Regardless of what type of motor is present in your vehicle, a failure in the timing belt will cause the engine to suddenly stop. Timing belts are present in engines with overhead cams and are essential to keep these cams turning at the right time in order to keep the engine running. Timing Belt The timing belt must be properly calibrated in order to move in sequence with the motion of the pistons. Regardless of what type of motor is present in your vehicle, a failure in the timing belt will cause the engine to suddenly stop. timing belts are present in engines with overhead cams and are essential to keep these cams turning at the right time in order to keep the engine running. The quality of the Timing Belt cannot be judged merely by appearance. Only genuine Hyundai Timing Belt is design and engineered specifically for your Hyundai vehicle; upon trouble-free driving, always ask for genuine Hyundai Timing Belt.",
         "guarantees": [],
         "guaranteeImages": [],
-        "images": ["/images/parts/timing-belt-1.webp", "/images/parts/timing-belt-2.webp"]
+        "images": [
+          "/images/parts/timing-belt-1.webp",
+          "/images/parts/timing-belt-2.webp"
+        ]
       }
     ]
   },

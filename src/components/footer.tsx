@@ -22,6 +22,8 @@ interface FooterProps {
     afterSales: string;
     partsAccessories: string;
     customerPromise: string;
+    offers: string;
+    aftersalesOffers: string;
   };
 }
 
@@ -46,7 +48,7 @@ export default function Footer({ locale, dict }: FooterProps) {
               ))}
             </ul>
           </div>
-<div>
+          <div>
             <h4 className="text-sm font-semibold mb-4">{dict.services}</h4>
             <ul className="space-y-2">
               {[
@@ -55,6 +57,8 @@ export default function Footer({ locale, dict }: FooterProps) {
                 { href: `/${locale}/services/after-sales`, label: dict.afterSales },
                 { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
                 { href: `/${locale}/customer-promise`, label: dict.customerPromise },
+                { href: `/${locale}/offers`, label: dict.offers },
+                { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
               ].map((s) => (
                 <li key={s.href}>
                   <Link href={s.href} className="text-sm text-white/50 hover:text-white transition-colors">

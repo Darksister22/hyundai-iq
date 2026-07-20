@@ -13,6 +13,7 @@ interface HeaderProps {
     findACar: string;
     aboutUs: string;
     findUs: string;
+    offers: string
     contactUs: string;
     requestCallback: string;
     langSwitch: string;
@@ -30,7 +31,8 @@ interface HeaderProps {
     serviceBookingDesc: string;
     afterSalesDesc: string;
     partsAccessoriesDesc: string;
-    customerPromiseDesc: string
+    customerPromiseDesc: string;
+    aftersalesOffers: string;
   };
   categories: FindCarCategory[];
   cars: FindCarCar[];
@@ -50,10 +52,12 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
   const [svcOpen, setSvcOpen] = useState(false);        // desktop services dropdown
   const svcRef = useRef<HTMLDivElement>(null);          // for outside-click close
   const [svcMobileOpen, setSvcMobileOpen] = useState(false); // mobile services accordion
-
+  const [offersOpen, setOffersOpen] = useState(false);
+  const offersRef = useRef<HTMLDivElement>(null);
+  const [offersMobileOpen, setOffersMobileOpen] = useState(false);
   // the header renders its solid (white) look when scrolled OR hovered
   // OR while the services dropdown is open
-  const solid = !atTop || hovered || svcOpen;
+  const solid = !atTop || hovered || svcOpen || offersOpen;
 
   // the service destinations — single source for desktop + mobile
   const serviceLinks = [
@@ -82,6 +86,11 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
       Icon: BadgeCheck,
     },
   ];
+  // offers destinations — single source for desktop + mobile
+  const offerLinks = [
+    { href: `/${locale}/offers`, label: dict.offers },
+    { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
+  ];
 
   const navLink = solid
     ? "text-gray-700 hover:text-[#002C5F]"
@@ -97,6 +106,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
       const current = window.scrollY;
       setAtTop(current < 20);
       setSvcOpen(false);
+      setOffersOpen(false);
       if (current < 80 && !subnavStuck.current) setHidden(false);
       else if (current > lastScroll.current) setHidden(true);
       else if (current < lastScroll.current && !subnavStuck.current) setHidden(false);
@@ -117,6 +127,17 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
     window.addEventListener("hyundai:subnav-stuck", onStuck);
     return () => window.removeEventListener("hyundai:subnav-stuck", onStuck);
   }, []);
+  // close the offers dropdown on outside click
+  useEffect(() => {
+    if (!offersOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (offersRef.current && !offersRef.current.contains(e.target as Node)) {
+        setOffersOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [offersOpen]);
 
   // close the desktop services dropdown on outside click
   useEffect(() => {
@@ -244,12 +265,53 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
             <Link href={`/${locale}/about-hyundai`} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}>
               {dict.aboutUs}
             </Link>
+            {/* Offers dropdown */}
+            <div ref={offersRef} className="relative">
+              <button
+                onClick={() => setOffersOpen((o) => !o)}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}
+              >
+                {dict.offers}
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className={`transition-transform duration-300 ${offersOpen ? "rotate-180" : ""}`}
+                >
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              {/* always mounted, animated via transform + opacity */}
+              <div
+                className={`absolute top-full mt-3 start-0 min-w-[14rem] origin-top
+                  bg-white rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-100
+                  p-2 transition-all duration-300 ease-out
+                  ${offersOpen
+                    ? "opacity-100 translate-y-0 scale-y-100 visible"
+                    : "opacity-0 -translate-y-3 scale-y-95 invisible pointer-events-none"
+                  }`}
+              >
+                {offerLinks.map((o) => (
+                  <Link
+                    key={o.href}
+                    href={o.href}
+                    onClick={() => setOffersOpen(false)}
+                    className="block px-4 py-2.5 rounded-lg text-sm text-gray-700 hover:text-[#002C5F] hover:bg-gray-50 transition-colors"
+                  >
+                    {o.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
             <Link href={`/${locale}/find-us`} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}>
               {dict.findUs}
             </Link>
             <Link href={`/${locale}/contact-us`} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}>
               {dict.contactUs}
             </Link>
+
           </nav>
 
           {/* ---------- zone 3: actions, separated by a rule ---------- */}
@@ -370,6 +432,38 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
               <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)} className="py-3 text-base font-medium">
                 {dict.aboutUs}
               </Link>
+              {/* Offers — accordion */}
+              <div>
+                <button
+                  onClick={() => setOffersMobileOpen((o) => !o)}
+                  className="w-full flex items-center justify-between text-start py-3 text-base font-medium"
+                >
+                  {dict.offers}
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className={`text-gray-400 transition-transform ${offersMobileOpen ? "rotate-180" : ""}`}
+                  >
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {offersMobileOpen && (
+                  <div className="mb-2 ps-4 flex flex-col border-s-2 border-gray-100">
+                    {offerLinks.map((o) => (
+                      <Link
+                        key={o.href}
+                        href={o.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="py-2.5 text-sm text-gray-600 hover:text-[#002C5F] transition-colors"
+                      >
+                        {o.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
               <Link href={`/${locale}/find-us`} onClick={() => setMenuOpen(false)} className="py-3 text-base font-medium">
                 {dict.findUs}
               </Link>

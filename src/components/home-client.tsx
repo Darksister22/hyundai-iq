@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState,useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination, Navigation } from "swiper/modules";
@@ -10,9 +10,9 @@ import type { Locale } from "@/lib/i18n";
 import type { FindCarCategory, HomeCar, HeroBanner } from "@/lib/find-car-data";
 import ParallaxImage from "@/components/parallax-image";
 import ModelCard from "@/components/model-card";
-// Add near the other refs:
 import type { Swiper as SwiperClass } from "swiper";
-// Swiper styles
+import HomeServicesSection, {type HomeServicesDict} from "./home-services-section";
+
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
@@ -31,6 +31,7 @@ interface HomeDict {
   whoWeAre: string;
   whoWeAreDesc: string;
   knowMore: string;
+    homeServices: HomeServicesDict;
 } // pull ar and en locale vars to be used in this page.
 
 // "all" or a category id from the DB
@@ -59,9 +60,9 @@ export default function HomeClient({
   const heroRef = useRef<HTMLDivElement>(null);
   const [activeCat, setActiveCat] = useState<CategoryFilter>("all");
   const modelSwiperRef = useRef<SwiperClass | null>(null);
-const handleCardSettled = useCallback(() => {
-  modelSwiperRef.current?.update();
-}, []);
+  const handleCardSettled = useCallback(() => {
+    modelSwiperRef.current?.update();
+  }, []);
 
   // which car card is expanded to state 3 (only one at a time)
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -284,8 +285,8 @@ const handleCardSettled = useCallback(() => {
                     setExpandedSlug(null);
                   }}
                   className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${activeCat === tab.id
-                      ? "bg-white shadow text-[#111]"
-                      : "text-gray-500 hover:text-gray-800"
+                    ? "bg-white shadow text-[#111]"
+                    : "text-gray-500 hover:text-gray-800"
                     }`}
                 >
                   {tab.label}
@@ -356,6 +357,8 @@ const handleCardSettled = useCallback(() => {
           </h2>
         </div>
       </section>
+
+      <HomeServicesSection locale={locale} dict={dict.homeServices} />
     </div>
   );
 }
