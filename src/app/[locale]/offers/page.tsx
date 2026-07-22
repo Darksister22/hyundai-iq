@@ -2,6 +2,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { VEHICLE_OFFERS } from "@/lib/offers-data";
 import { getDictionary, Locale } from "@/lib/i18n";
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).offers;
+
+  return {
+    title: t.bannerTitle,
+    description: t.bannerSubtitle,
+    alternates: { canonical: `/${locale}/offers` },
+  };
+}
 
 export default async function OffersPage({
   params,

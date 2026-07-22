@@ -1,6 +1,22 @@
 import { getDictionary, Locale } from "@/lib/i18n";
 import ParallaxImage from "@/components/parallax-image";
 import { getLocations, localized } from "@/lib/locations";
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).findUs;
+
+  return {
+    title: t.title,
+    description: t.subtitle,
+    alternates: { canonical: `/${locale}/find-us` },
+  };
+}
 
 export default async function FindUsPage({
   params,

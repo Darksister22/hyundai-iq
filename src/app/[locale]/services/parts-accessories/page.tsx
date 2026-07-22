@@ -3,6 +3,22 @@ import PartsTabs from "@/components/parts-tabs";
 import type { PartTab } from "@/lib/parts-data";
 import { getDictionary, Locale } from "@/lib/i18n";
 import ParallaxImage from "@/components/parallax-image";
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).partsAccessories;
+
+  return {
+    title: t.bannerTitle,
+    description: t.bannerSubtitle,
+    alternates: { canonical: `/${locale}/parts-accessories` },
+  };
+}
 
 export default async function PartsAccessoriesPage({
   params,

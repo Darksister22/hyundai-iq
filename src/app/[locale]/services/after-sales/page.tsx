@@ -4,6 +4,22 @@ import AfterSalesAccordion from "@/components/after-sales-accordion";
 import { Phone, Mail, Clock } from "lucide-react";
 import type { BranchGroup } from "@/lib/after-sales-data";
 import { getDictionary, Locale } from "@/lib/i18n";
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).afterSales;
+
+  return {
+    title: t.bannerTitle,
+    description: t.bannerSubtitle,
+    alternates: { canonical: `/${locale}/after-sales` },
+  };
+}
 
 export default async function AfterSalesPage({
   params,

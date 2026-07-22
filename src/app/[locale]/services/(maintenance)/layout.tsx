@@ -1,7 +1,22 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { ServiceBreadcrumb, ServiceTabs } from "@/components/service-nav";
-import { getDictionary, Locale } from "@/lib/i18n"; // ← adjust to your loader
+import { getDictionary, Locale } from "@/lib/i18n"; 
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).serviceBooking;
+
+  return {
+    description: t.bannerSubtitle,
+        openGraph: { images: ["/images/services/aftersales-banner.webp"] },
+  };
+}
 
 export default async function AftersalesLayout({
   children,

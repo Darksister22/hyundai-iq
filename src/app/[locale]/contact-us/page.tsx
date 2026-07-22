@@ -3,7 +3,22 @@ import { getDictionary, Locale } from "@/lib/i18n";
 import ContactForm from "@/components/contact-form";
 import BranchContactCard, { type Branch } from "@/components/branch-contact-card";
 import Image from "next/image";
+import { type Metadata } from "next";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).contact;
+
+  return {
+    title: t.title,
+    description: t.subtitle,
+    alternates: { canonical: `/${locale}/contact-us` },
+  };
+}
 export default async function ContactPage({
   params,
 }: {

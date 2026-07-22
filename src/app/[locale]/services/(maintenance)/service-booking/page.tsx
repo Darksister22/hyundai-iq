@@ -1,6 +1,21 @@
 import ServiceBookingForm from "@/components/service-booking-form";
 import { supabase } from "@/lib/supabase";
-import { getDictionary, Locale } from "@/lib/i18n"; // ← adjust to your loader
+import { getDictionary, Locale } from "@/lib/i18n";
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).serviceBooking;
+
+  return {
+    title: t.pillBooking,
+    alternates: { canonical: `/${locale}/services/service-booking` },
+  };
+}
 
 export default async function ServiceBookingPage({
   params,

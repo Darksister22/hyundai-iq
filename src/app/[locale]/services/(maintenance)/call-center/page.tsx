@@ -1,12 +1,22 @@
-// app/[locale]/services/(aftersales)/call-center/page.tsx
-// Body only — the banner + pill strip live in the (aftersales) layout.
-// Phone + working hours come from the single-row call_center_info table
-// (editable from the dashboard); dict strings are the fallback when the
-// row is missing or a field is empty.
-
 import { supabase } from "@/lib/supabase";
 import CallCenterPhoto from "@/components/call-center-photo";
-import { getDictionary, Locale } from "@/lib/i18n"; // ← adjust to your loader
+import { getDictionary, Locale } from "@/lib/i18n";
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).serviceBooking;
+
+  return {
+    title: t.pillCallCenter,
+    description: t.callCenterHeading,
+    alternates: { canonical: `/${locale}/services/call-center` },
+  };
+}
 
 interface CallCenterRow {
   phone: string | null;

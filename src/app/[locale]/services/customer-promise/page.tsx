@@ -3,6 +3,22 @@ import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 import { getDictionary, Locale } from "@/lib/i18n";
 import ParallaxImage from "@/components/parallax-image";
+import { type Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).customerPromise;
+
+  return {
+    title: t.title,
+    description: t.subtitle,
+    alternates: { canonical: `/${locale}/customer-promise` },
+  };
+}
 
 export default async function CustomerPromisePage({
     params,

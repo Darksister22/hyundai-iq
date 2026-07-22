@@ -1,8 +1,23 @@
 import { getDictionary, Locale } from "@/lib/i18n";
 import ParallaxImage from "@/components/parallax-image";
 import Reveal from "@/components/reveal";
+import { type Metadata } from "next";
 import AboutTabs from "@/components/about-tabs";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = (await getDictionary(locale as Locale)).about;
+
+  return {
+    title: t.title,
+    description: t.subtitle,
+    alternates: { canonical: `/${locale}/about-us` },
+  };
+}
 export default async function AboutPage({
   params,
 }: {
