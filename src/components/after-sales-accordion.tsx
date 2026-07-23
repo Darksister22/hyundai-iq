@@ -2,21 +2,30 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import type { BranchGroup } from "@/lib/after-sales-data";
 
-interface Labels {
-  saturday: string;
-  sunThu: string;
-  friday: string;
-  closed: string;
+// Shapes are locale-resolved by the server page before they get here.
+export interface AccordionRow {
+  label: string; // e.g. "Saturday", "الجمعة"
+  value: string; // e.g. "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM", "Closed"
+}
+
+export interface AccordionCard {
+  name: string; // card title, e.g. "Service Center — Baghdad, Al-Mansour"
+  rows: AccordionRow[];
+}
+
+export interface AccordionGroup {
+  title: string; // section heading, e.g. "Hyundai Service Centers"
+  cards: AccordionCard[];
 }
 
 export default function AfterSalesAccordion({
   groups,
-  labels,
+  closedLabel,
 }: {
-  groups: BranchGroup[];
-  labels: Labels;
+  groups: AccordionGroup[];
+  /** Localized "Closed" — matching values render dimmed. */
+  closedLabel: string;
 }) {
   // null = all collapsed; only one group open at a time
   const [open, setOpen] = useState<number | null>(null);
@@ -51,12 +60,17 @@ export default function AfterSalesAccordion({
             >
               <div className="overflow-hidden">
                 <div className="px-6 pb-6 flex flex-col gap-4">
-                  {group.branches.map((b, bi) => (
-                    <div key={bi} className="rounded-xl bg-white border border-gray-200 p-5">
-                      <p className="font-bold text-[#111] mb-3">{b.name}</p>
-                      <Row label={labels.saturday} value={b.saturday} closed={labels.closed} />
-                      <Row label={labels.sunThu} value={b.sunThu} closed={labels.closed} />
-                      <Row label={labels.friday} value={b.friday} closed={labels.closed} />
+                  {group.cards.map((card, ci) => (
+                    <div key={ci} className="rounded-xl bg-white border border-gray-200 p-5">
+                      <p className="font-bold text-[#111] mb-3">{card.name}</p>
+                      {card.rows.map((row, ri) => (
+                        <Row
+                          key={ri}
+                          label={row.label}
+                          value={row.value}
+                          closed={closedLabel}
+                        />
+                      ))}
                     </div>
                   ))}
                 </div>
@@ -72,7 +86,8 @@ export default function AfterSalesAccordion({
 // One day row. "Closed" is dimmed so open hours read first.
 // dir=ltr keeps time ranges like "8:30 - 12:30 / 4:30 - 8:30" in order under RTL.
 function Row({ label, value, closed }: { label: string; value: string; closed: string }) {
-  const isClosed = value === closed;
+  const isClosed =
+    value.trim().localeCompare(closed.trim(), undefined, { sensitivity: "accent" }) === 0;
   return (
     <div className="py-2.5 border-b border-gray-100 last:border-0 last:pb-0">
       <p className="text-xs text-gray-500 mb-1">{label}</p>

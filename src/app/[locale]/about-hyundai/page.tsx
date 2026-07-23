@@ -18,6 +18,7 @@ export async function generateMetadata({
     alternates: { canonical: `/${locale}/about-us` },
   };
 }
+
 export default async function AboutPage({
   params,
 }: {

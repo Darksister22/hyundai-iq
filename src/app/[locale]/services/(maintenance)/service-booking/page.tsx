@@ -16,7 +16,6 @@ export async function generateMetadata({
     alternates: { canonical: `/${locale}/services/service-booking` },
   };
 }
-
 export default async function ServiceBookingPage({
   params,
 }: {

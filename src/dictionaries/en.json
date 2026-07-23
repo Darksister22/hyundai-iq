@@ -605,100 +605,12 @@
     "sunThu": "Sunday to Thursday",
     "friday": "Friday",
     "closed": "Closed",
-    "groups": [
-      {
-        "title": "Hyundai Service Centers",
-        "branches": [
-          {
-            "name": "Service Center — Baghdad, Al-Mansour",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 9:00 PM",
-            "friday": "Closed"
-          },
-          {
-            "name": "Service Center — Basra, Al-Jazair",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 8:30 PM",
-            "friday": "Closed"
-          },
-          {
-            "name": "Service Center — Erbil, 60m Road",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 9:00 PM",
-            "friday": "Closed"
-          },
-          {
-            "name": "Service Center — Najaf, Kufa Road",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 8:30 PM",
-            "friday": "Closed"
-          }
-        ]
-      },
-      {
-        "title": "Hyundai Express Service",
-        "branches": [
-          {
-            "name": "Express Service — Baghdad, Karrada",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 9:00 PM",
-            "friday": "Closed"
-          },
-          {
-            "name": "Express Service — Baghdad, Al-Jadriya",
-            "saturday": "8:00 AM - 10:00 PM",
-            "sunThu": "8:00 AM - 10:00 PM",
-            "friday": "4:00 PM - 10:00 PM"
-          },
-          {
-            "name": "Express Service — Erbil, Ankawa",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 9:00 PM",
-            "friday": "Closed"
-          }
-        ]
-      },
-      {
-        "title": "Hyundai Genuine Parts",
-        "branches": [
-          {
-            "name": "Parts — Baghdad, Al-Mansour",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 9:00 PM",
-            "friday": "Closed"
-          },
-          {
-            "name": "Parts — Basra, Al-Jazair",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 8:30 PM",
-            "friday": "Closed"
-          },
-          {
-            "name": "Parts — Najaf, Kufa Road",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 8:30 PM",
-            "friday": "Closed"
-          }
-        ]
-      },
-      {
-        "title": "Hyundai Body & Paint",
-        "branches": [
-          {
-            "name": "Body & Paint — Baghdad, Al-Doura",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 9:00 PM",
-            "friday": "Closed"
-          },
-          {
-            "name": "Body & Paint — Erbil, 60m Road",
-            "saturday": "8:30 AM - 12:30 PM / 4:30 PM - 8:30 PM",
-            "sunThu": "8:30 AM - 8:30 PM",
-            "friday": "Closed"
-          }
-        ]
-      }
-    ],
+    "sections": {
+      "service_centers": "Hyundai Service Centers",
+      "express_service": "Hyundai Express Service",
+      "genuine_parts": "Hyundai Genuine Parts",
+      "body_paint": "Hyundai Body & Paint"
+    },
     "contactTitle": "Get in touch",
     "phoneLabel": "Customer care number",
     "phone": "+964 000 000 0000",
