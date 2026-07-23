@@ -38,7 +38,7 @@ export async function generateMetadata({
     alternates: { canonical: `/${locale}/models/${slug}` },
     openGraph: {
       title: name,
-      images: model.hero ? [{ url: model.hero, width: 1200, height: 630 }] : undefined,
+      images: model.hero ? [model.hero] : undefined,
     },
   };
 }
@@ -52,7 +52,6 @@ export async function generateStaticParams() {
 // unknown slugs render on first visit (dynamicParams default),
 // existing pages regenerate at most every 5 minutes
 export const revalidate = 300;
-
 export default async function ModelPage({
   params,
 }: {
@@ -66,6 +65,34 @@ export default async function ModelPage({
   if (!model) notFound();
 
   const dict = await getDictionary(locale);
+  const isAr = locale === "ar";
+  const PLACEHOLDER_URL = "https://hyundai-iq.example.com";
 
-  return <ModelDetailClient locale={locale} model={model} dict={dict.model} />;
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : PLACEHOLDER_URL);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `Hyundai ${isAr ? model.nameAr : model.nameEn}`,
+    description: isAr ? model.heroHeadlineAr : model.heroHeadlineEn,
+    image: model.hero ? [model.hero] : undefined, brand: { "@type": "Brand", name: "Hyundai" },
+    url: `${siteUrl}/${locale}/models/${slug}`,
+    // Paint options double as product variants
+    color: model.visualizer.colors
+      .map((c) => (isAr ? c.nameAr : c.nameEn))
+      .filter(Boolean),
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ModelDetailClient locale={locale} model={model} dict={dict.model} />
+    </>
+  );
 }

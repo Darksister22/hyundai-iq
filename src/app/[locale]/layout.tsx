@@ -11,10 +11,14 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-// ISR: the layout (and its Supabase fetch) is re-rendered at most every
-// 5 minutes, so CMS edits appear on the site without a redeploy.
 export const revalidate = 300;
+const PLACEHOLDER_URL = "https://hyundai-iq.example.com";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : PLACEHOLDER_URL);
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -25,7 +29,7 @@ Promise<Metadata> {
   const {locale} = await params;
   const isAr = locale ==="ar";
   return{
-    metadataBase:new URL("https://test.app"),
+    metadataBase:new URL(siteUrl),
     title: {
       default:isAr ? "هيونداي العراق" : "Hyundai Iraq",
       template: isAr? "%s | هيونداي العراق" : "Hyundai Iraq",
