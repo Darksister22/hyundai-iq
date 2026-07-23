@@ -25,7 +25,7 @@ Promise<Metadata> {
   const {locale} = await params;
   const isAr = locale ==="ar";
   return{
-    metadataBase:new URL("https://hyundai-iq.vercel.app"),
+    metadataBase:new URL("https://test.app"),
     title: {
       default:isAr ? "هيونداي العراق" : "Hyundai Iraq",
       template: isAr? "%s | هيونداي العراق" : "Hyundai Iraq",
