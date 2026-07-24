@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getDictionary, Locale } from "@/lib/i18n";
 import ContactForm from "@/components/contact-form";
-import BranchContactCard, { type Branch } from "@/components/branch-contact-card";
+import BranchContactCard from "@/components/branch-contact-card";
+import { getBranchContacts } from "@/lib/info";
 import Image from "next/image";
 
 export default async function ContactPage({
@@ -13,12 +14,9 @@ export default async function ContactPage({
   const locale = rawLocale as Locale;
   const dict = await getDictionary(locale);
   const t = dict.contact;
-  const BRANCHES: Branch[] = [
-  { cityEn: "Baghdad", cityAr: "بغداد", sales: "000000", service: "000000", parts: "00000000" },
-  { cityEn: "Najaf",   cityAr: "النجف", sales: "000000", service: "000000", parts: "00000000" },
-  { cityEn: "Basra",   cityAr: "البصرة", sales: "000000", service: "000000", parts: "00000000" },
-  { cityEn: "Erbil",   cityAr: "اربيل", sales: "000000", service: "000000", parts: "00000000" },
-];
+
+  // Per-city cards managed in the dashboard (Information → Contact us).
+  const branches = await getBranchContacts();
 
   return (
     <>
@@ -65,12 +63,14 @@ export default async function ContactPage({
                   : "Reach us on our customer service line, or contact the relevant team directly:"}
               </p>
 
-              {/* branch cards */}
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {BRANCHES.map((b) => (
-                  <BranchContactCard key={b.cityEn} locale={locale} branch={b} />
-                ))}
-              </div>
+              {/* branch cards — from the dashboard; hidden until cities are added */}
+              {branches.length > 0 ? (
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {branches.map((b) => (
+                    <BranchContactCard key={b.id} locale={locale} branch={b} />
+                  ))}
+                </div>
+              ) : null}
             </aside>
           </div>
         </div>
@@ -78,3 +78,4 @@ export default async function ContactPage({
     </>
   );
 }
+
