@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/reveal";
 import ParallaxImage from "@/components/parallax-image";
 
-interface Milestone { year: string; events: string[]; }
+interface Milestone { year: string; events: string[];image?:string; }
 interface AboutTabsDict { philosophyTab: string; historyTab: string; historyIntro: string; }
 
 // era buckets (right-hand nav)
@@ -27,6 +27,37 @@ export default function AboutTabs({
   const [activeEra, setActiveEra] = useState(ERAS[0].label);
   const yearRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  useEffect(() => {
+    if (tab !== "history") return;
+
+    const pick = () => {
+      const mid = window.innerHeight / 2;
+      let best: string | null = null;
+      let bestDist = Infinity;
+
+      Object.entries(yearRefs.current).forEach(([year, el]) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height / 2 - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = year;
+        }
+      });
+
+      if (best) setActiveEra(eraOf(best));
+    };
+
+    const raf = requestAnimationFrame(pick); // set correct era on mount
+    window.addEventListener("scroll", pick, { passive: true });
+    window.addEventListener("resize", pick);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", pick);
+      window.removeEventListener("resize", pick);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
   // which era does a given year fall into
   const eraOf = (year: string) => {
     const y = Number(year);
@@ -80,71 +111,72 @@ export default function AboutTabs({
 
       {tab === "philosophy" && philosophy}
 
-{tab === "history" && (
-  <section className="py-16">
-    <div className="max-w-7xl mx-auto px-6">
-      <Reveal>
-        <p className="text-gray-600 leading-relaxed mb-12 text-lg max-w-3xl">{dict.historyIntro}</p>
-      </Reveal>
+      {tab === "history" && (
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <Reveal>
+              <p className="text-gray-600 leading-relaxed mb-12 text-lg max-w-3xl">{dict.historyIntro}</p>
+            </Reveal>
 
-      {/* content on the left, sticky era-nav on the right */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_180px] gap-8 lg:gap-12">
-        {/* LEFT: year sections */}
-        <div className="order-2 lg:order-1">
-          {milestones.map((m) => (
-            <div
-              key={m.year}
-              data-year={m.year}
-              ref={(el) => { yearRefs.current[m.year] = el; }}
-              className="scroll-mt-28 pb-24"
-            >
-              {/* row: image left, sticky big year right */}
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-start mb-8">
-                <ParallaxImage label={`image ${m.year}`} className="w-full h-64 md:h-[360px] rounded-lg" />
-                {/* sticky year — pins while this section scrolls, pushed by next year */}
-                <div className="hidden md:block sticky top-28 self-start">
-                  <span className="text-5xl md:text-7xl font-bold text-[#111]">{m.year}</span>
+            {/* era nav | divider | milestones */}
+            <div className="grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-8 lg:gap-0">
+              {/* era nav — sticky for the whole section */}
+              <aside className="order-1">
+                <div className="sticky top-28 flex lg:flex-col gap-4 lg:gap-3 overflow-x-auto lg:overflow-visible">
+                  {ERAS.map((e) => (
+                    <button
+                      key={e.label}
+                      onClick={() => goToEra(e.label)}
+                      dir="ltr"
+                      className={`whitespace-nowrap transition-all text-start ${activeEra === e.label
+                          ? "text-[#002C5F] font-bold text-lg"
+                          : "text-gray-400 hover:text-gray-600 text-sm"
+                        }`}
+                    >
+                      {e.label}
+                    </button>
+                  ))}
                 </div>
-              </div>
+              </aside>
 
-              {/* mobile year (inline, since the sticky one is desktop-only) */}
-              <span className="md:hidden block text-5xl font-bold text-[#111] mb-6">{m.year}</span>
+              {/* milestones — vertical rule runs the full height alongside them */}
+              <div className="order-2 lg:border-s-2 lg:border-[#002C5F]/20 lg:ps-12">
+                {milestones.map((m) => (
+                  <div
+                    key={m.year}
+                    data-year={m.year}
+                    ref={(el) => { yearRefs.current[m.year] = el; }}
+                    // grid so the year column spans image + bullets, giving `sticky`
+                    // a tall enough track to pin against for the whole year block
+                    className="scroll-mt-28 pb-24 grid grid-cols-1 md:grid-cols-[7rem_1fr] lg:grid-cols-[10rem_1fr] gap-6 md:gap-12 lg:gap-16 items-start"
+                  >
+                    {/* pinned year — stays put until the next year pushes it out */}
+                    <div className="md:sticky md:top-28 self-start">
+                      <span dir="ltr" className="block text-5xl lg:text-6xl font-bold text-[#111]">
+                        {m.year}
+                      </span>
+                    </div>
 
-              {/* events — full width below, RTL bullets on the correct side */}
-              <ul className="space-y-4 text-gray-700 leading-relaxed">
-                {m.events.map((e, i) => (
-                  <li key={i} className="flex gap-2">
-                    <span className="text-[#00AAD2] mt-2 text-xs">■</span>
-                    <span>{e}</span>
-                  </li>
+                    {/* image + events stacked in the content column */}
+                    <div>
+                      <ParallaxImage label={`image ${m.year}`} className="w-full h-64 md:h-[360px] rounded-lg mb-8" src={m.image ?? ""}/>
+
+                      <ul className="space-y-4 text-gray-700 leading-relaxed">
+                        {m.events.map((e, i) => (
+                          <li key={i} className="flex gap-3">
+                            <span className="text-[#00AAD2] mt-2 text-xs shrink-0">■</span>
+                            <span>{e}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
-          ))}
-        </div>
-
-        {/* RIGHT: sticky era nav */}
-        <aside className="order-1 lg:order-2">
-          <div className="sticky top-28 flex lg:flex-col gap-4 lg:gap-5 overflow-x-auto lg:overflow-visible border-s-2 border-gray-200 ps-6">
-            {ERAS.map((e) => (
-              <button
-                key={e.label}
-                onClick={() => goToEra(e.label)}
-                className={`whitespace-nowrap transition-all text-start ${
-                  activeEra === e.label
-                    ? "text-[#002C5F] font-bold text-lg"
-                    : "text-gray-400 hover:text-gray-600 text-sm"
-                }`}
-              >
-                {e.label}
-              </button>
-            ))}
           </div>
-        </aside>
-      </div>
-    </div>
-  </section>
-)}
+        </section>
+      )}
     </>
   );
 }

@@ -3,9 +3,9 @@
     "findACar": "Find a Car",
     "aboutUs": "About Us",
     "findUs": "Find Us",
-    "aftersalesOffers": "Sales Offers",
+    "aftersalesOffers": "Aftersales Offers",
     "contactUs": "Contact Us",
-    "offers": "Offers",
+    "offers": "Sales Offers",
     "requestCallback": "Request a Callback",
     "langSwitch": "العربية",
     "langCode": "ar",
@@ -155,89 +155,702 @@
     "milestones": [
       {
         "year": "2023",
+        "image": "/images/years/2023.webp",
         "events": [
           "Launched the All-New KONA, featuring various powertrain models including EV, HEV, and ICE",
-          "HMG initiated the development of a lunar exploration rover model",
-          "Brand value reached USD 20.4 billion",
+          "HMG developed a new automatic charging robot for electric vehicles",
           "Introduced the 8th generation midsize sedan, the New SONATA",
+          "Extended the partnership with World Archery until the year 2025",
+          "HMG initiated the development of a lunar exploration rover model",
+          "HMG and SK On US established a joint venture for the production of electric vehicle battery cells",
+          "Unveiled the commercial model for Xcient fuel cell tractors and the hydrogen mobility vision in the U.S.",
+          "Unveiled the Hyundai PONY Coupe Concept (restored after 50 years) and the N Vision 74",
           "Extended FIFA partnership to 2030",
+          "HMG and LG Energy Solution established a battery cell manufacturing joint venture in the U.S.",
           "Announced Hyundai Motorway, a mid-to-long-term business financial plan, at the 2023 CEO Investor Day",
+          "Sponsored the FIFA Women’s World Cup Australia & New Zealand 2023™ as official mobility partners",
           "Introduced the IONIQ 5 N at the Goodwood Festival",
+          "HMG and Seoul National University established a joint battery research center",
+          "Introduced the new blockchain-based Supplier CO2 Emission Monitoring System (SCEMS)",
+          "HMG acquired shares of Tenstorent, an AI semiconductor company for future mobility development",
           "Signed an asset purchase agreement for the acquisition of identified assets of GM India Talegaon Plant",
+          "HMG proposed an optimal mobility solution based on traffic demand prediction in Singapore’s Jurong Innovation District",
+          "Celebrated the 8th anniversary of the high-performance N brand and the global launch of the New ELANTRA N",
+          "HMG, SG Enable, and SAVH launched an end-to-end mobility solution for the visually impaired in Singapore",
+          "HMG and Georgia Tech signed an MoU for future mobility collaboration",
+          "Unveiled a new hydrogen city bus at the Busworld trade show in Brussels with Iveco Group",
           "Strengthened power semiconductor supply through strategic partnership with Infineon",
+          "HMG and SOAS University of London founded new research centers for developing countries, focusing on Africa",
+          "Signed a joint venture agreement with PIF to establish a new automobile manufacturing plant in Saudi Arabia",
+          "Signed an MOU with KATECH, APQ, and SAPTCO to foster the Saudi hydrogen mobility ecosystem",
+          "Promoted the creation of a mangrove forest in Vietnam’s Mekong Delta with IUCN",
           "Supported 148 vehicles for the FIFA U-17 World Cup Indonesia 2023™",
           "Constructed brand heritage and an advanced electrification vision through the construction of a new EV-dedicated plant in Ulsan",
-          "Reached a brand value evaluation of $20.4 billion in Interbrand’s Best Global Brands 2023."
-        ]
-      },
-      {
-        "year": "2021",
-        "events": [
-          "Launched IONIQ 5, the first model on the E-GMP platform",
-          "Unveiled the STARIA multi-purpose vehicle",
-          "Committed to carbon neutrality by 2045"
+          "Reached a brand value evaluation of $20.4 billion in Interbrand’s Best Global Brands 2023.",
+          "Opened the HMG Innovation Center Singapore (HMGICS) for future mobility production, R&D, and customer experience",
+          "Signed an MOU with Potiongchun Logistics for the development of Singapore’s hydrogen ecosystem"
         ]
       },
       {
         "year": "2022",
+        "image": "/images/years/2022.webp",
         "events": [
-          "Participated in CES 2022, under the theme ‘Expanding Human Reach’ ",
+          "Participated in CES 2022, under the theme ‘Expanding Human Reach’",
           "Partnered with Unity to build Meta-Factory",
           "Partnered with IonQ to use quantum computing to advance effectiveness of next-gen batteries",
           "Expanded collaboration with Shell drive transition to clean mobility and carbon reduction",
-          "Signed an MOU with the Iveco Group"
+          "Signed an MOU with the Iveco Group",
+          "Inaugurated its first manufacturing plant in Southeast Asia",
+          "HMG collaborated with Aramco and KAUST on new e-fuel development to support clean mobility",
+          "Unveiled the New PALISADE at New York International Auto Show",
+          "Issued the first community-based NFT",
+          "Launched a new global sustainability campaign for FIFA World Cup 2022™ under the banner ‘Goal of the Century’",
+          "Supported Global Art Patronage in partnership with Korean Pavilion of the 59th La Biennale di Venezia",
+          "HMG's affiliates joined RE100, aiming to expand renewables usage",
+          "HMG started a pilot of an autonomous car-hailing RoboRide service in Seoul, Gangnam",
+          "Opened Hyundai Motorstudio Senayan Park in Indonesia",
+          "HMG and Michelin join hands to develop next-gen tires for premium Evs",
+          "Signed an MOU to establish hydrogen mobility ecosystem in Czech Republic",
+          "Unveiled the IONIQ 6, the electrified streamliner with extended range and innovative personal space",
+          "Unveiled RN22e and N Vision 74, the two rolling lab concepts from N Brand",
+          "HMG signed and MOU with Rolls-Royce to lead the way in the Advanced Air Mobility (AAM) market",
+          "HMG's Supernal unveiled eVTOL vehicle cabin concept at 2022 Farnborough International Airshow",
+          "HMG and Safran signed an MOU for AAM development cooperation",
+          "HMG launched Boston Dynamics AI Institute",
+          "HMG and KT corporation expanded strategic partnership for the future",
+          "Provided eco-friendly vehicles during FIFA World Cup 2022™ to support sustainability",
+          "HMG supported G20 Summit with fleet of Genesis electrified G80 and IONIQ 5 EVs",
+          "HMG started construction of metaplant America dedicated EV and battery plant",
+          "Signed an MOU with PT Adaro Minerals Indonesia, Tbk.",
+          "Launched the All-New GRANDEUR flagship sedan",
+          "HMG signed an MOU with Nusantara Capital City authority to establish ecosystem for AAM",
+          "HMG signed an MOU with SK On to secure EV battery supply for North America"
+        ]
+      },
+      {
+        "year": "2021",
+        "image": "/images/years/2021.webp",
+        "events": [
+          "Launched the IONIQ 5, the first Battery Electric Vehicle (BEV) model",
+          "Started the construction of the first overseas fuel-cell system plant in Guangzhou",
+          "Unveiled the All-new KONA N",
+          "Unveiled STARIA, a new MPV with premium and futuristic design",
+          "Announced a new partnership with Shell to expand collaborations on clean energy solutions",
+          "Signed an MOU with Singtel",
+          "Opened Hyundai Motorstudio Busan",
+          "Strengthened partnership with Grab to accelerate EV adoption in Southeast Asia",
+          "Elec City, Hyundai Motor's first fuel-cell bus began its trial service in Munich",
+          "XCIENT fuel-cell trucks exceeded 1 million kilometers of driving in 11 months in Switzerland",
+          "Started a research collaboration with Rhode Island School of Design (RISD)",
+          "Signed an MOU with Next Hydrogen to develop Advanced Alkaline Water Electrolysis System",
+          "Started an autonomous, demand-responsive shuttle service in South Korea",
+          "Unveiled the ELANTRA N",
+          "Signed an MOU with the Indonesian government with LG Energy Solution, to establish an EV battery cell plant",
+          "Hyundai Motor Manufacturing Alabama (HMMA) built its 5 millionth vehicle",
+          "Unveiled the IONIQ 5 Robotaxi",
+          "Vitalized future mobility in Roblox, Hyundai Motor's metaverse space",
+          "Announced our commitment to carbon neutrality by 2045 at IAA Mobility 2021",
+          "Announced the launch of an E-mobility pilot program in Singapore with our partners SP Group and Komoco Motor"
         ]
       },
       {
         "year": "2020",
+        "image": "/images/years/2020.webp",
         "events": [
-          "Launched the IONIQ brand dedicated to electric vehicles",
-          "Established Motional, an autonomous driving joint venture"
+          "Unveiling of SONATA Plug-in Hybrid",
+          "Established Hyundai Motorstudio Moscow",
+          "Participation of i20 in the WRC, achieving 2nd place in the Rally Sweden",
+          "Launch of SONATA Turbo",
+          "Launch of All-new TUCSON",
+          "Launch of mid-duty truck, All-new Mighty",
+          "Demonstration of zero emission fuel cell electric bus",
+          "Cumulative production by Hyundai Motor India surpasses 6 million units",
+          "Launch of All-new ELANTRA",
+          "Unveiling of High-Performance ‘N’ at Frankfurt Motor Show",
+          "Cumulative sales in the U.S. surpass 10 million units",
+          "Cumulative production in Russia surpasses 1 million units",
+          "Launch of global luxury brand ‘GENESIS’",
+          "Hyundai SONATA Plug-in Hybrid named to Wards 10 Best Engines",
+          "Launch of GENESIS G90"
+        ]
+      },
+      {
+        "year": "2019",
+        "image": "/images/years/2019.webp",
+        "events": [
+          "All-new GENESIS wins the 2014 iF Design Award",
+          "All-new GENESIS and i10 win the Red Dot Design Award",
+          "Unveiling of HED-9 Intrado at the Geneva International Motor Show",
+          "Launch of the All-new SONATA",
+          "All-new GENESIS wins the highest safety score in NHTSA history",
+          "Established Hyundai Motorstudio Seoul",
+          "Official sponsor of the 2014 FIFA World Cup Brazil",
+          "Cumulative production by HAOS surpasses 1 million units",
+          "Participation of i20 in the WRC, achieving 1st place in Rally Deutschland",
+          "Unveiling of new i20 for Europe",
+          "Official sponsor of the 2014 Incheon Asian Games",
+          "Selected as one of the top 40 Global Brands",
+          "Cumulative global sales of AVANTE (ELANTRA) surpass 10 million units",
+          "GENESIS ranked highest in the Residual Value Awards in the U.S.",
+          "i20 awarded ‘Indian Car of the Year’",
+          "Launch of new SONATA Hybrid",
+          "Tucson (ix35) Fuel Cell engine named ‘10 Best Engines Winners’ by Ward’s Auto"
+        ]
+      },
+      {
+        "year": "2018",
+        "image": "/images/years/2018.webp",
+        "events": [
+          "World Rally Championship (WRC) Team launched",
+          "Launch of GRANDEUR Hybrid",
+          "No.2 in Autobild’s (Germany) 2013 Quality Satisfaction Report",
+          "i10 awarded Indian Car of the Year 2014",
+          "Beijing Hyundai sales in China surpass 1 million units / year",
+          "Launch of All-new GENESIS",
+          "Ranked Most Valuable Car Brand in the U.S.",
+          "Launch of New i20 at the International Automobile Ausstellung",
+          "ix35 (TUCSON) fuel cell electric vehicles supplied to the City of Copenhagen",
+          "Hyundai’s Centennial named Best Luxury Full-Sized Car for 2 years in a row",
+          "GENESIS ranked No.1 in Vehicle Satisfaction Awards (Auto Pacific) - Aspirational Luxury Car in the U.S.",
+          "Launch of MISTRA at the 2013 Shanghai International Automobile Industry Exhibition",
+          "SONATA ranked Most Dependable Midsize Car in the U.S.",
+          "World’s 1st mass production of ix35 (TUCSON) fuel cell electric vehicles",
+          "SANTA FE selected as the 2013 Canadian Utility Vehicle of the Year",
+          "Unveiling of HCD-14, premium sports sedan concept car at the North American International Auto Show",
+          "Unveiling of HND-6, next generation smart car concept car at the CES",
+          "Named No.1 brand and No.1 car in 4 vehicle categories (EQUUS, GENESIS Coupe, etc.) in Strategic Vision’s Total Value Awards",
+          "Launch of MAXCRUZ",
+          "Cumulative sales in the U.S. surpass 8 million units",
+          "Launch of Hyundai Motorsport",
+          "Unveiling of electronically controlled AWD HTRAC",
+          "Cumulative production by Hyundai Motor India surpass 5 million units"
+        ]
+      },
+      {
+        "year": "2017",
+        "image": "/images/years/2017.webp",
+        "events": [
+          "AVANTE (ELANTRA) awarded ‘North American Car of the Year’",
+          "Launch of New SANTA FE, i40 Saloon, and VELOSTER Turbo",
+          "No.53 in Global Brand Value",
+          "Established the Brazil plant",
+          "TUCSON (ix35) Fuel Cell supplied to Europe",
+          "Unveiling of the IONIQ Electric concept car",
+          "GRANDEUR (AZERA), AVANTE (ELANTRA), SANTA FE awarded ‘the ALGR residual Value Award’",
+          "GRANDEUR (AZERA), SANTA FE, VELOSTER win a Good Design™ Award",
+          "Official sponsor of the UEFA Euro 2012 2013",
+          "World’s 1st mass production of TUCSON (ix35) Fuel Cell",
+          "Launch of MAXCRUZ",
+          "Cumulative sales in the U.S. surpass 8 million units",
+          "Launch of Hyundai Motorsport",
+          "Unveiling of new i10",
+          "Selected as one of top 50 Global Brands",
+          "Cumulative sales of SONATA in Korea surpass 3 million units",
+          "Unveiling of electronically controlled AWD HTRAC",
+          "Cumulative production by Hyundai Motor India surpass 5 million units",
+          "Launch of All-new GENESIS",
+          "World Rally Championship (WRC) Team launched",
+          "Beijing Hyundai annual sales in China surpass 1 million units",
+          "Unveiling of CUV HB20X",
+          "Executive Chair Mong-Koo Chung named 2011 Top Manager in the World by Italy's Inter Auto News",
+          "Named the most fuel efficient and least CO2 emitting brand by the U.S. Environmental Protection Agency",
+          "Sonata named Top Picks in the medium-size car segment by Consumer Reports",
+          "Solaris (ACCENT) awarded Best Auto and Car of the Year in Russia",
+          "GENESIS tops J.D. Power’s Vehicle Dependability Study (VDS) in the premium car segment in the U.S.",
+          "No.1 in J.D. Power’s Customer Retention Study"
+        ]
+      },
+      {
+        "year": "2016",
+        "image": "/images/years/2016.webp",
+        "events": [
+          "Blue Link introduced at the 2011 International Consumer Electronics Show (CES) in the U.S.",
+          "Launch of VELOSTER and the HCD-12 concept car at the North American International Auto Show",
+          "Cumulative sales by Hyundai Motor India surpass 3 million units",
+          "Unveiling of the new brand direction and slogan \"New Thinking. New Possibilities.\"",
+          "Launch of the 5th generation GRANDEUR (AZERA) and VELOSTER",
+          "Launch of SONATA Hybrid",
+          "First official car partner of the International Cricket Council (ICC) from 2011 to 2015",
+          "Launch of i40 wagon",
+          "ix20 awarded Euro NCAP's highest five-star rating",
+          "Unveiling of the D-segment i40 sedan at the Barcelona International Motor Show",
+          "Launch of GENESIS Prada limited edition",
+          "No.61 in Global Brand Value",
+          "Cumulative sales in Europe surpass 5 million units",
+          "No.11 in Interbrand’s 50 Best Global Green Brands",
+          "Launch of EON by the Indian subsidiary Hyundai Motor India",
+          "i40 awarded the EuroCarBody Golden Award",
+          "Cumulative exports to Central and South America surpass 2 million units",
+          "Unveiling of GENESIS Coupe",
+          "Top position in Autobild’s Quality Report for the 2nd consecutive year",
+          "Gamma engine named 10 Best Engines Winners by Ward's Auto"
+        ]
+      },
+      {
+        "year": "2015",
+        "image": "/images/years/2015.webp",
+        "events": [
+          "Unveiling of SONATA Plug-in Hybrid",
+          "Established Hyundai Motorstudio Moscow",
+          "Participation of i20 in the WRC, achieving 2nd place in the Rally Sweden",
+          "Launch of SONATA Turbo",
+          "Launch of All-new TUCSON",
+          "Launch of mid-duty truck, All-new Mighty",
+          "Demonstration of zero emission fuel cell electric bus",
+          "Cumulative production by Hyundai Motor India surpasses 6 million units",
+          "Launch of All-new ELANTRA",
+          "Unveiling of High-Performance ‘N’ at Frankfurt Motor Show",
+          "Cumulative sales in the U.S. surpass 10 million units",
+          "Cumulative production in Russia surpasses 1 million units",
+          "Launch of global luxury brand ‘GENESIS’",
+          "Hyundai SONATA Plug-in Hybrid named to Wards 10 Best Engines",
+          "Launch of GENESIS G90"
+        ]
+      },
+      {
+        "year": "2014",
+        "image": "/images/years/2014.webp",
+        "events": [
+          "All-new GENESIS wins the 2014 iF Design Award",
+          "All-new GENESIS and i10 win the Red Dot Design Award",
+          "Unveiling of HED-9 Intrado at the Geneva International Motor Show",
+          "Launch of the All-new SONATA",
+          "All-new GENESIS wins the highest safety score in NHTSA history",
+          "Established Hyundai Motorstudio Seoul",
+          "Official sponsor of the 2014 FIFA World Cup Brazil",
+          "Cumulative production by HAOS surpasses 1 million units",
+          "Participation of i20 in the WRC, achieving 1st place in Rally Deutschland",
+          "Unveiling of new i20 for Europe",
+          "Official sponsor of the 2014 Incheon Asian Games",
+          "Selected as one of the top 40 Global Brands",
+          "Cumulative global sales of AVANTE (ELANTRA) surpass 10 million units",
+          "GENESIS ranked highest in the Residual Value Awards in the U.S.",
+          "i20 awarded ‘Indian Car of the Year’",
+          "Launch of new SONATA Hybrid",
+          "Tucson (ix35) Fuel Cell engine named ‘10 Best Engines Winners’ by Ward’s Auto"
         ]
       },
       {
         "year": "2013",
+        "image": "/images/years/2013.webp",
         "events": [
-          "Cumulative global sales surpassed 60 million vehicles",
-          "Expanded the premium lineup"
+          "World Rally Championship (WRC) Team launched",
+          "Launch of GRANDEUR Hybrid",
+          "No.2 in Autobild’s (Germany) 2013 Quality Satisfaction Report",
+          "i10 awarded Indian Car of the Year 2014",
+          "Beijing Hyundai sales in China surpass 1 million units / year",
+          "Launch of All-new GENESIS",
+          "Ranked Most Valuable Car Brand in the U.S.",
+          "Launch of New i20 at the International Automobile Ausstellung",
+          "ix35 (TUCSON) fuel cell electric vehicles supplied to the City of Copenhagen",
+          "Hyundai’s Centennial named Best Luxury Full-Sized Car for 2 years in a row",
+          "GENESIS ranked No.1 in Vehicle Satisfaction Awards (Auto Pacific) - Aspirational Luxury Car in the U.S.",
+          "Launch of MISTRA at the 2013 Shanghai International Automobile Industry Exhibition",
+          "SONATA ranked Most Dependable Midsize Car in the U.S.",
+          "World’s 1st mass production of ix35 (TUCSON) fuel cell electric vehicles",
+          "SANTA FE selected as the 2013 Canadian Utility Vehicle of the Year",
+          "Unveiling of HCD-14, premium sports sedan concept car at the North American International Auto Show",
+          "Unveiling of HND-6, next generation smart car concept car at the CES",
+          "Named No.1 brand and No.1 car in 4 vehicle categories (EQUUS, GENESIS Coupe, etc.) in Strategic Vision’s Total Value Awards",
+          "Launch of MAXCRUZ",
+          "Cumulative sales in the U.S. surpass 8 million units",
+          "Launch of Hyundai Motorsport",
+          "Unveiling of electronically controlled AWD HTRAC",
+          "Cumulative production by Hyundai Motor India surpass 5 million units"
+        ]
+      },
+      {
+        "year": "2012",
+        "image": "/images/years/2012.webp",
+        "events": [
+          "AVANTE (ELANTRA) awarded ‘North American Car of the Year’",
+          "Launch of New SANTA FE, i40 Saloon, and VELOSTER Turbo",
+          "No.53 in Global Brand Value",
+          "Established the Brazil plant",
+          "TUCSON (ix35) Fuel Cell supplied to Europe",
+          "Unveiling of the IONIQ Electric concept car",
+          "GRANDEUR (AZERA), AVANTE (ELANTRA), SANTA FE awarded ‘the ALGR residual Value Award’",
+          "GRANDEUR (AZERA), SANTA FE, VELOSTER win a Good Design™ Award",
+          "Official sponsor of the UEFA Euro 2012 2013",
+          "World’s 1st mass production of TUCSON (ix35) Fuel Cell",
+          "Launch of MAXCRUZ",
+          "Cumulative sales in the U.S. surpass 8 million units",
+          "Launch of Hyundai Motorsport",
+          "Unveiling of new i10",
+          "Selected as one of top 50 Global Brands",
+          "Cumulative sales of SONATA in Korea surpass 3 million units",
+          "Unveiling of electronically controlled AWD HTRAC",
+          "Cumulative production by Hyundai Motor India surpass 5 million units",
+          "Launch of All-new GENESIS",
+          "World Rally Championship (WRC) Team launched",
+          "Beijing Hyundai annual sales in China surpass 1 million units",
+          "Unveiling of CUV HB20X",
+          "Executive Chair Mong-Koo Chung named 2011 Top Manager in the World by Italy's Inter Auto News",
+          "Named the most fuel efficient and least CO2 emitting brand by the U.S. Environmental Protection Agency",
+          "Sonata named Top Picks in the medium-size car segment by Consumer Reports",
+          "Solaris (ACCENT) awarded Best Auto and Car of the Year in Russia",
+          "GENESIS tops J.D. Power’s Vehicle Dependability Study (VDS) in the premium car segment in the U.S.",
+          "No.1 in J.D. Power’s Customer Retention Study"
+        ]
+      },
+      {
+        "year": "2011",
+        "image": "/images/years/2011.webp",
+        "events": [
+          "Blue Link introduced at the 2011 International Consumer Electronics Show (CES) in the U.S.",
+          "Launch of VELOSTER and the HCD-12 concept car at the North American International Auto Show",
+          "Cumulative sales by Hyundai Motor India surpass 3 million units",
+          "Unveiling of the new brand direction and slogan \"New Thinking. New Possibilities.\"",
+          "Launch of the 5th generation GRANDEUR (AZERA) and VELOSTER",
+          "Launch of SONATA Hybrid",
+          "First official car partner of the International Cricket Council (ICC) from 2011 to 2015",
+          "Launch of i40 wagon",
+          "ix20 awarded Euro NCAP's highest five-star rating",
+          "Unveiling of the D-segment i40 sedan at the Barcelona International Motor Show",
+          "Launch of GENESIS Prada limited edition",
+          "No.61 in Global Brand Value",
+          "Cumulative sales in Europe surpass 5 million units",
+          "No.11 in Interbrand’s 50 Best Global Green Brands",
+          "Launch of EON by the Indian subsidiary Hyundai Motor India",
+          "i40 awarded the EuroCarBody Golden Award",
+          "Cumulative exports to Central and South America surpass 2 million units",
+          "Unveiling of GENESIS Coupe",
+          "Top position in Autobild’s Quality Report for the 2nd consecutive year",
+          "Gamma engine named 10 Best Engines Winners by Ward's Auto"
         ]
       },
       {
         "year": "2010",
+        "image": "/images/years/2010.webp",
         "events": [
-          "Introduced the 'Fluidic Sculpture' design language",
-          "Ranked among the world's top automakers by volume"
+          "Unveiling of the HED-VII hybrid concept car at the Geneva International Motor Show",
+          "Ranked No.1 in J.D. Power’s Vehicle Dependability Study (VDS) for 3 consecutive years and Initial Quality Study (IQS) for sub-compact cars",
+          "Launch of SONATA Hybrid at the New York International Auto Show",
+          "GENESIS and TUCSON named No.1 in AutoPacific’s Vehicle Satisfaction Awards",
+          "SONATA awarded the highest safety ratings by the National Highway Traffic Safety Agency in the U.S.",
+          "Cumulative sales of SONATA surpass 5 million units",
+          "Official sponsor of the 2010 FIFA World Cup South Africa",
+          "Executive Chair Mong-Koo Chung selected as the Top Automotive Industry CEO in Asia",
+          "Launch of the eco-friendly electric car BlueOn",
+          "Cumulative sales by Hyundai Motor India surpass 3 million units",
+          "Established the Russia plant",
+          "Launch of ix20 small minivan at the Paris Motor Show",
+          "Unveiling of the independently-developed Nu·Tau GDi engines and RWD 8-speed automatic transmission",
+          "Official car sponsor of the G20 Summit",
+          "Tau engine named as '10 Best Engines Winners' by Ward’s Auto for a 3rd consecutive year",
+          "Annual sales in the U.S. surpass 500,000 units",
+          "Developed TUCSON fuel-cell electric vehicle"
+        ]
+      },
+      {
+        "year": "2009",
+        "image": "/images/years/2009.webp",
+        "events": [
+          "GENESIS named as ‘North American Car of the Year’",
+          "Became the main sponsor of the U.S. Super Bowl",
+          "Cumulative exports to Africa surpass 1 million units",
+          "Ranked No.69 in Global Brand Value",
+          "Established the Czech plant",
+          "Established Hyundai Motor India Engineering Pvt. Ltd.",
+          "Developed next-generation high performance Theta GDi",
+          "Sales of SANTA FE surpass 2 million units",
+          "Cumulative sales of SONATA surpass 5 million units",
+          "Cumulative sales by Hyundai Motor India surpass 3 million units",
+          "Established the Russia plant",
+          "Unveiling of the independently-developed Nu·Tau GDi engines and RWD 8-speed automatic transmission",
+          "Annual sales in the U.S. surpass 500,000 units",
+          "Unveiling of the new brand direction and slogan ‘New Thinking. New Possibilities.’",
+          "Launch of the 5th generation GRANDEUR (AZERA) and VELOSTER",
+          "Launch of SONATA Hybrid",
+          "Launch of i40 wagon",
+          "Cumulative exports to Central and South America surpass 2 million units",
+          "Gamma engine named ‘10 Best Engines Winners’ by Ward’s Auto",
+          "Unveiling of i20 3-door and the ix-onic concept car at the Geneva International Motor Show",
+          "Best automotive company in China’s warranty service satisfaction survey",
+          "Hyundai ranks No.1 of J.D. Power's Initial Quality Study (IQS)",
+          "ELANTRA (AVANTE) named No.1compact car in J.D. Power’s Vehicle Launch Index",
+          "GENESIS ranked No.1 in J.D. Power’s Vehicle Launch Index",
+          "Unveiling of ix-Metro and ix35 at the International Automobile Ausstellung",
+          "Presidential Prize at the 2009 Korean Technology Awards"
+        ]
+      },
+      {
+        "year": "2008",
+        "image": "/images/years/2008.webp",
+        "events": [
+          "Launch of GENESIS",
+          "Established the 2nd plant in India",
+          "Beijing Hyundai hits 1 million vehicles production milestone",
+          "Established 2nd plant in Beijing",
+          "Sales of AVANTE (ELANTRA) surpass 5 million units",
+          "Launch of European strategic model i20",
+          "Developed next-generation clean diesel R-engine",
+          "Launched Blue Drive brand for green models",
+          "Tau engine named ‘10 Best Engines Winners’ by Ward’s Auto",
+          "Developed front-wheel 6-speed automatic transmission",
+          "Unveiling of the eco-friendly concept car i-Mode at the Geneva International Motor Show",
+          "Official sponsor of UEFA Euro 2008"
+        ]
+      },
+      {
+        "year": "2007",
+        "image": "/images/years/2008.webp",
+        "events": [
+          "Launch of European strategic model i30",
+          "Cumulative sales in the U.S. surpass 5 million units",
+          "Unveiling of the 3rd generation fuel-cell concept car i-Blue",
+          "Developed F, G, H diesel engines for commercial vehicle",
+          "Launch of the next-generation compact car i10 by Hyundai Motor India",
+          "VERNA awarded Best Car of the Year by India’s Overdrive magazine",
+          "Unveiling of the HED-IV (QarmaQ) concept car at the Geneva International Motor Show",
+          "Unveiling of the HND-III (VELOSTER) concept car at the Seoul Motor Show",
+          "AZERA (GRANDEUR) ranks No.1 in J.D. Power’s Customer Satisfaction Survey for a 2nd consecutive year",
+          "Inauguration of the Brazilian CKD plant",
+          "i30 selected as Australia’s Car of the Year and Green Car of the Year"
+        ]
+      },
+      {
+        "year": "2006",
+        "image": "/images/years/2006.webp",
+        "events": [
+          "Developed Gamma engine",
+          "No.1 Non-Premium Nameplate in J.D. Power’s IQS",
+          "Launch of new AVANTE (ELANTRA)",
+          "Exports to South America surpass 1 million units",
+          "Developed V6 diesel S engine",
+          "Established new Hyundai Motor Europe building",
+          "Annual sales surpass KRW 1 trillion",
+          "Total production reaches No. 6 in the world",
+          "Unveiling of the Hellion, Arnejs, Genus, and Talus concept cars",
+          "Selected as Interbrand’s 100 Best Global Brands for a 2nd consecutive year",
+          "Official sponsor of the 2006 FIFA World Cup Germany"
+        ]
+      },
+      {
+        "year": "2005",
+        "image": "/images/years/2006.webp",
+        "events": [
+          "Developed Korea’s first passenger diesel engine and large commercial engine",
+          "The debut of the four mid and large-sized Bus models",
+          "Korea’s first fuel cell electric vehicle SANTA FE developed",
+          "Official sponsor of the UEFA Euro 2000"
         ]
       },
       {
         "year": "2004",
+        "image": "/images/years/2006.webp",
         "events": [
-          "Recognized for major gains in vehicle quality rankings"
+          "Launch of Hyundai Motor’s first compact SUV, TUCSON (ix35)",
+          "Production of Delta engine surpasses 1 million units",
+          "SONATA placed first in J.D. Power’s IQS",
+          "Cumulative exports surpass 10 million units",
+          "Developed Theta engine and Lambda engine",
+          "Official sponsor of the UEFA Euro 2004",
+          "Joint venture plant for commercial vehicles in China established",
+          "Executive Chair Mong-Koo Chung named as the Best CEO of 2004 by Business Week"
+        ]
+      },
+      {
+        "year": "2003",
+        "image": "/images/years/2006.webp",
+        "events": [
+          "Established the California Design & Technical Center",
+          "Production of AVANTE (ELANTRA) surpasses 2 million units",
+          "Proclaimed Global Environmental Management",
+          "Established the Europe Technical Center",
+          "Established the Namyang Design Center",
+          "Annual exports surpass 1 million units",
+          "The world’s first ultra high-pressure hydrogen storage system for fuel cell electric vehicles developed"
+        ]
+      },
+      {
+        "year": "2002",
+        "image": "/images/years/2006.webp",
+        "events": [
+          "Cumulative production at Asan plant surpasses 1 million units",
+          "Production of Sonata begins in China",
+          "Launch of Chinese-made ELANTRA",
+          "Sonata receives J.D. Power's APEAL Award",
+          "Inauguration of the California Design & Technical Center",
+          "Official sponsor of the 2002 FIFA World Cup Korea /Japan",
+          "Unveiling of the HCD - 7 concept car at the Chicago Auto Show"
+        ]
+      },
+      {
+        "year": "2001",
+        "image": "/images/years/2006.webp",
+        "events": [
+          "Production of Beta engine surpasses 1 million units",
+          "Unveiling of Korea’s first fuel cell electric vehicle SANTA FE",
+          "Established Hyundai European Design Center",
+          "Launch of TUSCANI (Hyundai's sports coupe), TERRACAN, and LAVITA",
+          "Santa Fe ranked No.1 in the U.S. customer satisfaction survey",
+          "HMA receives J.D. Power’s Chairman's Award",
+          "Unveiling of the HCD - VI concept car at the Chicago Auto Show"
+        ]
+      },
+      {
+        "year": "2000",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Developed Korea’s first passenger diesel engine and large commercial engine",
+          "The debut of the four mid and large-sized Bus models",
+          "Korea’s first fuel cell electric vehicle SANTA FE developed",
+          "Official sponsor of the UEFA Euro 2000"
+        ]
+      },
+      {
+        "year": "1999",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Launch of EQUUS (CENTENNIAL: Hyundai Motor’s ultra large-sized sedan), VERNA, and TRAJET XG",
+          "Developed Korea’s first automotive fuel cell battery"
         ]
       },
       {
         "year": "1998",
+        "image": "/images/years/2000.webp",
         "events": [
-          "Introduced the industry-leading 10-year / 100,000-mile warranty in the US"
+          "Independently developed world-class, high-performance V6 Delta engine",
+          "Launch of GRANDEUR (AZERA) and SONATA",
+          "Established India plant",
+          "2nd solar-powered vehicle developed",
+          "Acquisition of Kia Motors"
+        ]
+      },
+      {
+        "year": "1997",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Independently developed Epsilon engine",
+          "Established the Turkey plant and Asan plant"
+        ]
+      },
+      {
+        "year": "1996",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Cumulative production surpasses 10 million units",
+          "Inauguration of the Namyang Technology Research Center",
+          "Launch of DYNASTY and TIBURON"
+        ]
+      },
+      {
+        "year": "1995",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Launch of AVANTE (ELANTRA)",
+          "Completion of Jeonju commercial vehicle manufacturing plant",
+          "Hyundai Motor Europe Technical Center (HMETC) opens"
+        ]
+      },
+      {
+        "year": "1994",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Annual production surpasses 1 million units",
+          "Launch of ACCENT",
+          "Solar-powered and fuel cell electric vehicles developed"
+        ]
+      },
+      {
+        "year": "1993",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Launch of SONATA II",
+          "Unveiling of the HCD-II concept car"
+        ]
+      },
+      {
+        "year": "1992",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Unveiling of HCD-I, Korea’s first concept car",
+          "Cumulative production surpasses 5 million units"
+        ]
+      },
+      {
+        "year": "1991",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Developed Alpha engine, the first engine created in Korea",
+          "Launch of GALLOPER",
+          "Developed SONATA EV"
+        ]
+      },
+      {
+        "year": "1990",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Launch of ELANTRA and SCOUPE"
+        ]
+      },
+      {
+        "year": "1989",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Overseas exports of EXCEL surpass 1 million units"
+        ]
+      },
+      {
+        "year": "1988",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Launch of SONATA, Hyundai Motor’s mid-size luxury sedan"
+        ]
+      },
+      {
+        "year": "1987",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Excel is the best selling imported compact car in the U.S. for 3 consecutive years"
         ]
       },
       {
         "year": "1986",
+        "image": "/images/years/2000.webp",
         "events": [
-          "Entered the US market with the Excel"
+          "Exports of Excel to the U.S. begin",
+          "Launch of GRANDEUR (AZERA), Hyundai Motor’s large-sized luxury car"
+        ]
+      },
+      {
+        "year": "1985",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Launch of PONY EXCEL",
+          "Incorporation of the U.S. subsidiary HMA",
+          "Launch of 1st generation SONATA"
+        ]
+      },
+      {
+        "year": "1983",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Incorporation of the Canadian subsidiary HMC"
         ]
       },
       {
         "year": "1976",
+        "image": "/images/years/2000.webp",
         "events": [
-          "Launched the Hyundai Pony, Korea's first mass-produced passenger car",
-          "Began exports, starting with Ecuador"
+          "Launch of Hyundai Pony, the first Korean passenger car",
+          "First export of Hyundai PONY to Ecuador"
+        ]
+      },
+      {
+        "year": "1968",
+        "image": "/images/years/2000.webp",
+        "events": [
+          "Completion of Ulsan assembly plant",
+          "Mass production of Cortina begins"
         ]
       },
       {
         "year": "1967",
+        "image": "/images/years/2000.webp",
         "events": [
-          "Hyundai Motor Company founded"
+          "Incorporation of Hyundai Motor Company"
         ]
       }
     ]
