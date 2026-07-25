@@ -102,8 +102,6 @@ reservationCallLabel
           heading={detailsHeading}
           details={car.details}
           ctaValue={car.ctaValue}
-          callLabel={reservationCallLabel}
-           callNumber="000000"
         />
       </div>
     </div>
