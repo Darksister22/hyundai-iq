@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { Locale } from "@/lib/i18n";
-import { models } from "@/lib/models-data";
 import Image from "next/image";
+import FooterVehicles from "./footer-vehicles";
+import { FindCarCar, FindCarCategory } from "@/lib/find-car-data";
 
 interface FooterProps {
   locale: Locale;
+  cars: FindCarCar[];
+  categories: FindCarCategory[];
   dict: {
     newsletter: string;
     newsletterDesc: string;
@@ -27,27 +30,29 @@ interface FooterProps {
   };
 }
 
-export default function Footer({ locale, dict }: FooterProps) {
+export default function Footer({ locale, dict, cars, categories }: FooterProps) {
+  const grouped = categories
+    .map((cat) => ({
+      cat,
+      cars: cars.filter((c) => c.categoryId === cat.id),
+    }))
+    .filter((g) => g.cars.length > 0);
+
+  const uncategorised = cars.filter(
+    (c) => !categories.some((cat) => cat.id === c.categoryId)
+  );
+  const isAr = locale === "ar";
   return (
     <footer className="bg-[#111] text-white">
       {/* link columns */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <div>
-            <h4 className="text-sm font-semibold mb-4">{dict.vehicles}</h4>
-            <ul className="space-y-2">
-              {models.map((model) => (
-                <li key={model.slug}>
-                  <Link
-                    href={`/${locale}/models/${model.slug}`}
-                    className="text-sm text-white/50 hover:text-white transition-colors"
-                  >
-                    {locale === "ar" ? model.nameAr : model.nameEn}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterVehicles
+            locale={locale}
+            cars={cars}
+            categories={categories}
+            heading={dict.vehicles}
+          />
           <div>
             <h4 className="text-sm font-semibold mb-4">{dict.services}</h4>
             <ul className="space-y-2">

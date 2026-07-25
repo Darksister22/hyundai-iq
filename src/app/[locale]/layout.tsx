@@ -7,6 +7,8 @@ import Footer from "@/components/footer";
 import LoadingScreen from "@/components/loading-screen";
 import { getFindCarData } from "@/lib/find-car-data";
 import RouteLoadingScreen from "@/components/route-loading-screen";
+import ChatWidget from "@/components/chat/ChatWidget";
+import { getChatTree } from "@/lib/chat/chat-data-db";
 
 
 export function generateStaticParams() {
@@ -61,6 +63,7 @@ export default async function LocaleLayout({
   const dir = getDirection(locale);
   const dict = await getDictionary(locale);
   const { categories, cars } = await getFindCarData();
+  const chatTree = await getChatTree(locale);
 
   return (
     <html lang={locale} dir={dir} className={`${textHyundai.variable} ${headHyundai.variable} ${arabic.variable}`}>
@@ -70,7 +73,8 @@ export default async function LocaleLayout({
 
         <Header locale={locale} dict={dict.nav} categories={categories} cars={cars} />
         <main className="pt-[72px]">{children}</main>
-        <Footer locale={locale} dict={dict.footer} />
+        <Footer locale={locale} dict={dict.footer} cars={cars} categories={categories} />
+        {chatTree && <ChatWidget tree={chatTree} locale={locale} />}
       </body>
     </html>
   );

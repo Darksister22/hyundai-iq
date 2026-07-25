@@ -85,6 +85,7 @@ html {
 @theme {
   --font-sans: var(--font-text), var(--font-ar), Tahoma, sans-serif;
   --font-head: var(--font-head), var(--font-ar), Tahoma, sans-serif;
+   --model-card-h: 27.5rem; 
 }
 
 @utility scrollbar-hide {
