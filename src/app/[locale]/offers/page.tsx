@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { VEHICLE_OFFERS } from "@/lib/offers-data";
+import { getSalesOffers } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
 import { type Metadata } from "next";
 
@@ -19,6 +19,9 @@ export async function generateMetadata({
   };
 }
 
+// list regenerates at most every 5 min, matching the rest of the site
+export const revalidate = 300;
+
 export default async function OffersPage({
   params,
 }: {
@@ -30,6 +33,8 @@ export default async function OffersPage({
   const t = dict.offers;
   const isAr = locale === "ar";
 
+  const offers = await getSalesOffers();
+
   return (
     <div className="bg-white">
       {/* banner */}
@@ -40,7 +45,8 @@ export default async function OffersPage({
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">
           <nav className="mb-4 flex items-center gap-2 text-sm text-white/70">
             <Link href={`/${locale}`} className="hover:text-white transition-colors">{t.breadcrumbHome}</Link>
-                <span aria-hidden className="inline-block rtl:rotate-180">›</span>            <span className="text-white">{t.breadcrumbOffers}</span>
+            <span aria-hidden>›</span>
+            <span className="text-white">{t.breadcrumbOffers}</span>
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-white">{t.bannerTitle}</h1>
           <p className="mt-3 max-w-2xl text-white/90">{t.bannerSubtitle}</p>
@@ -50,10 +56,12 @@ export default async function OffersPage({
       {/* cards */}
       <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {VEHICLE_OFFERS.map((o) => (
+          {offers.map((o) => (
             <article key={o.slug}>
               <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-gray-100">
-                <Image src={o.image} alt={isAr ? o.title.ar : o.title.en} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                {o.image && (
+                  <Image src={o.image} alt={isAr ? o.title.ar : o.title.en} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                )}
               </div>
               <h2 className="mt-5 text-xl md:text-2xl font-bold text-[#111]">
                 {isAr ? o.title.ar : o.title.en}
@@ -64,7 +72,7 @@ export default async function OffersPage({
                 className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 border border-[#002C5F] text-[#002C5F] text-sm font-semibold hover:bg-[#002C5F] hover:text-white transition-colors"
               >
                 {t.offerDetailsCta}
-                <span aria-hidden className="rtl:rotate-180">›</span>
+                <span aria-hidden>›</span>
               </Link>
             </article>
           ))}

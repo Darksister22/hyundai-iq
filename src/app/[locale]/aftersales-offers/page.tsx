@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { AFTERSALES_OFFERS } from "@/lib/offers-data";
+import { getAftersalesOffers } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
+
+export const revalidate = 300;
 
 export default async function OffersPage({
   params,
@@ -13,6 +15,8 @@ export default async function OffersPage({
   const dict = await getDictionary(locale);
   const t = dict.aftersalesOffers;
   const isAr = locale === "ar";
+
+  const offers = await getAftersalesOffers();
 
   return (
     <div className="bg-white">
@@ -35,10 +39,12 @@ export default async function OffersPage({
       {/* cards */}
       <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {AFTERSALES_OFFERS.map((o) => (
+          {offers.map((o) => (
             <article key={o.slug}>
               <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-gray-100">
-                <Image src={o.image} alt={isAr ? o.title.ar : o.title.en} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                {o.image && (
+                  <Image src={o.image} alt={isAr ? o.title.ar : o.title.en} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                )}
               </div>
               <h2 className="mt-5 text-xl md:text-2xl font-bold text-[#111]">
                 {isAr ? o.title.ar : o.title.en}
@@ -49,7 +55,8 @@ export default async function OffersPage({
                 className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 border border-[#002C5F] text-[#002C5F] text-sm font-semibold hover:bg-[#002C5F] hover:text-white transition-colors"
               >
                 {t.offerDetailsCta}
-                <span aria-hidden className="inline-block rtl:rotate-180">›</span>              </Link>
+                <span aria-hidden>›</span>
+              </Link>
             </article>
           ))}
         </div>

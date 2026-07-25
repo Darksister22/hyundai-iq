@@ -47,6 +47,7 @@
   },
   "offers": {
     "breadcrumbHome": "Home",
+    "reservationCallLabel": "For reservation and inquiries please call:",
     "breadcrumbOffers": "Offers",
     "bannerTitle": "Offers",
     "bannerSubtitle": "Current offers across the Hyundai range.",
@@ -68,6 +69,7 @@
   },
   "aftersalesOffers": {
     "breadcrumbHome": "Home",
+    "reservationCallLabel": "For reservation and inquiries please call:",
     "breadcrumbOffers": "After-Sales Offers",
     "bannerTitle": "After-Sales Offers",
     "bannerSubtitle": "Service and parts offers for your Hyundai.",

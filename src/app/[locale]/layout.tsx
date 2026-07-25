@@ -6,6 +6,8 @@ import { textHyundai, headHyundai, arabic } from "@/lib/fonts";
 import Footer from "@/components/footer";
 import LoadingScreen from "@/components/loading-screen";
 import { getFindCarData } from "@/lib/find-car-data";
+import RouteLoadingScreen from "@/components/route-loading-screen";
+
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -64,6 +66,8 @@ export default async function LocaleLayout({
     <html lang={locale} dir={dir} className={`${textHyundai.variable} ${headHyundai.variable} ${arabic.variable}`}>
       <body>
         <LoadingScreen />
+          <RouteLoadingScreen />
+
         <Header locale={locale} dict={dict.nav} categories={categories} cars={cars} />
         <main className="pt-[72px]">{children}</main>
         <Footer locale={locale} dict={dict.footer} />

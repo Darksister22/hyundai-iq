@@ -48,6 +48,7 @@
   "offers": {
     "breadcrumbHome": "الرئيسية",
     "breadcrumbOffers": "العروض",
+    "reservationCallLabel": "للحجز و الاستفسار يرجى الاتصال على الرقم:",
     "bannerTitle": "العروض",
     "bannerSubtitle": "أحدث العروض على مجموعة هيونداي.",
     "offerDetailsCta": "تفاصيل العرض",
@@ -68,6 +69,7 @@
   },
   "aftersalesOffers": {
     "breadcrumbHome": "الرئيسية",
+    "reservationCallLabel": "للحجز و الاستفسار يرجى الاتصال على الرقم:",
     "breadcrumbOffers": "عروض ما بعد البيع",
     "bannerTitle": "عروض ما بعد البيع",
     "bannerSubtitle": "عروض الصيانة وقطع الغيار لسيارتك هيونداي.",
@@ -155,7 +157,7 @@
     "milestones": [
       {
         "year": "2023",
-        "image":"/images/years/2023.webp",
+        "image": "/images/years/2023.webp",
         "events": [
           "إطلاق سيارة كونا الجديدة كليًا، التي تتميز بمجموعة متنوعة من طُرُز مجموعات نقل الحركة، بما في ذلك السيارة الكهربائية (EV)، والسيارة الكهربائية الهجينة (HEV)، والسيارة ذات محرك الاحتراق الداخلي (ICE)",
           "تطوير HMG روبوت شحن أوتوماتيكي جديد للسيارات الكهربائية",
@@ -193,7 +195,7 @@
       },
       {
         "year": "2022",
-        "image":"/images/years/2022.webp",
+        "image": "/images/years/2022.webp",
         "events": [
           "المشاركة في معرض CES لعام 2022 تحت شعار \"توسيع المتناول البشري\"",
           "الشراكة مع Unity لبناء Meta-Factory",
@@ -229,7 +231,7 @@
       },
       {
         "year": "2021",
-        "image":"/images/years/2021.webp",
+        "image": "/images/years/2021.webp",
         "events": [
           "تم إطلاق IONIQ 5، وهي أول طراز للمركبة الكهربائية التي تعمل بالبطارية (BEV)",
           "بدأت بناء أول مصنع لنظام خلايا الوقود في الخارج في مدينة قوانغتشو",
@@ -255,7 +257,7 @@
       },
       {
         "year": "2020",
-        "image":"/images/years/2020.webp",
+        "image": "/images/years/2020.webp",
         "events": [
           "الكشف عن سيارة Sonata Plug-in Hybrid",
           "أسست Hyundai Motorstudio في موسكو",
@@ -276,7 +278,7 @@
       },
       {
         "year": "2019",
-        "image":"/images/years/2019.webp",
+        "image": "/images/years/2019.webp",
         "events": [
           "سيارة Genesis الجديدة كليًا تفوز بجائزة iF Design لعام 2014",
           "سيارتا Genesis وi10 الجديدتان كليًا تفوزان بجائزة Red Dot Design",
@@ -299,7 +301,7 @@
       },
       {
         "year": "2018",
-        "image":"/images/years/2018.webp",
+        "image": "/images/years/2018.webp",
         "events": [
           "انطلاق فريق بطولة العالم للراليات (WRC)",
           "إطلاق Grandeur Hybrid",
@@ -328,7 +330,7 @@
       },
       {
         "year": "2017",
-        "image":"/images/years/2017.webp",
+        "image": "/images/years/2017.webp",
         "events": [
           "مُنحت سيارة Avante‏ (Elantra) لقب سيارة العام في أمريكا الشمالية\"",
           "إطلاق New Santa Fe، وi40 Saloon، وVeloster Turbo",
@@ -362,7 +364,7 @@
       },
       {
         "year": "2016",
-        "image":"/images/years/2016.webp",
+        "image": "/images/years/2016.webp",
         "events": [
           "تم تقديم Blue Link في معرض الإلكترونيات الاستهلاكية الدولي (CES) لعام 2011 في الولايات المتحدة",
           "إطلاق سيارة Veloster والسيارة الاختبارية HCD-12 في معرض أمريكا الشمالية الدولي للسيارات",
@@ -388,7 +390,7 @@
       },
       {
         "year": "2015",
-        "image":"/images/years/2015.webp",
+        "image": "/images/years/2015.webp",
         "events": [
           "الكشف عن سيارة Sonata Plug-in Hybrid",
           "أسست Hyundai Motorstudio في موسكو",
@@ -409,7 +411,7 @@
       },
       {
         "year": "2014",
-        "image":"/images/years/2014.webp",
+        "image": "/images/years/2014.webp",
         "events": [
           "سيارة Genesis الجديدة كليًا تفوز بجائزة iF Design لعام 2014",
           "سيارتا Genesis وi10 الجديدتان كليًا تفوزان بجائزة Red Dot Design",
@@ -432,7 +434,7 @@
       },
       {
         "year": "2013",
-        "image":"/images/years/2013.webp",
+        "image": "/images/years/2013.webp",
         "events": [
           "انطلاق فريق بطولة العالم للراليات (WRC)",
           "إطلاق Grandeur Hybrid",
@@ -461,7 +463,7 @@
       },
       {
         "year": "2012",
-        "image":"/images/years/2012.webp",
+        "image": "/images/years/2012.webp",
         "events": [
           "مُنحت سيارة Avante‏ (Elantra) لقب سيارة العام في أمريكا الشمالية\"",
           "إطلاق New Santa Fe، وi40 Saloon، وVeloster Turbo",
@@ -495,7 +497,7 @@
       },
       {
         "year": "2011",
-        "image":"/images/years/2011.webp",
+        "image": "/images/years/2011.webp",
         "events": [
           "تم تقديم Blue Link في معرض الإلكترونيات الاستهلاكية الدولي (CES) لعام 2011 في الولايات المتحدة",
           "إطلاق سيارة Veloster والسيارة الاختبارية HCD-12 في معرض أمريكا الشمالية الدولي للسيارات",
@@ -521,7 +523,7 @@
       },
       {
         "year": "2010",
-        "image":"/images/years/2010.webp",
+        "image": "/images/years/2010.webp",
         "events": [
           "الكشف عن السيارة الاختبارية HED-VII الهجينة في معرض جنيف الدولي للسيارات",
           "احتلت المرتبة الأولى في دراسة اعتمادية السيارات (VDS) التي أجرتها شركة J.D. Power لمدة 3 سنوات متتالية ودراسة الجودة الأولية (IQS) للسيارات الصغيرة الحجم",
@@ -544,7 +546,7 @@
       },
       {
         "year": "2009",
-        "image":"/images/years/2009.webp",
+        "image": "/images/years/2009.webp",
         "events": [
           "سيارة Genesis تفوز بلقب \"سيارة العام في أمريكا الشمالية\"",
           "أصبحت الراعي الرئيسي لمباراة Super Bowl في الولايات المتحدة",
@@ -576,7 +578,7 @@
       },
       {
         "year": "2008",
-        "image":"/images/years/2008.webp",
+        "image": "/images/years/2008.webp",
         "events": [
           "إطلاق سيارة Genesis",
           "أسست المصنع الثاني في الهند",
@@ -594,7 +596,7 @@
       },
       {
         "year": "2007",
-        "image":"/images/years/2008.webp",
+        "image": "/images/years/2008.webp",
         "events": [
           "إطلاق الطراز الإستراتيجي الأوروبي i30",
           "تجاوزت المبيعات التراكمية في الولايات المتحدة 5 ملايين وحدة",
@@ -611,7 +613,7 @@
       },
       {
         "year": "2006",
-        "image":"/images/years/2006.webp",
+        "image": "/images/years/2006.webp",
         "events": [
           "طوّرت محرك Gamma",
           "احتلت المركز الأول للوحات الأرقام غير الفاخرة في دراسة الجودة الأولية التي أجرتها شركة J.D. Power",
@@ -628,7 +630,7 @@
       },
       {
         "year": "2005",
-        "image":"/images/years/2006.webp",
+        "image": "/images/years/2006.webp",
         "events": [
           "طوّرت أول محرك ديزل للركاب ومحرك تجاري كبير في كوريا",
           "الظهور الأول لنماذج الحافلات الأربعة المتوسطة والكبيرة الحجم",
@@ -638,7 +640,7 @@
       },
       {
         "year": "2004",
-        "image":"/images/years/2006.webp",
+        "image": "/images/years/2006.webp",
         "events": [
           "إطلاق أول سيارة رياضية متعددة الأغراض مدمجة Tucson (ix35) من Hyundai Motor",
           "تجاوز إنتاج محرك Delta المليون وحدة",
@@ -652,7 +654,7 @@
       },
       {
         "year": "2003",
-        "image":"/images/years/2006.webp",
+        "image": "/images/years/2006.webp",
         "events": [
           "أسست مركز كاليفورنيا للتصميم والتقنية",
           "تجاوز إنتاج سيارة Avante‏ (Elantra)‏ 2 مليون سيارة",
@@ -665,7 +667,7 @@
       },
       {
         "year": "2002",
-        "image":"/images/years/2006.webp",
+        "image": "/images/years/2006.webp",
         "events": [
           "تجاوز الإنتاج التراكمي في مصنع أسان مليون سيارة",
           "بدأ إنتاج Sonata في الصين",
@@ -678,7 +680,7 @@
       },
       {
         "year": "2001",
-        "image":"/images/years/2006.webp",
+        "image": "/images/years/2006.webp",
         "events": [
           "تجاوز إنتاج محرك Beta مليون وحدة",
           "الكشف عن أول سيارة كهربائية Santa Fe تعمل بخلايا الوقود في كوريا",
@@ -691,7 +693,7 @@
       },
       {
         "year": "2000",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "طوّرت أول محرك ديزل للركاب ومحرك تجاري كبير في كوريا",
           "الظهور الأول لنماذج الحافلات الأربعة المتوسطة والكبيرة الحجم",
@@ -701,7 +703,7 @@
       },
       {
         "year": "1999",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "إطلاق Equus (اليوبيل المئوي: سيارة سيدان كبيرة الحجم للغاية من Hyundai Motor) و Verna و Trajet XG",
           "طوّرت أول بطارية خلية وقود للسيارات في كوريا"
@@ -709,7 +711,7 @@
       },
       {
         "year": "1998",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "طوّرت بشكل مستقل محرك V6 Delta على مستوى عالمي وعالي الأداء",
           "إطلاق Grandeur‏ (Azera) و Sonata",
@@ -720,7 +722,7 @@
       },
       {
         "year": "1997",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "طوّرت محرك Epsilon بشكل مستقل",
           "أسست مصنع تركيا ومصنع أسان"
@@ -728,7 +730,7 @@
       },
       {
         "year": "1996",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "تجاوز الإنتاج التراكمي 10 ملايين سيارة",
           "افتتاح مركز ناميانغ لأبحاث التكنولوجيا",
@@ -737,7 +739,7 @@
       },
       {
         "year": "1995",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "إطلاق Avante‏ (Elantra)",
           "الانتهاء من مصنع جيونجو لتصنيع المركبات التجارية",
@@ -746,7 +748,7 @@
       },
       {
         "year": "1994",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "الإنتاج السنوي يتجاوز مليون سيارة",
           "إطلاق السيارة أكسنت",
@@ -755,7 +757,7 @@
       },
       {
         "year": "1993",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "إطلاق سيارة Sonata II",
           "الكشف عن السيارة الاختبارية HCD-II"
@@ -763,7 +765,7 @@
       },
       {
         "year": "1992",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "الكشف عن سيارة HCD-I، أول سيارة اختبارية كورية",
           "تجاوز الإنتاج التراكمي 5 ملايين سيارة"
@@ -771,7 +773,7 @@
       },
       {
         "year": "1991",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "طورت محرك Alpha، أول محرك تم إنشاؤه في كوريا",
           "إطلاق سيارة Galloper",
@@ -780,35 +782,35 @@
       },
       {
         "year": "1990",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "إطلاق سيارتي Elantra و Scoupe"
         ]
       },
       {
         "year": "1989",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "تجاوز صادرات من سيارة Excel مليون سيارة"
         ]
       },
       {
         "year": "1988",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "إطلاق Sonata، وهي سيارة سيدان فاخرة متوسطة الحجم من Hyundai Motor"
         ]
       },
       {
         "year": "1987",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "سيارة Excel هي السيارة المدمجة المستوردة الأكثر مبيعًا في الولايات المتحدة لمدة 3 سنوات متتالية"
         ]
       },
       {
         "year": "1986",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "بدء تصدير سيارة Excel إلى الولايات المتحدة",
           "إطلاق سيارة Grandeur‏ (Azera)، وهي السيارة الفاخرة الكبيرة الحجم من Hyundai Motor"
@@ -816,7 +818,7 @@
       },
       {
         "year": "1985",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "إطلاق سيارة Pony Excel",
           "تأسيس الشركة الفرعية HMA في الولايات المتحدة",
@@ -825,14 +827,14 @@
       },
       {
         "year": "1983",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "تأسيس الشركة الفرعية الكندية HMC"
         ]
       },
       {
         "year": "1976",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "إطلاق سيارة Hyundai Pony، وهي أول سيارة ركاب كورية",
           "أول تصدير لسيارة Hyundai Pony إلى الإكوادور"
@@ -840,7 +842,7 @@
       },
       {
         "year": "1968",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "استكمال مصنع التجميع في أولسان",
           "بدء الإنتاج الضخم لسيارة Cortina"
@@ -848,7 +850,7 @@
       },
       {
         "year": "1967",
-        "image":"/images/years/2000.webp",
+        "image": "/images/years/2000.webp",
         "events": [
           "تأسيس شركة Hyundai Motor"
         ]

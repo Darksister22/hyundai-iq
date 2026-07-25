@@ -1,13 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+
+const SLIDE_MS = 700; // must match transitionDuration below
 
 export default function LoadingScreen() {
-  const [hidden, setHidden] = useState(false);   // fade-out started
-  const [removed, setRemoved] = useState(false); // unmounted after fade
+  const [leaving, setLeaving] = useState(false); // slide-up started
+  const [removed, setRemoved] = useState(false); // unmounted after slide
 
   useEffect(() => {
     // wait for EVERYTHING (images, fonts, etc.) via window 'load'
-    const done = () => setHidden(true);
+    const done = () => setLeaving(true);
     if (document.readyState === "complete") {
       done();
     } else {
@@ -26,15 +29,28 @@ export default function LoadingScreen() {
 
   return (
     <div
-      onTransitionEnd={() => hidden && setRemoved(true)}   // unmount after fade
-      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#002C5F] transition-opacity duration-700 ${
-        hidden ? "opacity-0" : "opacity-100"
-      }`}
+      onTransitionEnd={() => leaving && setRemoved(true)} // unmount after slide-up
+      style={{
+        transform: leaving ? "translateY(-100%)" : "translateY(0)",
+        transitionDuration: `${SLIDE_MS}ms`,
+      }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-white transition-transform ease-[cubic-bezier(0.65,0,0.35,1)] will-change-transform"
     >
-      {/* brand + spinner — swap for your logo/animation */}
-      <div className="flex flex-col items-center gap-6">
-        <span className="text-3xl font-bold tracking-widest text-white">HYUNDAI</span>
-        <div className="w-10 h-10 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+      <div className="flex flex-col items-center gap-8">
+        <Image
+          src="/svglogo/HyundaiLogoBlue.svg"
+          alt="Hyundai"
+          width={180}
+          height={30}
+          priority
+        />
+
+        {/* three pulsing navy dots */}
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#002C5F] animate-pulse [animation-duration:1s]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#002C5F] animate-pulse [animation-duration:1s] [animation-delay:0.2s]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#002C5F] animate-pulse [animation-duration:1s] [animation-delay:0.4s]" />
+        </div>
       </div>
     </div>
   );

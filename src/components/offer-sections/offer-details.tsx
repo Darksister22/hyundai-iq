@@ -1,4 +1,4 @@
-import { CheckCircle2, Tag, ClipboardCheck } from "lucide-react";
+import { CheckCircle2, Tag, ClipboardCheck, Phone } from "lucide-react";
 import type { Bilingual } from "@/lib/offers-data";
 import type { Locale } from "@/lib/i18n";
 
@@ -7,11 +7,17 @@ export default function OfferDetails({
   heading,
   details,
   ctaValue,
+  callLabel,
+  callNumber,
 }: {
   locale: Locale;
   heading: string;
   details: Bilingual[];
   ctaValue: Bilingual;
+  /** localized "For reservation and inquiries please call:" label */
+  callLabel?: string;
+  /** per-offer reservation number */
+  callNumber?: string;
 }) {
   const isAr = locale === "ar";
   const tx = (b: Bilingual) => (isAr ? b.ar : b.en);
@@ -35,9 +41,22 @@ export default function OfferDetails({
       </div>
 
       {/* navy half — the call to action */}
-      <div className="bg-[#002C5F] text-white flex flex-col justify-center px-8 py-12 md:px-12">
-        <ClipboardCheck size={36} strokeWidth={1.6} className="mb-5" />
-        <p className="text-2xl md:text-4xl font-bold leading-tight">{tx(ctaValue)}</p>
+      <div className="bg-[#002C5F] text-white flex flex-col px-8 py-12 md:px-12">
+        <div className="flex-1 flex flex-col justify-center">
+          <ClipboardCheck size={36} strokeWidth={1.6} className="mb-5" />
+          <p className="text-2xl md:text-4xl font-bold leading-tight">{tx(ctaValue)}</p>
+        </div>
+
+        {/* reservation line — only when a number is provided */}
+        {callNumber && (
+          <div className="mt-10 border-t border-dashed border-white/30 pt-6 flex items-center gap-3 text-sm md:text-base">
+            <Phone size={18} strokeWidth={1.8} className="shrink-0 text-white/70" />
+            <span className="text-white/80">{callLabel}</span>
+            <a href={`tel:${callNumber.replace(/[^\d+]/g, "")}`} className="font-bold" dir="ltr">
+              {callNumber}
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

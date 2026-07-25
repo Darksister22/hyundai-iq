@@ -12,11 +12,13 @@ export default function OfferCarousel({
   cars,
   detailsHeading,
   discoverLabel,
+reservationCallLabel
 }: {
   locale: Locale;
   cars: OfferCar[];
   detailsHeading: string;
   discoverLabel: string;
+  reservationCallLabel: string;
 }) {
   const isAr = locale === "ar";
   const [active, setActive] = useState(0);
@@ -89,8 +91,7 @@ export default function OfferCarousel({
           className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#002C5F] text-white text-sm font-semibold hover:bg-[#003d7a] transition-colors"
         >
           {discoverLabel}
-          <span aria-hidden className="rtl:rotate-180">›</span>
-        </Link>
+<span aria-hidden>›</span>        </Link>
       </div>
 
       {/* details for the active car */}
@@ -101,6 +102,8 @@ export default function OfferCarousel({
           heading={detailsHeading}
           details={car.details}
           ctaValue={car.ctaValue}
+          callLabel={reservationCallLabel}
+           callNumber="000000"
         />
       </div>
     </div>

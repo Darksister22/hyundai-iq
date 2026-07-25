@@ -2,13 +2,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import OfferDetails from "@/components/offer-sections/offer-details";
-import OfferForm from "@/components/offer-sections/offer-form";
-import { AFTERSALES_OFFERS, findOffer } from "@/lib/offers-data";
+import ServiceBookingForm from "@/components/service-booking-form";
+import { supabase } from "@/lib/supabase";
+import { getAftersalesOfferBySlug, getAftersalesOfferSlugs } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
 
-export function generateStaticParams() {
-  return AFTERSALES_OFFERS.map((o) => ({ slug: o.slug }));
+export async function generateStaticParams() {
+  const slugs = await getAftersalesOfferSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
+
+export const revalidate = 300;
 
 export default async function AftersalesOfferDetailPage({
   params,
@@ -19,16 +23,33 @@ export default async function AftersalesOfferDetailPage({
   const locale = rawLocale as Locale;
   const dict = await getDictionary(locale);
   const t = dict.aftersalesOffers;
+  const sbDict = dict.serviceBooking; // ServiceBookingForm's dictionary slice
   const isAr = locale === "ar";
 
-  const offer = findOffer(AFTERSALES_OFFERS, slug);
+  const offer = await getAftersalesOfferBySlug(slug);
   if (!offer) notFound();
+
+  // car models for the booking form — English name stored, localized label
+  const { data, error } = await supabase
+    .from("cars")
+    .select("name_ar, name_en")
+    .order("name_en");
+  if (error) console.error("cars query failed:", error.message);
+
+  const carModels = (data ?? []).map(
+    (c: { name_ar: string | null; name_en: string }) => ({
+      value: c.name_en,
+      label: locale === "ar" ? c.name_ar ?? c.name_en : c.name_en,
+    })
+  );
 
   return (
     <div className="bg-white">
       {/* hero image */}
       <section className="relative h-[60svh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
-        <Image src={offer.image} alt={isAr ? offer.title.ar : offer.title.en} fill priority sizes="100vw" className="object-cover" />
+        {offer.image && (
+          <Image src={offer.image} alt={isAr ? offer.title.ar : offer.title.en} fill priority sizes="100vw" className="object-cover" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
 
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">
@@ -44,23 +65,22 @@ export default async function AftersalesOfferDetailPage({
         </div>
       </section>
 
-      {/* offer details — no carousel on after-sales offers */}
+      {/* offer details — bullets on the white half, title2 on the navy half,
+          reservation phone from the DB */}
       <section className="max-w-7xl mx-auto px-6 py-16">
         <OfferDetails
           locale={locale}
           heading={t.offerDetailsHeading}
+          callLabel={t.reservationCallLabel}
           details={offer.details}
           ctaValue={offer.ctaValue}
+          callNumber={offer.phone ?? undefined}
         />
       </section>
 
-      {/* enquiry form */}
+      {/* booking form — same component as the service-booking page */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
-        <OfferForm
-          locale={locale}
-          offerOptions={[isAr ? offer.title.ar : offer.title.en]}
-          dict={t}
-        />
+        <ServiceBookingForm locale={locale} dict={sbDict} carModels={carModels} />
       </section>
     </div>
   );
