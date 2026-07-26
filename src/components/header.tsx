@@ -33,6 +33,7 @@ interface HeaderProps {
     partsAccessoriesDesc: string;
     customerPromiseDesc: string;
     aftersalesOffers: string;
+    salesOffers:string;
   };
   categories: FindCarCategory[];
   cars: FindCarCar[];
@@ -88,7 +89,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
   ];
   // offers destinations — single source for desktop + mobile
   const offerLinks = [
-    { href: `/${locale}/offers`, label: dict.offers },
+    { href: `/${locale}/offers`, label: dict.salesOffers },
     { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
   ];
 
@@ -180,6 +181,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                 width={180}
                 height={30}
                 priority
+                aria-hidden
                 className="h-6 w-auto"
               />
               <Image

@@ -3,9 +3,10 @@
     "findACar": "اعثر على سيارة",
     "aboutUs": "من نحن",
     "findUs": "مواقعنا",
-    "aftersalesOffers": "عروض ما بعد البيع",
+    "aftersalesOffers": "عروض الصيانة",
+    "salesOffers": "عروض المبيعات",
     "contactUs": "اتصل بنا",
-    "offers": "عروض البيع",
+    "offers": "العروض",
     "requestCallback": "طلب اتصال",
     "langSwitch": "English",
     "langCode": "en",
@@ -70,8 +71,8 @@
   "aftersalesOffers": {
     "breadcrumbHome": "الرئيسية",
     "reservationCallLabel": "للحجز و الاستفسار يرجى الاتصال على الرقم:",
-    "breadcrumbOffers": "عروض ما بعد البيع",
-    "bannerTitle": "عروض ما بعد البيع",
+    "breadcrumbOffers": "عروض الصيانة",
+    "bannerTitle": "عروض الصيانة",
     "bannerSubtitle": "عروض الصيانة وقطع الغيار لسيارتك هيونداي.",
     "offerDetailsCta": "تفاصيل العرض",
     "offerDetailsHeading": "تفاصيل العرض:",
@@ -103,7 +104,7 @@
     "safety": "السلامة",
     "convenience": "الراحة",
     "requestCallback": "طلب اتصال",
-    "requestTestDrive": "طلب قيادة تجريبية",
+    "requestTestDrive": "طلب تجربة قيادة",
     "exterior": "التصميم الخارجي",
     "interior": "التصميم الداخلي",
     "specification": "المواصفات",
@@ -783,16 +784,12 @@
       {
         "year": "1990",
         "image": "/images/years/2000.webp",
-        "events": [
-          "إطلاق سيارتي Elantra و Scoupe"
-        ]
+        "events": ["إطلاق سيارتي Elantra و Scoupe"]
       },
       {
         "year": "1989",
         "image": "/images/years/2000.webp",
-        "events": [
-          "تجاوز صادرات من سيارة Excel مليون سيارة"
-        ]
+        "events": ["تجاوز صادرات من سيارة Excel مليون سيارة"]
       },
       {
         "year": "1988",
@@ -828,9 +825,7 @@
       {
         "year": "1983",
         "image": "/images/years/2000.webp",
-        "events": [
-          "تأسيس الشركة الفرعية الكندية HMC"
-        ]
+        "events": ["تأسيس الشركة الفرعية الكندية HMC"]
       },
       {
         "year": "1976",
@@ -851,9 +846,7 @@
       {
         "year": "1967",
         "image": "/images/years/2000.webp",
-        "events": [
-          "تأسيس شركة Hyundai Motor"
-        ]
+        "events": ["تأسيس شركة Hyundai Motor"]
       }
     ]
   },
@@ -896,7 +889,8 @@
   },
   "footer": {
     "offers": "العروض",
-    "aftersalesOffers": "عروض ما بعد البيع",
+    "aftersalesOffers": "عروض الصيانة",
+    "salesOffers": "عروض المبيعات",
     "newsletter": "اشترك في نشرتنا الإخبارية",
     "newsletterDesc": "ابقَ على اطلاع بأحدث الطرازات والعروض وأخبار هيونداي",
     "emailPlaceholder": "البريد الإلكتروني",
@@ -1121,11 +1115,7 @@
         "label": "قطع غيار أصلية",
         "heading": "نضمن ملائمتها نضمن أدائها نضمن أنها أصلية",
         "body": "يتم اختبار قطع غيار هيونداي الأصلية في ظل مختلف الظروف القاسية والمشابهة للظروف الواقعية التى تمر بها السيارة وذلك لضمان جودتها ومتانتها وكفاءتها بالاضافة لقدرتها على التحمل والبقاء طوبلاً. تتمتع قطع غيار هيونداي الأصلية بضمان لمدة 12 شهراً أو ما يعادل 20,000 كم. قطع غيار هيونداي الأصلية استثمار جيد لسيارتك لانها صممت على أعلي مستويات الجودة وتم اختيارها لتلبية احتياجات سيارتك وفقاً لأعلى معايير ومقاييس قواعد التصميم الاسترالي",
-        "guarantees": [
-          "ملائمتها",
-          "أدائها",
-          "أنها أصلية"
-        ],
+        "guarantees": ["ملائمتها", "أدائها", "أنها أصلية"],
         "guaranteeImages": [
           "/images/parts/guarantee-fit.webp",
           "/images/parts/guarantee-performance.webp",

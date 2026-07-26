@@ -1,10 +1,4 @@
 "use client";
-// components/service-booking-form.tsx
-// Booking Information → Vehicle Information → Your Information → consent → Submit
-// Submits into public.service_bookings via the site's singleton supabase client.
-// Styling matches components/contact-form.tsx (inputCls, Field labels, navy
-// submit, card wrapper) for visual consistency across the site's forms.
-
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { IRAQI_GOVERNORATES } from "@/lib/iraqi-governorates";

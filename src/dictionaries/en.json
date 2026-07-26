@@ -4,6 +4,7 @@
     "aboutUs": "About Us",
     "findUs": "Find Us",
     "aftersalesOffers": "Aftersales Offers",
+    "salesOffers": "Sales Offers",
     "contactUs": "Contact Us",
     "offers": "Sales Offers",
     "requestCallback": "Request a Callback",
@@ -758,10 +759,7 @@
       {
         "year": "1993",
         "image": "/images/years/2000.webp",
-        "events": [
-          "Launch of SONATA II",
-          "Unveiling of the HCD-II concept car"
-        ]
+        "events": ["Launch of SONATA II", "Unveiling of the HCD-II concept car"]
       },
       {
         "year": "1992",
@@ -783,23 +781,17 @@
       {
         "year": "1990",
         "image": "/images/years/2000.webp",
-        "events": [
-          "Launch of ELANTRA and SCOUPE"
-        ]
+        "events": ["Launch of ELANTRA and SCOUPE"]
       },
       {
         "year": "1989",
         "image": "/images/years/2000.webp",
-        "events": [
-          "Overseas exports of EXCEL surpass 1 million units"
-        ]
+        "events": ["Overseas exports of EXCEL surpass 1 million units"]
       },
       {
         "year": "1988",
         "image": "/images/years/2000.webp",
-        "events": [
-          "Launch of SONATA, Hyundai Motor’s mid-size luxury sedan"
-        ]
+        "events": ["Launch of SONATA, Hyundai Motor’s mid-size luxury sedan"]
       },
       {
         "year": "1987",
@@ -828,9 +820,7 @@
       {
         "year": "1983",
         "image": "/images/years/2000.webp",
-        "events": [
-          "Incorporation of the Canadian subsidiary HMC"
-        ]
+        "events": ["Incorporation of the Canadian subsidiary HMC"]
       },
       {
         "year": "1976",
@@ -851,9 +841,7 @@
       {
         "year": "1967",
         "image": "/images/years/2000.webp",
-        "events": [
-          "Incorporation of Hyundai Motor Company"
-        ]
+        "events": ["Incorporation of Hyundai Motor Company"]
       }
     ]
   },
@@ -896,7 +884,8 @@
   },
   "footer": {
     "offers": "Offers",
-    "aftersalesOffers": "After Sales Offers",
+    "aftersalesOffers": "Maintenance Offers",
+    "salesOffers": "Sales Offers",
     "newsletter": "Sign up for our newsletter",
     "newsletterDesc": "Stay updated on new models, offers, and Hyundai news",
     "emailPlaceholder": "Email address",
@@ -1121,11 +1110,7 @@
         "label": "Genuine Parts",
         "heading": "Guaranteed to fit, Guaranteed to perform, Guaranteed Genuine",
         "body": "Hyundai Genuine Parts are tested under various simulated extreme conditions to ensure quality, reliability, and durability. They are also backed by a 12-month / 20,000 km warranty, giving you added peace of mind. Hyundai Genuine Parts always prove to be a sound investment for your vehicle. Specifically designed and tested to meet Australian Design Rules, all Hyundai Genuine Parts are manufactured to the highest Hyundai standards.",
-        "guarantees": [
-          "to fit",
-          "to perform",
-          "Genuine"
-        ],
+        "guarantees": ["to fit", "to perform", "Genuine"],
         "guaranteeImages": [
           "/images/parts/guarantee-fit.webp",
           "/images/parts/guarantee-performance.webp",

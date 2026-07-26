@@ -25,110 +25,117 @@ interface FooterProps {
     afterSales: string;
     partsAccessories: string;
     customerPromise: string;
-    offers: string;
+    salesOffers: string;
     aftersalesOffers: string;
   };
 }
 
 export default function Footer({ locale, dict, cars, categories }: FooterProps) {
-  const grouped = categories
-    .map((cat) => ({
-      cat,
-      cars: cars.filter((c) => c.categoryId === cat.id),
-    }))
-    .filter((g) => g.cars.length > 0);
-
-  const uncategorised = cars.filter(
-    (c) => !categories.some((cat) => cat.id === c.categoryId)
-  );
   const isAr = locale === "ar";
+
   return (
     <footer className="bg-[#111] text-white">
-      {/* link columns */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <FooterVehicles
-            locale={locale}
-            cars={cars}
-            categories={categories}
-            heading={dict.vehicles}
+      {/* logo + link columns side by side */}
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-10">
+          {/* logo — to the side, not below; shrink-0 keeps it from squashing */}
+          <Image
+            src="/svglogo/AloulaVertical.svg"
+            alt="Al-Oula Motors"
+            width={160}
+            height={44}
+            className="h-14 w-auto shrink-0"
           />
-          <div>
-            <h4 className="text-sm font-semibold mb-4">{dict.services}</h4>
-            <ul className="space-y-2">
-              {[
-                { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
-                { href: `/${locale}/services/call-center`, label: dict.callCenter },
-                { href: `/${locale}/services/after-sales`, label: dict.afterSales },
-                { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
-                { href: `/${locale}/customer-promise`, label: dict.customerPromise },
-                { href: `/${locale}/offers`, label: dict.offers },
-                { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
-              ].map((s) => (
-                <li key={s.href}>
-                  <Link href={s.href} className="text-sm text-white/50 hover:text-white transition-colors">
-                    {s.label}
+
+          {/* the four link columns take the remaining width */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 flex-1">
+            <FooterVehicles
+              locale={locale}
+              cars={cars}
+              categories={categories}
+              heading={dict.vehicles}
+            />
+
+            <div>
+              <h4 className="text-sm font-semibold mb-4">{dict.services}</h4>
+              <ul className="space-y-2">
+                {[
+                  { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
+                  { href: `/${locale}/services/call-center`, label: dict.callCenter },
+                  { href: `/${locale}/services/after-sales`, label: dict.afterSales },
+                  { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
+                  { href: `/${locale}/customer-promise`, label: dict.customerPromise },
+                  { href: `/${locale}/offers`, label: dict.salesOffers },
+                  { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
+                ].map((s) => (
+                  <li key={s.href}>
+                    <Link href={s.href} className="text-sm text-white/50 hover:text-white transition-colors">
+                      {s.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold mb-4">{dict.support}</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link href={`/${locale}/contact-us`} className="text-sm text-white/50 hover:text-white transition-colors">
+                    {isAr ? "اتصل بنا" : "Contact Us"}
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold mb-4">{dict.support}</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href={`/${locale}/contact-us`}
-                  className="text-sm text-white/50 hover:text-white transition-colors"
-                >
-                  {locale === "ar" ? "اتصل بنا" : "Contact Us"}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`/${locale}/find-us`}
-                  className="text-sm text-white/50 hover:text-white transition-colors"
-                >
-                  {locale === "ar" ? "مواقعنا" : "Find Us"}
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold mb-4">{dict.story}</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href={`/${locale}/about-hyundai`}
-                  className="text-sm text-white/50 hover:text-white transition-colors"
-                >
-                  {locale === "ar" ? "نبذة عن هيونداي" : "About Hyundai"}
-                </Link>
-              </li>
-            </ul>
+                <li>
+                  <Link href={`/${locale}/find-us`} className="text-sm text-white/50 hover:text-white transition-colors">
+                    {isAr ? "مواقعنا" : "Find Us"}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold mb-4">{dict.story}</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link href={`/${locale}/about-hyundai`} className="text-sm text-white/50 hover:text-white transition-colors">
+                    {isAr ? "نبذة عن هيونداي" : "About Hyundai"}
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <Image
-          src='svglogo/AloulaVertical.svg'
-          alt="Al-Oula Motors"
-          width={160}
-          height={44}
-          className="block mr-auto h-20 w-auto mt-16"
-        />
       </div>
 
       {/* legal bar */}
+{/* legal bar — socials · legal links · logo */}
       <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 gap-4">
-          <span>{dict.rights}</span>
-          <div className="flex gap-6">
-            <Link
-              href={`/${locale}/privacy-policy`}
-              className="hover:text-white/60 transition-colors"
-            >
-              {dict.privacyPolicy}
-            </Link>            <span>{dict.legalTerms}</span>
+        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
+
+          {/* social icons */}
+          <div className="flex items-center gap-5 order-2 md:order-1">
+            {[{ href: "#", label: "YouTube" }, { href: "#", label: "X" }, { href: "#", label: "Instagram" }, { href: "#", label: "Facebook" }].map((s) => (
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-white/60 hover:text-white transition-colors">
+                <span className="block w-5 h-5" />
+              </a>
+            ))}
           </div>
+
+          {/* legal links */}
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-white/50 order-1 md:order-2">
+            <Link href={`/${locale}/privacy-policy`} className="hover:text-white transition-colors">{dict.privacyPolicy}</Link>
+            <span>{dict.legalTerms}</span>
+            <span>{isAr ? "سياسة ملفات تعريف الارتباط" : "Cookie Policy"}</span>
+          </div>
+
+          {/* Hyundai logo */}
+          <Image src="/svglogo/HyundaiLogoWhite.svg" alt="Hyundai" width={140} height={24} className="h-6 w-auto order-3" />
+
+        </div>
+
+        {/* copyright */}
+        <div className="border-t border-white/10">
+          <div className="max-w-7xl mx-auto px-6 py-4 text-center text-xs text-white/30">{dict.rights}</div>
         </div>
       </div>
     </footer>
