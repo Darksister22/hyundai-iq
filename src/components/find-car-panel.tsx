@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import type { Locale } from "@/lib/i18n";
 import type { FindCarCategory, FindCarCar } from "@/lib/find-car-data";
-import { usePathname } from "next/navigation";
+import CarHoverMedia from "./car-hover-media";
 
 interface Props {
   locale: Locale;
@@ -34,11 +35,22 @@ export default function FindCarPanel({
   const panelRef = useRef<HTMLDivElement>(null);
   const catsRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const pathname = usePathname();
+
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [mounted, setMounted] = useState(false);
+  // which card is hovered — drives hover media + video playback
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-    if (open && !mounted) setMounted(true);
+  // `mounted` is derived from `open`, so adjust during render rather than
+  // in an effect (avoids the cascading-render warning).
+  if (open && !mounted) setMounted(true);
+
+  // TEMP: hardcoded hover media on the first card to test the effect.
+  // Remove once hover_image / hover_video come from Supabase.
+  const testHoverImage = (index: number) =>
+    index === 0 ? "/images/IONIQ_9_3.webp" : null;
 
   // localized label with English fallback
   const catLabel = (c: FindCarCategory) => (isAr ? c.nameAr ?? c.nameEn : c.nameEn);
@@ -52,11 +64,9 @@ export default function FindCarPanel({
   const filtered: FindCarCar[] =
     category === "all" ? cars : cars.filter((m) => m.categoryId === category);
 
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
-  // mount as soon as the panel should open
-
-
-  
+  // Single animation driver for BOTH open and close. Kills whatever timeline
+  // is running and animates from the panel's current state, so interrupting a
+  // close with a reopen can never strand the panel.
   useEffect(() => {
     if (!mounted) return;
     tlRef.current?.kill();
@@ -81,27 +91,29 @@ export default function FindCarPanel({
     return () => { tl.kill(); };
   }, [open, mounted]);
 
+  // Route changed → panel must be gone. The close timeline can be killed
+  // mid-navigation, so snap shut and unmount from the tween's callback.
   useEffect(() => {
     tlRef.current?.kill();
-    onClose(); // parent sets open = false
+    onClose();
 
     if (panelRef.current) {
       tlRef.current = gsap.timeline().to(panelRef.current, {
         height: 0,
         duration: 0,
-        onComplete: () => setMounted(false), // callback, not effect body
+        onComplete: () => setMounted(false),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  useEffect(() => { //Close on click away / esc press
+  // Close on click away / Esc press
+  useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent | TouchEvent) => {
       const target = e.target as HTMLElement;
       // clicks inside the panel OR inside the site header (e.g. the
-      // "Find a Car" button) must not trigger the click-away close —
-      // otherwise the header button closes and reopens in one gesture.
+      // "Find a Car" button) must not trigger the click-away close
       if (panelRef.current && !panelRef.current.contains(target) && !target.closest("header")) {
         onClose();
       }
@@ -155,13 +167,14 @@ export default function FindCarPanel({
           <div className="max-w-[1400px] mx-auto px-8 pt-8 pb-20">
             {/* category selector (slider) + close */}
             <div ref={catsRef} className="mb-12">
-              {/* close button — own row on mobile (flex end), absolute on desktop */}
+              {/* close button — own row on mobile, absolute on desktop */}
               <div className="flex justify-end mb-4 md:mb-0 md:h-0 relative z-10">
                 <button
                   onClick={onClose}
                   aria-label="Close"
-                  className={`relative z-10 text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${isAr ? "md:left-0" : "md:right-0"
-                    }`}
+                  className={`relative z-10 text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${
+                    isAr ? "md:left-0" : "md:right-0"
+                  }`}
                 >
                   <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
                     <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -176,8 +189,9 @@ export default function FindCarPanel({
                     <button
                       key={c.id}
                       onClick={() => onCategory(c.id)}
-                      className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${category === c.id ? "bg-white shadow text-[#111]" : "text-gray-500 hover:text-gray-800"
-                        }`}
+                      className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                        category === c.id ? "bg-white shadow text-[#111]" : "text-gray-500 hover:text-gray-800"
+                      }`}
                     >
                       {c.label}
                     </button>
@@ -191,36 +205,50 @@ export default function FindCarPanel({
               ref={gridRef}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {filtered.map((m) => (
+              {filtered.map((m, i) => (
                 <Link
                   key={m.id}
                   href={`/${locale}/models/${m.slug}`}
                   onClick={onClose}
+                  onMouseEnter={() => setHoveredId(m.id)}
+                  onMouseLeave={() => setHoveredId(null)}
                   className="group bg-gray-50 hover:bg-gray-100 rounded-xl p-8 transition-colors flex flex-col"
                 >
                   <h3
-                    className={`text-2xl font-bold text-[#111] mb-6 ${isAr ? "text-right" : "text-left"
-                      }`}
+                    className={`text-2xl font-bold text-[#111] mb-6 ${isAr ? "text-right" : "text-left"}`}
                   >
                     {carName(m)}
                   </h3>
+
                   <div className="flex-1 flex items-center justify-center overflow-hidden min-h-[220px]">
-                    {m.heroImage ? (
-                      <div className="relative w-full h-[220px]">
+                    <div className="relative w-full h-[220px]">
+                      {m.heroImage ? (
                         <Image
                           src={m.heroImage}
                           alt={carName(m)}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-contain transition-transform duration-500 group-hover:scale-105"
+                          // fades out only when there's hover media to replace it
+                          className={`object-contain transition-all duration-500 ${
+                            hoveredId === m.id && testHoverImage(i)
+                              ? "opacity-0"
+                              : "group-hover:scale-105"
+                          }`}
                         />
-                      </div>
-                    ) : (
-                      // fallback when the CMS has no hero image yet
-                      <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
-                        {m.nameEn}
-                      </div>
-                    )}
+                      ) : (
+                        // fallback when the CMS has no hero image yet
+                        <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
+                          {m.nameEn}
+                        </div>
+                      )}
+
+                      <CarHoverMedia
+                        hoverVideo={null}
+                        hoverImage={testHoverImage(i)}
+                        alt={carName(m)}
+                        active={hoveredId === m.id}
+                      />
+                    </div>
                   </div>
                 </Link>
               ))}

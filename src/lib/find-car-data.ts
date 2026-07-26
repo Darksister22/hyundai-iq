@@ -23,6 +23,8 @@ export interface FindCarCar {
   heroImage: string | null; // full public URL (may be null if not uploaded yet)
   categoryId: number | null;
   sortOrder: number;
+  hoverVideo?: string | null;  // mp4/webm — takes priority when present
+  hoverImage?: string | null;  // placeholder until video exists
 }
 
 export interface FindCarData {
