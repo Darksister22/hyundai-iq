@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import Header from "@/components/header";
 import { textHyundai, headHyundai, arabic } from "@/lib/fonts";
 import Footer from "@/components/footer";
-import LoadingScreen from "@/components/loading-screen";
+import LoadingScreen from "@/components/loaders/loading-screen";
 import { getFindCarData } from "@/lib/find-car-data";
-import RouteLoadingScreen from "@/components/route-loading-screen";
+import RouteLoadingScreen from "@/components/loaders/route-loading-screen";
 import ChatWidget from "@/components/chat/ChatWidget";
 import { getChatTree } from "@/lib/chat/chat-data-db";
 

@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
+import Image from "next/image";
 
 interface Props {
   locale: Locale;
@@ -13,33 +14,44 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
   const rows = model.additionalDesign.rows;
   const [active, setActive] = useState(0);
   const containerRef = useRef<HTMLElement>(null);
-    const mobileListRef = useRef<HTMLDivElement>(null);
+  const mobileListRef = useRef<HTMLDivElement>(null);
+  const desktopListRef = useRef<HTMLDivElement>(null);
+
 
   // Scroll-spy drives BOTH layouts' sticky image. Only the layout that's
   // visible at the current breakpoint has laid-out (intersecting) rows, so
   // the hidden one's [data-row] elements never fire.
- useEffect(() => {
-    const list = mobileListRef.current;
-    if (!list) return;
-
+  useEffect(() => {
     const pick = () => {
       const mid = window.innerHeight / 2;
       let best = 0;
       let bestDist = Infinity;
-      list.querySelectorAll<HTMLElement>("[data-mrow]").forEach((el) => {
-        const r = el.getBoundingClientRect();
-        const dist = Math.abs(r.top + r.height / 2 - mid);
-        if (dist < bestDist) {
-          bestDist = dist;
-          best = Number(el.dataset.mrow);
-        }
-      });
+
+      const scan = (root: HTMLElement | null, attr: string) => {
+        if (!root) return;
+        root.querySelectorAll<HTMLElement>(`[${attr}]`).forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.height === 0) return; // hidden breakpoint — skip
+          const dist = Math.abs(r.top + r.height / 2 - mid);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = Number(el.dataset[attr === "data-mrow" ? "mrow" : "row"]);
+          }
+        });
+      };
+
+      scan(mobileListRef.current, "data-mrow");
+      scan(desktopListRef.current, "data-row");
       setActive(best);
     };
 
-    pick(); // set correct frame on mount instead of last-intersecting
+    pick();
     window.addEventListener("scroll", pick, { passive: true });
-    return () => window.removeEventListener("scroll", pick);
+    window.addEventListener("resize", pick);
+    return () => {
+      window.removeEventListener("scroll", pick);
+      window.removeEventListener("resize", pick);
+    };
   }, []);
 
   // Shared sliding image track: changing `active` translates the stack by one
@@ -51,13 +63,14 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
         style={{ transform: `translateY(-${active * 100}%)` }}
       >
         {rows.map((row, i) => (
-          <div key={i} className="h-full shrink-0">
+          <div key={i} className="relative h-full shrink-0">
             {row.image ? (
-              <img
+              <Image
                 src={row.image}
                 alt={isAr ? row.titleAr : row.titleEn}
-                loading="lazy"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400">
@@ -80,7 +93,7 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
           {isAr ? model.additionalDesign.headingAr : model.additionalDesign.headingEn}
         </h2>
 
-{/* MOBILE: sticky sliding image on top, captions scroll beneath */}
+        {/* MOBILE: sticky sliding image on top, captions scroll beneath */}
         <div className="md:hidden">
           <div className="sticky top-[72px] z-10 h-64 rounded-lg overflow-hidden mb-4">
             {imageTrack}
@@ -90,8 +103,7 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
               <div
                 key={i}
                 data-mrow={i}
-                className="min-h-[65svh] flex flex-col justify-center"
-              >
+                className="min-h-[65svh] flex flex-col justify-center">
                 <p className="text-sm text-gray-400 mb-3">{isAr ? row.labelAr : row.labelEn}</p>
                 <p className="text-2xl font-bold text-[#111] leading-snug">
                   {isAr ? row.titleAr : row.titleEn}
@@ -108,7 +120,7 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
               {imageTrack}
             </div>
           </div>
-          <div>
+          <div ref={desktopListRef}>
             {rows.map((row, i) => (
               <div key={i} data-row={i} className="min-h-[60svh] flex flex-col justify-center">
                 <p className="text-sm text-gray-400 mb-3">{isAr ? row.labelAr : row.labelEn}</p>
