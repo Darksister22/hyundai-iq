@@ -1,6 +1,7 @@
 import { getDictionary, Locale } from "@/lib/i18n";
 import ParallaxImage from "@/components/parallax-image";
-import { getLocations, localized } from "@/lib/locations";
+import { getLocations } from "@/lib/locations";
+import LocationCard from "@/components/location-card";
 import { type Metadata } from "next";
 
 export async function generateMetadata({
@@ -17,6 +18,9 @@ export async function generateMetadata({
     alternates: { canonical: `/${locale}/find-us` },
   };
 }
+
+// regenerates at most every 5 min, matching the rest of the site
+export const revalidate = 300;
 
 export default async function FindUsPage({
   params,
@@ -44,7 +48,7 @@ export default async function FindUsPage({
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-[#002C5F] mb-2">{dict.findUs.title}</h2>
           <p className="text-gray-500 mb-12">{dict.findUs.subtitle}</p>
@@ -58,7 +62,7 @@ export default async function FindUsPage({
                 href={mapHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block h-96 rounded-xl overflow-hidden border border-gray-200 relative group"
+                className="block h-56 sm:h-72 md:h-96 rounded-xl overflow-hidden border border-gray-200 relative group"
               >
                 <img
                   src="/images/hq-map.webp"
@@ -74,38 +78,15 @@ export default async function FindUsPage({
 
           {/* location cards from Supabase */}
           {locations.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              {locations.map((loc) => {
-                const city = localized(loc, "city", locale);
-                const landmark = localized(loc, "landmark", locale);
-                return (
-                  <a
-                    key={loc.id}
-                    href={loc.map_url ?? "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow block"
-                  >
-                    {loc.province && (
-                      <span className="text-xs uppercase tracking-wider text-[#00AAD2] font-semibold">
-                        {loc.province}
-                      </span>
-                    )}
-                    <h3 className="font-semibold text-[#002C5F] mt-1 capitalize">
-                      {city}
-                    </h3>
-                    {landmark && (
-                      <p className="text-sm text-gray-500 mt-2 capitalize">{landmark}</p>
-                    )}
-                    {loc.map_url && (
-                      <span className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-[#002C5F] group-hover:text-[#00AAD2] transition-colors">
-                        {locale === "ar" ? "على الخريطة" : "View on map"}
-                        <span aria-hidden>›</span>
-                      </span>
-                    )}
-                  </a>
-                );
-              })}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+              {locations.map((loc) => (
+                <LocationCard
+                  key={loc.id}
+                  loc={loc}
+                  locale={locale}
+                  viewOnMapLabel={dict.findUs.viewOnMap}
+                />
+              ))}
             </div>
           ) : (
             <p className="text-gray-400 mt-12">

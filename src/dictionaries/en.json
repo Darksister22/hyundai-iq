@@ -877,10 +877,11 @@
     "privacyConsent": "I agree that my personal information will be used in accordance with the privacy policy.",
     "successMsg": "Thank you for reaching out. Your message has been received."
   },
-  "findUs": {
+"findUs": {
     "title": "Find Us",
     "subtitle": "Locate your nearest Hyundai showroom",
-    "home": "Home"
+    "home": "Home",
+    "viewOnMap": "View on map"
   },
   "footer": {
     "offers": "Offers",

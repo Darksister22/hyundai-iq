@@ -3,7 +3,7 @@ import type { Viewport } from "next";
 import type { Metadata } from "next";
 import Header from "@/components/header";
 import { textHyundai, headHyundai, arabic } from "@/lib/fonts";
-import Footer from "@/components/footer";
+import Footer from "@/components/footer-sections/footer";
 import LoadingScreen from "@/components/loaders/loading-screen";
 import { getFindCarData } from "@/lib/find-car-data";
 import RouteLoadingScreen from "@/components/loaders/route-loading-screen";

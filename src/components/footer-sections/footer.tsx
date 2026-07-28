@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Locale } from "@/lib/i18n";
 import Image from "next/image";
 import FooterVehicles from "./footer-vehicles";
+import FooterServices from "./footer-services";
+import { YouTube, Twitter, Instagram, Facebook } from "@deemlol/next-icons";
 import { FindCarCar, FindCarCategory } from "@/lib/find-car-data";
 
 interface FooterProps {
@@ -44,7 +46,7 @@ export default function Footer({ locale, dict, cars, categories }: FooterProps) 
             alt="Al-Oula Motors"
             width={160}
             height={44}
-            className="h-14 w-auto shrink-0"
+            className="h-20 w-auto shrink-0"
           />
 
           {/* the four link columns take the remaining width */}
@@ -56,26 +58,18 @@ export default function Footer({ locale, dict, cars, categories }: FooterProps) 
               heading={dict.vehicles}
             />
 
-            <div>
-              <h4 className="text-sm font-semibold mb-4">{dict.services}</h4>
-              <ul className="space-y-2">
-                {[
-                  { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
-                  { href: `/${locale}/services/call-center`, label: dict.callCenter },
-                  { href: `/${locale}/services/after-sales`, label: dict.afterSales },
-                  { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
-                  { href: `/${locale}/customer-promise`, label: dict.customerPromise },
-                  { href: `/${locale}/offers`, label: dict.salesOffers },
-                  { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
-                ].map((s) => (
-                  <li key={s.href}>
-                    <Link href={s.href} className="text-sm text-white/50 hover:text-white transition-colors">
-                      {s.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <FooterServices
+              heading={dict.services}
+              links={[
+                { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
+                { href: `/${locale}/services/call-center`, label: dict.callCenter },
+                { href: `/${locale}/services/after-sales`, label: dict.afterSales },
+                { href: `/${locale}/services/parts-accessories`, label: dict.partsAccessories },
+                { href: `/${locale}/customer-promise`, label: dict.customerPromise },
+                { href: `/${locale}/offers`, label: dict.salesOffers },
+                { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
+              ]}
+            />
 
             <div>
               <h4 className="text-sm font-semibold mb-4">{dict.support}</h4>
@@ -107,35 +101,26 @@ export default function Footer({ locale, dict, cars, categories }: FooterProps) 
         </div>
       </div>
 
-      {/* legal bar */}
-{/* legal bar — socials · legal links · logo */}
+      {/* legal bar — socials · legal links · logo */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
 
-          {/* social icons */}
           <div className="flex items-center gap-5 order-2 md:order-1">
-            {[{ href: "#", label: "YouTube" }, { href: "#", label: "X" }, { href: "#", label: "Instagram" }, { href: "#", label: "Facebook" }].map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-white/60 hover:text-white transition-colors">
-                <span className="block w-5 h-5" />
+            {[{ Icon: YouTube, href: "#", label: "YouTube" }, { Icon: Twitter, href: "#", label: "X" }, { Icon: Instagram, href: "#", label: "Instagram" }, { Icon: Facebook, href: "#", label: "Facebook" }].map(({ Icon, href, label }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="text-white/60 hover:text-white transition-colors">
+                <Icon size={20} />
               </a>
             ))}
           </div>
 
-          {/* legal links */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-white/50 order-1 md:order-2">
             <Link href={`/${locale}/privacy-policy`} className="hover:text-white transition-colors">{dict.privacyPolicy}</Link>
             <span>{dict.legalTerms}</span>
             <span>{isAr ? "سياسة ملفات تعريف الارتباط" : "Cookie Policy"}</span>
           </div>
 
-          {/* Hyundai logo */}
           <Image src="/svglogo/HyundaiLogoWhite.svg" alt="Hyundai" width={140} height={24} className="h-6 w-auto order-3" />
 
-        </div>
-
-        {/* copyright */}
-        <div className="border-t border-white/10">
-          <div className="max-w-7xl mx-auto px-6 py-4 text-center text-xs text-white/30">{dict.rights}</div>
         </div>
       </div>
     </footer>

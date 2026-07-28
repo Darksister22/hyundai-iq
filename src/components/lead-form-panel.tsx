@@ -125,7 +125,7 @@ export default function LeadFormPanel({
       phone: `+964${national}`,
       email: cleanEmail || null,
       city,
-      preferred_date: date || null,
+      preferred_date: variant === "testDrive" ? date || null : null,
       locale,
       // status omitted on purpose — the RLS policy requires the default 'new'
     });
@@ -259,17 +259,19 @@ export default function LeadFormPanel({
                 </select>
               </Field>
 
-              <Field label={dict.formDate} required>
-                {/* min = today: no back-dated appointments */}
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => { setDate(e.target.value); clearError(); }}
-                  required
-                  min={new Date().toISOString().split("T")[0]}
-                  className={INPUT}
-                />
-              </Field>
+              {variant === "testDrive" && (
+               <Field label={dict.formDate} required>
+                 {/* min = today: no back-dated appointments */}
+                 <input
+                   type="date"
+                   value={date}
+                   onChange={(e) => { setDate(e.target.value); clearError(); }}
+                   required
+                   min={new Date().toISOString().split("T")[0]}
+                   className={INPUT}
+                 />
+               </Field>
+             )}
 
               {state === "error" && errorMsg && (
                 <p role="alert" className="text-sm text-red-600">{errorMsg}</p>
