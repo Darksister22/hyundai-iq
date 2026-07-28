@@ -9,6 +9,7 @@ import { getFindCarData } from "@/lib/find-car-data";
 import RouteLoadingScreen from "@/components/loaders/route-loading-screen";
 import ChatWidget from "@/components/chat/ChatWidget";
 import { getChatTree } from "@/lib/chat/chat-data-db";
+import GsapConfig from "@/components/gsap-config";
 
 
 export function generateStaticParams() {
@@ -28,24 +29,24 @@ export const viewport: Viewport = {
   initialScale: 1,
   interactiveWidget: "resizes-content"
 }
-export  async function generateMetadata({params,}:{params: Promise<{locale:string}>;}):
-Promise<Metadata> {
-  const {locale} = await params;
-  const isAr = locale ==="ar";
-  return{
-    metadataBase:new URL(siteUrl),
+export async function generateMetadata({ params, }: { params: Promise<{ locale: string }>; }):
+  Promise<Metadata> {
+  const { locale } = await params;
+  const isAr = locale === "ar";
+  return {
+    metadataBase: new URL(siteUrl),
     title: {
-      default:isAr ? "هيونداي العراق" : "Hyundai Iraq",
-      template: isAr? "%s | هيونداي العراق" : "Hyundai Iraq",
+      default: isAr ? "هيونداي العراق" : "Hyundai Iraq",
+      template: isAr ? "%s | هيونداي العراق" : "Hyundai Iraq",
     },
-    description : 
+    description:
       isAr ? "الاولى موتورز الموزع المعتمد لسيارات هونداي في العراق لبيع المركبات و الخدمات و قطع الغيار الاصلية" : "Al-Oula Motors the authorize Hyundai distributor in Iraq for selling vehicles, service, and genuine parts",
-    alternates:{
+    alternates: {
       canonical: `/${locale}`,
-      languages: {ar: "/ar", en: "/en"}
+      languages: { ar: "/ar", en: "/en" }
     },
-    openGraph:{
-      type:"website",
+    openGraph: {
+      type: "website",
       locale: isAr ? "ar_IQ" : "en_US",
       siteName: isAr ? "هونداي العراق" : "Hyundai Iraq"
     }
@@ -69,8 +70,8 @@ export default async function LocaleLayout({
     <html lang={locale} dir={dir} className={`${textHyundai.variable} ${headHyundai.variable} ${arabic.variable}`}>
       <body>
         <LoadingScreen />
-          <RouteLoadingScreen />
-
+        <RouteLoadingScreen />
+        <GsapConfig />
         <Header locale={locale} dict={dict.nav} categories={categories} cars={cars} />
         <main className="pt-[72px]">{children}</main>
         <Footer locale={locale} dict={dict.footer} cars={cars} categories={categories} />
