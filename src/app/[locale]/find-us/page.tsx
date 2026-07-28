@@ -36,9 +36,7 @@ export default async function FindUsPage({
   return (
     <>
       {/* ── Banner ── */}
-      <section className="relative h-[80svh] min-h-[590px] -mt-[72px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">
-        <ImageWithLoader src="/images/find-us.webp" unoptimized className="absolute inset-0 h-full w-full" alt={dict.findUs.title}/>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+<section className="relative h-[50svh] md:h-[80svh] min-h-[400px] -mt-[72px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">        <ImageWithLoader src="/images/find-us.webp" fill unoptimized className="object-cover" alt={dict.findUs.title} />        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-12">
           <nav className="text-xs text-white/80 flex items-center gap-2 self-start mb-3">
             <span>{dict.findUs.home ?? (locale === "ar" ? "الرئيسية" : "Home")}</span>
@@ -60,7 +58,7 @@ export default async function FindUsPage({
             const mapHref = hq?.map_url ?? "#";
             return (
               <a href={mapHref} target="_blank" rel="noopener noreferrer" className="block h-56 sm:h-72 md:h-96 rounded-xl overflow-hidden border border-gray-200 relative group">
-                <ImageWithLoader unoptimized src="/images/hq-map.webp" alt={locale === "ar" ? "موقع المقر الرئيسي" : "HQ location"} fill unoptimized className="object-cover" />
+                <ImageWithLoader src="/images/hq-map.webp" alt={locale === "ar" ? "موقع المقر الرئيسي" : "HQ location"} fill  className="h-auto w-auto object-cover" />
                 <span className="absolute bottom-4 end-4 z-10 bg-white/90 text-[#002C5F] text-sm font-semibold px-4 py-2 rounded shadow">
                   {locale === "ar" ? "افتح في الخرائط" : "Open in Maps"}
                 </span>
