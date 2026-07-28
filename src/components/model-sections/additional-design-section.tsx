@@ -2,8 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
-import Image from "next/image";
-
+import ImageWithLoader from "../loaders/loading-image";
 interface Props {
   locale: Locale;
   model: VehicleModel;
@@ -65,7 +64,7 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
         {rows.map((row, i) => (
           <div key={i} className="relative h-full shrink-0">
             {row.image ? (
-              <Image
+              <ImageWithLoader
                 src={row.image}
                 alt={isAr ? row.titleAr : row.titleEn}
                 fill

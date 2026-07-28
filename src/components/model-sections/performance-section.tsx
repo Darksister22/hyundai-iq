@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
+import ImageWithLoader from "../loaders/loading-image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,21 +64,21 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
     >
       {/* sticky blurring background */}
       <div className="sticky top-0 h-[100svh] overflow-hidden">
-        <div
-          ref={bgRef}
-          className="absolute -inset-8 scale-110 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm overflow-hidden"
-        >
+        <div ref={bgRef} className="absolute inset-0 overflow-hidden">
           {perf.heroImage ? (
-            <img
+            <ImageWithLoader
               src={perf.heroImage}
               alt={isAr ? perf.engineAr : perf.engineEn}
-              className="w-full h-full object-cover"
+              className="object-cover"
+              unoptimized
+              fill
             />
           ) : (
-            <>Performance driving image (full-bleed)</>
+            <div className="w-full h-full bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center text-white/30 text-sm">
+              Performance driving image (full-bleed)
+            </div>
           )}
         </div>
-
       </div>
 
       {/* content scrolls over */}
@@ -97,15 +98,13 @@ export default function PerformanceSection({ locale, model, heading }: Props) {
                 <p className="text-3xl md:text-4xl font-bold">{stat.value}</p>
               </div>
             ))}
-            {perf.closingImage && (
-              <img
-                src={perf.closingImage}
-                alt=""
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
-            )}
           </div>
+
+          {perf.closingImage && (
+            <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden mt-20">
+              <ImageWithLoader src={perf.closingImage} alt="" unoptimized fill className="object-cover" />
+            </div>
+          )}
         </div>
       </div>
     </section>

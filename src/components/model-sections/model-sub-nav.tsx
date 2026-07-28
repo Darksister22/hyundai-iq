@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
 
 export interface SubNavSection {
@@ -22,7 +21,6 @@ interface Props {
 }
 
 export default function ModelSubNav({
-  locale,
   modelName,
   sections,
   brochureUrl,

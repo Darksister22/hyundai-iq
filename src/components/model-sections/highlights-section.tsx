@@ -5,6 +5,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import type { Locale } from "@/lib/i18n";
 import Reveal from "@/components/reveal";
 import type { VehicleModel } from "@/lib/models-data";
+import ImageWithLoader from "../loaders/loading-image";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -44,14 +45,17 @@ export default function HighlightsSection({ locale, model, heading }: Props) {
             <SwiperSlide key={`${card.titleEn}-${i}`}>
               <div className="group">
                 {/* image with hover zoom */}
-                <div className="h-[300px] rounded-lg overflow-hidden mb-5">
+                <div className="h-[300px] relative rounded-lg overflow-hidden mb-5">
                   {card.image ? (
-                    <img
+                    <ImageWithLoader
                       src={card.image}
+                      unoptimized
+                      fill
                       alt={isAr ? card.titleAr : card.titleEn}
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
+
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105" />
                   )}

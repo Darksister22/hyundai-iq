@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
-import ParallaxImage from "@/components/parallax-image";
+import ImageWithLoader from "../loaders/loading-image";
 import Reveal from "@/components/reveal";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -43,12 +43,15 @@ export default function DesignSection({
       </div>
 
       {/* full-bleed design hero image (ParallaxImage falls back to its gradient when src is empty) */}
-      <ParallaxImage
-        src={model.design.heroImage || undefined}
-        alt={isAr ? model.design.headingAr : model.design.headingEn}
-        label="Full Design Section"
-        className="h-[60svh] min-h-[400px]"
-      />
+      <div className="relative h-[60svh] min-h-[400px] w-full overflow-hidden">
+        <ImageWithLoader
+          src={model.design.heroImage}
+          fill
+          unoptimized
+          alt={isAr ? model.design.headingAr : model.design.headingEn}
+          className="object-cover"
+        />
+      </div>
 
       {/* exterior / interior toggle + gallery */}
       <div className="max-w-[1400px] mx-auto px-8 py-16">
@@ -56,8 +59,8 @@ export default function DesignSection({
           <button
             onClick={() => setTab("exterior")}
             className={`text-3xl font-bold transition-colors ${tab === "exterior"
-                ? "text-[#111] border-b-2 border-[#111] pb-1"
-                : "text-gray-300"
+              ? "text-[#111] border-b-2 border-[#111] pb-1"
+              : "text-gray-300"
               }`}
           >
             {exteriorLabel}
@@ -65,8 +68,8 @@ export default function DesignSection({
           <button
             onClick={() => setTab("interior")}
             className={`text-3xl font-bold transition-colors ${tab === "interior"
-                ? "text-[#111] border-b-2 border-[#111] pb-1"
-                : "text-gray-300"
+              ? "text-[#111] border-b-2 border-[#111] pb-1"
+              : "text-gray-300"
               }`}
           >
             {interiorLabel}
@@ -82,15 +85,16 @@ export default function DesignSection({
           key={tab}
         >
           {items.map((item, i) => (
-            <SwiperSlide key={i}>
+           <SwiperSlide key={i}>
               <div className="group">
-                <div className="h-[420px] rounded-lg overflow-hidden mb-5">
+                <div className="relative h-[420px] rounded-lg overflow-hidden mb-5">
                   {item.image ? (
-                    <img
+                    <ImageWithLoader
                       src={item.image}
                       alt={isAr ? item.captionAr : item.captionEn}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      unoptimized
+                      fill
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105">

@@ -2,10 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import ParallaxImage from "../parallax-image";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
+import ImageWithLoader from "../loaders/loading-image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,11 +57,18 @@ export default function ConvenienceSection({ locale, model }: Props) {
       <div className="relative h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end overflow-hidden">
         {conv.bgImage && (
           <>
-            <img
+            {/* <img
               src={conv.bgImage}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
-            />
+            /> */}
+
+            <ImageWithLoader  src={conv.bgImage}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized
+              className="absolute inset-0 w-full h-full object-cover"/>
             {/* dark scrim so the white heading stays readable on any image */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
           </>
@@ -81,11 +88,12 @@ export default function ConvenienceSection({ locale, model }: Props) {
         <div className="conv-row max-w-[1400px] mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           {conv.cards.map((card, i) => (
             <div key={`${card.titleEn}-${i}`} className="conv-card group">
-              <div className="h-[200px] rounded-lg overflow-hidden mb-4">
-                <ParallaxImage
-                  src={card.image || undefined}
+              <div className="h-[200px] relative rounded-lg overflow-hidden mb-4">
+                <ImageWithLoader
+                  src={card.image }
+                  fill
+                  unoptimized
                   alt={isAr ? card.titleAr : card.titleEn}
-                  label={`convenience image`}
                   className="h-full w-full"
                 />
               </div>

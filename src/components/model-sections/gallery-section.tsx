@@ -9,6 +9,7 @@ import type { VehicleModel } from "@/lib/models-data";
 import "swiper/css";
 import "swiper/css/navigation";
 import Reveal from "../reveal";
+import ImageWithLoader from "../loaders/loading-image";
 
 interface Props {
   locale: Locale;
@@ -61,11 +62,12 @@ export default function GallerySection({ locale, model, heading }: Props) {
         {/* Main image — aspect-ratio box, object-contain, no cropping. */}
         <div className="relative aspect-[16/9] max-h-[70svh] w-full rounded-lg overflow-hidden mb-4 bg-neutral-100 flex items-center justify-center text-gray-500 text-sm">
           {model.gallery[active] ? (
-            <img
-              src={model.gallery[active]}
+
+            <ImageWithLoader   src={model.gallery[active]}
               alt={`Gallery image ${active + 1}`}
-              className="absolute inset-0 w-full h-full object-contain"
-            />
+              fill
+              unoptimized
+              className="absolute inset-0 w-full h-full object-contain"/>
           ) : (
             <>Gallery image {active + 1}</>
           )}
@@ -105,12 +107,13 @@ export default function GallerySection({ locale, model, heading }: Props) {
                 }`}
               >
                 {img ? (
-                  <img
-                    src={img}
+
+                  <ImageWithLoader src={img}
                     alt={`Thumbnail ${i + 1}`}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                    fill
+                    unoptimized
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 ) : (
                   <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-[10px] text-gray-400 transition-transform duration-500 group-hover:scale-110">
                     {i + 1}
@@ -175,12 +178,15 @@ export default function GallerySection({ locale, model, heading }: Props) {
           )}
 
           {/* The image itself. stopPropagation so clicking the photo doesn't close. */}
-          <img
-            src={model.gallery[active]}
+
+          <ImageWithLoader             src={model.gallery[active]}
             alt={`Gallery image ${active + 1}`}
+            loading="lazy"
+            sizes="100vw"
+            fill
+            unoptimized
             onClick={(e) => e.stopPropagation()}
-            className="max-w-[92vw] max-h-[88svh] object-contain select-none"
-          />
+            className="max-w-[92vw] max-h-[88svh] object-contain select-none" />
         </div>
       )}
     </section>
