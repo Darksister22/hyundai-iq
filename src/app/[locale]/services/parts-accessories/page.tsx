@@ -36,7 +36,7 @@ export default async function PartsAccessoriesPage({
 
   return (
     <>
-<section className="relative h-[60svh] min-h-[24rem] -mt-[72px] overflow-hidden">
+<section className="relative h-[60lvh] min-h-[24rem] -mt-[72px] overflow-hidden">
         <ParallaxImage src="/images/services/accessories-banner.webp" label={t.bannerTitle} priority className="absolute inset-0 h-full" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">

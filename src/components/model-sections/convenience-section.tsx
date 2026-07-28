@@ -54,7 +54,7 @@ export default function ConvenienceSection({ locale, model }: Props) {
   return (
     <section id="convenience" ref={ref} className="scroll-mt-36 overflow-x-clip">
       {/* full-bleed bg with heading */}
-      <div className="relative h-[60svh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end overflow-hidden">
+      <div className="relative h-[60lvh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end overflow-hidden">
         {conv.bgImage && (
           <>
             {/* <img

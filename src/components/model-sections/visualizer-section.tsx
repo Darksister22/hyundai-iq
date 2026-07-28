@@ -27,11 +27,11 @@ const PX_PER_FRAME = 8;
    ██  A. SECTION SIZE  ██
 
    One full screen at every width, matching the hero's convention.
-     100svh → smallest viewport (mobile bar visible). Never resizes.
+     100lvh → smallest viewport (mobile bar visible). Never resizes.
      100dvh → tracks the bar. Fuller, but resizes as you scroll.
    MIN_HEIGHT stops the stage collapsing on a landscape phone.
    ═══════════════════════════════════════════════════════════════════ */
-const SECTION_HEIGHT = "calc(85svh - var(--safe-top))";
+const SECTION_HEIGHT = "calc(85lvh - var(--safe-top))";
 const SECTION_MIN_HEIGHT = "560px";
 
 /* ═══════════════════════════════════════════════════════════════════

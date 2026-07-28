@@ -60,7 +60,7 @@ export default function GallerySection({ locale, model, heading }: Props) {
 
       <div className="max-w-[1400px] mx-auto px-8">
         {/* Main image — aspect-ratio box, object-contain, no cropping. */}
-        <div className="relative aspect-[16/9] max-h-[70svh] w-full rounded-lg overflow-hidden mb-4 bg-neutral-100 flex items-center justify-center text-gray-500 text-sm">
+        <div className="relative aspect-[16/9] max-h-[70lvh] w-full rounded-lg overflow-hidden mb-4 bg-neutral-100 flex items-center justify-center text-gray-500 text-sm">
           {model.gallery[active] ? (
 
             <ImageWithLoader   src={model.gallery[active]}
@@ -186,7 +186,7 @@ export default function GallerySection({ locale, model, heading }: Props) {
             fill
             unoptimized
             onClick={(e) => e.stopPropagation()}
-            className="max-w-[92vw] max-h-[88svh] object-contain select-none" />
+            className="max-w-[92vw] max-h-[88lvh] object-contain select-none" />
         </div>
       )}
     </section>

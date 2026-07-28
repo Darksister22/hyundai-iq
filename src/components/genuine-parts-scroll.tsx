@@ -61,8 +61,8 @@ export default function GenuinePartsScroll({
 
   return (
     // one viewport of scroll per guarantee
-    <div ref={ref} style={{ height: `${count * 100}svh` }} className="relative">
-      <div className="sticky top-0 h-[100svh] overflow-hidden">
+    <div ref={ref} style={{ height: `${count * 100}lvh` }} className="relative">
+      <div className="sticky top-0 h-[100lvh] overflow-hidden">
         {/* sliding image track — no CSS transition; scroll drives it directly */}
         <div ref={trackRef} className="h-full flex flex-col will-change-transform">
           {guarantees.map((g, i) => (

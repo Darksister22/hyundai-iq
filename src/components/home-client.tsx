@@ -171,7 +171,7 @@ export default function HomeClient({
   return (
     <div ref={rootRef} className="flex flex-col">
       <div className="-mt-[72px]">
-        <section ref={heroRef} className="relative h-[36rem] md:h-[100svh] overflow-hidden">          {banners.length === 0 ? (
+<section ref={heroRef} className="relative h-[100lvh] overflow-hidden">          {banners.length === 0 ? (
           /* fallback when the CMS has no banners yet — single static slide */
           <div className="relative h-full bg-[#002C5F] flex items-center">
             <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
@@ -304,7 +304,7 @@ export default function HomeClient({
               className="model-swiper !pb-10"
             >
               {filteredCars.map((car) => (
-                <SwiperSlide key={car.id} className="!w-auto !h-[60svh] flex items-center">
+                <SwiperSlide key={car.id} className="!w-auto !h-[60lvh] flex items-center">
                   <ModelCard
                     locale={locale}
                     car={car}

@@ -32,7 +32,7 @@ export default async function AftersalesLayout({
   return (
     <div className="bg-white">
       {/* ---------- Banner (one image, fixed for both pages) ---------- */}
-      <section className="relative h-[70svh] min-h-[28rem] -mt-[72px] overflow-hidden ">
+      <section className="relative h-[70lvh] min-h-[28rem] -mt-[72px] overflow-hidden ">
         <Image
           src="/images/services/aftersales-banner.webp"
           alt={dict.bannerTitle}

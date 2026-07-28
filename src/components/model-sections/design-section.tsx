@@ -43,7 +43,7 @@ export default function DesignSection({
       </div>
 
       {/* full-bleed design hero image (ParallaxImage falls back to its gradient when src is empty) */}
-      <div className="relative h-[60svh] min-h-[400px] w-full overflow-hidden">
+      <div className="relative h-[60lvh] min-h-[400px] w-full overflow-hidden">
         <ImageWithLoader
           src={model.design.heroImage}
           fill

@@ -162,7 +162,7 @@ export default function LeadFormPanel({
         aria-modal="true"
         aria-label={title}
         className={`fixed z-[80] bg-white shadow-2xl flex flex-col
-          inset-x-0 bottom-0 max-h-[90svh] rounded-t-2xl
+          inset-x-0 bottom-0 max-h-[90lvh] rounded-t-2xl
           md:inset-y-0 md:end-0 md:start-auto md:w-[26rem] md:max-h-none md:rounded-none
           transition-transform duration-300 ease-out
           ${open

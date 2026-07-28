@@ -46,7 +46,7 @@ export default async function AftersalesOfferDetailPage({
   return (
     <div className="bg-white">
       {/* hero image */}
-      <section className="relative h-[60svh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
+      <section className="relative h-[60lvh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
         {offer.image && (
           <Image src={offer.image} alt={isAr ? offer.title.ar : offer.title.en} fill priority sizes="100vw" className="object-cover" />
         )}

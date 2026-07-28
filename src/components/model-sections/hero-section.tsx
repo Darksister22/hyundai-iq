@@ -25,7 +25,7 @@ export default function HeroSection({
     locale === "ar" ? model.heroHeadlineAr : model.heroHeadlineEn;
 
   return (
-<section className="relative h-[100svh] -mt-[72px] min-h-[560px] w-full overflow-hidden bg-gray-300">      {/* full-bleed exterior image */}
+<section className="relative h-[100lvh] -mt-[72px] min-h-[560px] w-full overflow-hidden bg-gray-300">      {/* full-bleed exterior image */}
       {model.hero && (
         <ImageWithLoader 
         src={model.hero}

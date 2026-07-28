@@ -10,7 +10,7 @@
 
 /*lock to small viewport in mobile to disable the address bar from collabsing.*/
 .h-screen-stable {
-  height: 100svh;
+  height: 100lvh;
 }
 
 /* base resets */
@@ -20,7 +20,7 @@ body {
   overflow-x: clip;
   /* stops full-bleed sideways shift on mobile */
   width: 100%;
-  min-height: 100svh;
+  min-height: 100lvh;
     background-color: #ffffff;
 }
 

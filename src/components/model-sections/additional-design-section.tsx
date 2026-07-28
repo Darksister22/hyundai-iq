@@ -102,7 +102,7 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
               <div
                 key={i}
                 data-mrow={i}
-                className="min-h-[65svh] flex flex-col justify-center">
+                className="min-h-[65lvh] flex flex-col justify-center">
                 <p className="text-sm text-gray-400 mb-3">{isAr ? row.labelAr : row.labelEn}</p>
                 <p className="text-2xl font-bold text-[#111] leading-snug">
                   {isAr ? row.titleAr : row.titleEn}
@@ -121,7 +121,7 @@ export default function AdditionalDesignSection({ locale, model }: Props) {
           </div>
           <div ref={desktopListRef}>
             {rows.map((row, i) => (
-              <div key={i} data-row={i} className="min-h-[60svh] flex flex-col justify-center">
+              <div key={i} data-row={i} className="min-h-[60lvh] flex flex-col justify-center">
                 <p className="text-sm text-gray-400 mb-3">{isAr ? row.labelAr : row.labelEn}</p>
                 <p className="text-3xl font-bold text-[#111] leading-snug">
                   {isAr ? row.titleAr : row.titleEn}

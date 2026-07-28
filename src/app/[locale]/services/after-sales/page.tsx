@@ -71,7 +71,7 @@ export default async function AfterSalesPage({
   return (
     <div className="bg-white">
       {/* Banner — starts at the top, under the fixed header */}
-      <section className="relative h-[60svh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-100">
+      <section className="relative h-[60lvh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-100">
         <Image src="/images/customer-promise.webp" alt={t.bannerTitle} fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
