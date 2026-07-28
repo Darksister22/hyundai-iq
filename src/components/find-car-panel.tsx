@@ -17,6 +17,8 @@ interface Props {
   categories: FindCarCategory[]; // DB categories, already ordered by sort_order
   cars: FindCarCar[];            // DB cars, already ordered by sort_order
   navHeight?: number;
+  onMountedChange?: (mounted: boolean) => void;
+   instantClose?: boolean;
 }
 
 // "all" or a category id from the DB
@@ -30,6 +32,8 @@ export default function FindCarPanel({
   categories,
   cars,
   navHeight = 72,
+  onMountedChange,
+  instantClose
 }: Props) {
   const isAr = locale === "ar";
   const panelRef = useRef<HTMLDivElement>(null);
@@ -78,18 +82,29 @@ export default function FindCarPanel({
         .fromTo(catsRef.current, { y: -12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, "-=0.1")
         .fromTo(gridRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, "-=0.05");
     } else {
-      tl.to(gridRef.current, { y: 16, opacity: 0, duration: 0.25, ease: "power2.in" })
-        .to(catsRef.current, { y: -12, opacity: 0, duration: 0.2, ease: "power2.in" }, "-=0.05")
-        .to(panelRef.current, {
+      if (instantClose) {
+               tl.to(panelRef.current, {
           height: 0,
-          duration: 0.4,
-          ease: "power3.inOut",
+          duration: 0.3,
+          ease: "power2.inOut",
           onComplete: () => setMounted(false),
         });
+      } else {
+        tl.to(gridRef.current, { y: 16, opacity: 0, duration: 0.25, ease: "power2.in" })
+          .to(catsRef.current, { y: -12, opacity: 0, duration: 0.2, ease: "power2.in" }, "-=0.05")
+          .to(panelRef.current, {
+            height: 0,
+            duration: 0.4,
+            ease: "power3.inOut",
+            onComplete: () => setMounted(false),
+          });
+      }
     }
-
     return () => { tl.kill(); };
   }, [open, mounted]);
+    useEffect(() => {
+    onMountedChange?.(mounted);
+  }, [mounted, onMountedChange]);
 
   // Route changed → panel must be gone. The close timeline can be killed
   // mid-navigation, so snap shut and unmount from the tween's callback.

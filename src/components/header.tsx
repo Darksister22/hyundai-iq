@@ -33,7 +33,7 @@ interface HeaderProps {
     partsAccessoriesDesc: string;
     customerPromiseDesc: string;
     aftersalesOffers: string;
-    salesOffers:string;
+    salesOffers: string;
   };
   categories: FindCarCategory[];
   cars: FindCarCar[];
@@ -56,9 +56,13 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
   const [offersOpen, setOffersOpen] = useState(false);
   const offersRef = useRef<HTMLDivElement>(null);
   const [offersMobileOpen, setOffersMobileOpen] = useState(false);
+  const [findPanelVisible, setFindPanelVisible] = useState(false);
+  const [findInstant, setFindInstant] = useState(false);
   // the header renders its solid (white) look when scrolled OR hovered
   // OR while the services dropdown is open
-  const solid = !atTop || hovered || svcOpen || offersOpen;
+  const findOpenRef = useRef(findOpen);
+  findOpenRef.current = findOpen;
+  const solid = !atTop || hovered || svcOpen || offersOpen || findPanelVisible;
 
   // the service destinations — single source for desktop + mobile
   const serviceLinks = [
@@ -102,9 +106,11 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
   const divider = solid ? "bg-gray-200" : "bg-white/25";
 
   //header scroll state
+
   useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY;
+      if (findOpenRef.current) { setFindInstant(true); setFindOpen(false); }
       setAtTop(current < 20);
       setSvcOpen(false);
       setOffersOpen(false);
@@ -198,8 +204,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
           {/* ---------- zone 2: primary nav (lg and up) ---------- */}
           <nav className="hidden lg:flex items-center gap-1">
             <button
-              onClick={() => setFindOpen((o) => !o)}
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}
+              onClick={() => setFindOpen((o) => { if (!o) setFindInstant(false); return !o; })} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${navLink}`}
             >
               {dict.findACar}
             </button>
@@ -382,8 +387,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
             {/* scrollable link list */}
             <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-1">
               <button
-                onClick={() => { setMenuOpen(false); setFindOpen(true); }}
-                className="text-start py-3 text-base font-medium"
+                onClick={() => { setMenuOpen(false); setFindInstant(false); setFindOpen(true); }} className="text-start py-3 text-base font-medium"
               >
                 {dict.findACar}
               </button>
@@ -492,6 +496,8 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
         locale={locale}
         open={findOpen}
         onClose={() => setFindOpen(false)}
+        onMountedChange={setFindPanelVisible}
+        instantClose={findInstant}
         allCarsLabel={dict.allCars}
         categories={categories}
         cars={cars}
