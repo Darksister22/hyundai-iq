@@ -30,9 +30,9 @@ export const headHyundai = localFont({
 // Arabic + Kurdish
 export const arabic = localFont({
   src: [
-    { path: "../fonts/arabic/Rabar_038.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/arabic/Rabar_042.woff2", weight: "500", style: "normal" },
-    { path: "../fonts/arabic/Rabar_043.woff2", weight: "700", style: "normal" },
+    { path: "../fonts/arabic/Rabar_042.woff2", weight: "400", style: "normal" }, // lightest
+    { path: "../fonts/arabic/Rabar_043.woff2", weight: "500", style: "normal" }, // regular
+    { path: "../fonts/arabic/Rabar_038.woff2", weight: "700", style: "normal" }, // boldest
   ],
   variable: "--font-ar",
   display: "swap",
