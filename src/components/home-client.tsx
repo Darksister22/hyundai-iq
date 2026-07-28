@@ -11,7 +11,7 @@ import type { FindCarCategory, HomeCar, HeroBanner } from "@/lib/find-car-data";
 import ParallaxImage from "@/components/parallax-image";
 import ModelCard from "@/components/model-card";
 import type { Swiper as SwiperClass } from "swiper";
-import HomeServicesSection, {type HomeServicesDict} from "./home-services-section";
+import HomeServicesSection, { type HomeServicesDict } from "./home-services-section";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -31,7 +31,7 @@ interface HomeDict {
   whoWeAre: string;
   whoWeAreDesc: string;
   knowMore: string;
-    homeServices: HomeServicesDict;
+  homeServices: HomeServicesDict;
 } // pull ar and en locale vars to be used in this page.
 
 // "all" or a category id from the DB
@@ -171,98 +171,97 @@ export default function HomeClient({
   return (
     <div ref={rootRef} className="flex flex-col">
       <div className="-mt-[72px]">
-        <section ref={heroRef} className="relative h-[100svh] overflow-hidden">
-          {banners.length === 0 ? (
-            /* fallback when the CMS has no banners yet — single static slide */
-            <div className="relative h-full bg-[#002C5F] flex items-center">
-              <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
-                <h1 className=" font-head hero-anim text-5xl font-bold leading-tight">
-                  {isAr ? "هيونداي العراق" : "Hyundai Iraq"}
-                </h1>
-              </div>
+        <section ref={heroRef} className="relative h-[36rem] md:h-[100svh] overflow-hidden">          {banners.length === 0 ? (
+          /* fallback when the CMS has no banners yet — single static slide */
+          <div className="relative h-full bg-[#002C5F] flex items-center">
+            <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
+              <h1 className=" font-head hero-anim text-5xl font-bold leading-tight">
+                {isAr ? "هيونداي العراق" : "Hyundai Iraq"}
+              </h1>
             </div>
-          ) : (
-            <Swiper
-              modules={[Autoplay, EffectFade, Pagination, Navigation]}
-              effect="fade"
-              fadeEffect={{ crossFade: true }}
-              autoplay={multiSlide ? { delay: 12000, disableOnInteraction: false } : false}
-              pagination={multiSlide ? { clickable: true } : false}
-              navigation={multiSlide ? { prevEl: ".hero-prev", nextEl: ".hero-next" } : false}
-              loop={multiSlide}
-              className="h-full"
-            >
-              {multiSlide && (
-                <>
-                  <button
-                    aria-label="Previous banner"
-                    className="hero-prev absolute start-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
-                      <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                  <button
-                    aria-label="Next banner"
-                    className="hero-next absolute end-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
-                      <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                </>
-              )}
-              {banners.map((b) => (
-                <SwiperSlide key={b.id}>
-                  <div className="relative h-full bg-[#002C5F] flex items-end">
-                    {/* media background — image or looping muted video */}
-                    {b.mediaUrl &&
-                      (b.mediaType === "video" ? (
-                        <video
-                          src={b.mediaUrl}
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          className="absolute inset-0 w-full h-full object-cover"
-                        />
-                      ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={b.mediaUrl}
-                          alt={bannerTitle(b) ?? ""}
-                          className="absolute inset-0 w-full h-full object-cover"
-                        />
-                      ))}
+          </div>
+        ) : (
+          <Swiper
+            modules={[Autoplay, EffectFade, Pagination, Navigation]}
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            autoplay={multiSlide ? { delay: 12000, disableOnInteraction: false } : false}
+            pagination={multiSlide ? { clickable: true } : false}
+            navigation={multiSlide ? { prevEl: ".hero-prev", nextEl: ".hero-next" } : false}
+            loop={multiSlide}
+            className="h-full"
+          >
+            {multiSlide && (
+              <>
+                <button
+                  aria-label="Previous banner"
+                  className="hero-prev absolute start-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                    <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Next banner"
+                  className="hero-next absolute end-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                    <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </>
+            )}
+            {banners.map((b) => (
+              <SwiperSlide key={b.id}>
+                <div className="relative h-full bg-[#002C5F] flex items-end">
+                  {/* media background — image or looping muted video */}
+                  {b.mediaUrl &&
+                    (b.mediaType === "video" ? (
+                      <video
+                        src={b.mediaUrl}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={b.mediaUrl}
+                        alt={bannerTitle(b) ?? ""}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ))}
 
-                    <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full pb-20 md:pb-24">
-                      {bannerTitle(b) && (
-                        <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
-                          {bannerTitle(b)}
-                        </h1>
-                      )}
-                      {bannerTagline(b) && (
-                        <p className="hero-anim text-base opacity-70 max-w-md mb-8">
-                          {bannerTagline(b)}
-                        </p>
-                      )}
-                      {b.carSlug && (
-                        <div className="hero-anim">
-                          <Link
-                            href={`/${locale}/models/${b.carSlug}`}
-                            className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
-                          >
-                            {dict.explore}
-                          </Link>
-                        </div>
-                      )}
-                    </div>
+                  <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full pb-20 md:pb-24">
+                    {bannerTitle(b) && (
+                      <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
+                        {bannerTitle(b)}
+                      </h1>
+                    )}
+                    {bannerTagline(b) && (
+                      <p className="hero-anim text-base opacity-70 max-w-md mb-8">
+                        {bannerTagline(b)}
+                      </p>
+                    )}
+                    {b.carSlug && (
+                      <div className="hero-anim">
+                        <Link
+                          href={`/${locale}/models/${b.carSlug}`}
+                          className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
+                        >
+                          {dict.explore}
+                        </Link>
+                      </div>
+                    )}
                   </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
         </section>
       </div>
 
