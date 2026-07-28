@@ -119,8 +119,7 @@ export default function Footer({ locale, dict, cars, categories }: FooterProps) 
             <span>{isAr ? "سياسة ملفات تعريف الارتباط" : "Cookie Policy"}</span>
           </div>
 
-          <Image src="/svglogo/HyundaiLogoWhite.svg" alt="Hyundai" width={140} height={24} className="h-6 w-auto order-3" />
-
+<Image src="/svglogo/HyundaiLogoWhite.svg" alt="Hyundai" width={140} height={24} style={{ height: "1.5rem", width: "auto" }} className="order-3" />
         </div>
       </div>
     </footer>

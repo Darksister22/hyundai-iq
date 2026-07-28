@@ -26,8 +26,12 @@ export default function ImageWithLoader({
     : sizes;
 
   const spinner = !loaded && (
-    <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <span className="w-8 h-8 border-2 border-gray-300 border-t-[#002C5F] rounded-full animate-spin" />
+    <span className="absolute inset-0 flex items-center justify-center bg-gray-50 pointer-events-none">
+      <span className="flex items-center gap-2">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#002C5F] animate-pulse [animation-duration:1s]" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#002C5F] animate-pulse [animation-duration:1s] [animation-delay:0.2s]" />
+        <span className="w-2.5 h-2.5 rounded-full bg-[#002C5F] animate-pulse [animation-duration:1s] [animation-delay:0.4s]" />
+      </span>
     </span>
   );
 

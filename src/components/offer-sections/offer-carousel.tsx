@@ -1,24 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import OfferDetails from "./offer-details";
 import type { OfferCar } from "@/lib/offers-data";
 import type { Locale } from "@/lib/i18n";
+import ImageWithLoader from "../loaders/loading-image";
 
 export default function OfferCarousel({
   locale,
   cars,
   detailsHeading,
   discoverLabel,
-reservationCallLabel
 }: {
   locale: Locale;
   cars: OfferCar[];
   detailsHeading: string;
   discoverLabel: string;
-  reservationCallLabel: string;
 }) {
   const isAr = locale === "ar";
   const [active, setActive] = useState(0);
@@ -29,21 +27,20 @@ reservationCallLabel
   return (
     <div>
       {/* slide */}
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-gray-100">
-        <Image
+<div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-gray-100">
+        <ImageWithLoader
           key={car.image}
           src={car.image}
           alt={isAr ? car.name.ar : car.name.en}
           fill
-          priority
+          // unoptimized
           sizes="(max-width: 1024px) 100vw, 1200px"
           className="object-cover animate-[fadeIn_300ms_ease-out]"
         />
-
         {cars.length > 1 && (
           <>
             {/* arrows are physical (dir=ltr) so prev is always visually left */}
-            <div dir="ltr" className="absolute inset-0 flex items-center justify-between px-4 pointer-events-none">
+            <div dir="ltr" className="absolute inset-0 z-10 flex items-center justify-between px-4 pointer-events-none">
               <button
                 onClick={() => go(-1)}
                 aria-label="Previous"
@@ -65,7 +62,7 @@ reservationCallLabel
             </div>
 
             {/* dots */}
-            <div className="absolute bottom-4 inset-x-0 flex justify-center gap-2">
+            <div className="absolute bottom-4 inset-x-0 z-10 flex justify-center gap-2">
               {cars.map((_, i) => (
                 <button
                   key={i}

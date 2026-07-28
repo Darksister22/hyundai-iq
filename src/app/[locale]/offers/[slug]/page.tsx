@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import ImageWithLoader from "@/components/loaders/loading-image";
 import { notFound } from "next/navigation";
 import OfferCarousel from "@/components/offer-sections/offer-carousel";
 import OfferForm from "@/components/offer-sections/offer-form";
@@ -33,7 +33,7 @@ export default async function OfferDetailPage({
       {/* hero image */}
       <section className="relative h-[60svh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
         {offer.image && (
-          <Image src={offer.image} alt={isAr ? offer.title.ar : offer.title.en} fill priority sizes="100vw" className="object-cover" />
+          <ImageWithLoader src={offer.image} alt={isAr ? offer.title.ar : offer.title.en} fill unoptimized sizes="100vw" className="object-cover" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
 
@@ -58,7 +58,6 @@ export default async function OfferDetailPage({
             cars={offer.cars}
             detailsHeading={t.offerDetailsHeading}
             discoverLabel={t.discoverMore}
-            reservationCallLabel={t.reservationCallLabel}
           />
         </section>
       )}

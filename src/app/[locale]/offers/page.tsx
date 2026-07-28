@@ -39,7 +39,7 @@ export default async function OffersPage({
     <div className="bg-white">
       {/* banner */}
       <section className="relative h-[60svh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
-        <Image src="/images/IONIQ_9_3.webp" alt={t.bannerTitle} fill priority sizes="100vw" className="object-cover" />
+        <Image src="/images/IONIQ_9_3.webp" unoptimized alt={t.bannerTitle} fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
 
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">

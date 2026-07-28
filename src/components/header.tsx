@@ -181,15 +181,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
           {/* ---------- zone 1: logo ---------- */}
           <Link href={`/${locale}`} className="flex items-center shrink-0">
             <span className="relative inline-block h-6">
-              <Image
-                src="/svglogo/HyundaiLogoWhite.svg"
-                alt="Hyundai"
-                width={180}
-                height={30}
-                priority
-                aria-hidden
-                className="h-6 w-auto"
-              />
+             <Image src="/svglogo/HyundaiLogoWhite.svg" alt="Hyundai" width={140} height={24} style={{ height: "1.5rem", width: "auto" }} className="order-3" />
               <Image
                 src="/svglogo/HyundaiLogoBlue.svg"
                 alt="Hyundai"

@@ -37,12 +37,13 @@ export default function LoadingScreen() {
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-white transition-transform ease-[cubic-bezier(0.65,0,0.35,1)] will-change-transform"
     >
       <div className="flex flex-col items-center gap-8">
-        <Image
+      <Image
           src="/svglogo/HyundaiLogoBlue.svg"
           alt="Hyundai"
           width={180}
           height={30}
-          priority
+                    className="h-6 w-auto"
+
         />
 
         {/* three pulsing navy dots */}

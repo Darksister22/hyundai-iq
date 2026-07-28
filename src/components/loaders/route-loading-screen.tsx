@@ -114,6 +114,7 @@ export default function RouteLoadingScreen() {
                     alt="Hyundai"
                     width={180}
                     height={30}
+                    className="h-6 w-auto"
                 />
                 <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#002C5F] animate-pulse [animation-duration:1s]" />
