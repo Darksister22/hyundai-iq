@@ -139,20 +139,23 @@
     "intro": "We are dedicated to moving humanity forward, crafting vehicles that redefine mobility for our global community.",
     "overviewLabel": "Overview",
     "overviewTitle": "Moving Forward Together",
-    "overviewBody": "A big technological step forward is only meaningful when it is anchored in a deep sense of humanity. From hydrogen-powered solutions and next-generation electric vehicles to cutting-edge robotics and air mobility, we advance human progress through innovation. Progress for humanity is our guiding principle, uniting us in who we are, where we come from, and where we are going.",
+    "overviewBody": "Taking a big technological step forward is only meaningful when it is anchored in a deep sense of humanity. Whether it's our commitment to hydrogen powered solutions and next-generation electric vehicles or cutting-edge robotics and air mobility, we are advancing human progress through innovation. Being a pioneer also means embracing convictions that challenge the status quo, which is why we have always stayed true to our beliefs and done things our way. As our guiding principle, progress for humanity unites us in who we are, where we come from, and where we are going.",
     "progressTitle": "Progress for Humanity",
-    "progressBody": "We believe progress only becomes meaningful when connected with a deep sense of humanity. Humanity is what unites us and makes us stronger; it guides our investments and drives our innovations. We are here to do the right thing for humanity.",
+    "progressBody": "We believe progress only becomes meaningful when it is connected with a deep sense of humanity. Humanity is what unites us and makes us stronger. It guides us in our investments and drives our innovations. Humanity allows us to strengthen our relationships, to feel connected and get more from life. We are here to do the right thing for humanity.",
     "quote": "If someone asks me what is the motivating force for Hyundai, I would have a ready answer: a desire for better.",
     "quoteAuthor": "— Chung Ju-yung, Founding Chairman of Hyundai Motor Group",
     "cornerTitle": "Inspired by What's Around the Corner",
-    "cornerBody": "Today we stand at an amazing point in the evolution of mobility and the benefits it brings humanity. Transportation is becoming smarter, safer, more connected, and in harmony with sustainability and a zero-emission tomorrow — and we are at the forefront as a smart mobility solution provider.",
+    "cornerBody": "Today, we are all at an amazing point in the evolution of mobility and the multitude of benefits it brings humanity. Modes of transportation are becoming smarter, safer, more connected, and in harmony with sustainability goals and a zero-emission tomorrow. We at Hyundai are at the forefront of all this future-defining progress as a smart mobility solution provider.",
     "nextTitle": "The Next Big Thing",
-    "nextBody": "Progress needs new perspectives to move forward. Our transformation from an automobile manufacturer into a smart mobility solutions provider demonstrates this flexibility and vision — through autonomous driving, robotics, advanced air mobility, and AI- and big-data-based connectivity.",
+    "nextBody": "Progress needs new perspectives to move forward. Our transformation from an automobile manufacturer into a smart mobility solutions provider demonstrates this flexibility and vision. We have been introducing various aspects of autonomous driving, robotics, and AAM(Advanced Air Mobility). By 2025, we aim to transition to SDV(software-defined vehicle) through the advancement of software, AI, and big data-based connectivity technologies, providing our customers with a freer, safer, and fairer driving experience. Additional goals include creating a sustainable hydrogen ecosystem by recycling used batteries and producing clean hydrogen energy from waste. Our evolution across all sectors is driven by our deep commitment to humanity.",
     "wayTitle": "Going Our Way",
-    "wayBody": "Any great road trip needs the right traveling companions. That's why we look forward to taking these exciting next steps together with you, providing everyone with the mobility solutions they need to enhance their lives. That's progress for humanity.",
+    "wayBody": "Any great road trip needs the right traveling companions. That's why we look forward to taking all these next exciting steps together with you and providing everyone with the mobility solutions they need to enhance their lives, elevate their day, and empower our shared responsibility to one another and the planet. That's progress for humanity.",
     "storyCrumb": "Hyundai Story",
     "progressQuote": "We are here to do what benefits humanity.",
     "home": "Home",
+    "commitmentLabel": "Obligation",
+    "commitmentHeading": "An Obligation to People from the Start",
+    "commitmentBody": "We believe every breakthrough or life-enhancing innovation must begin and end with the human factor. For our founder, Chung Ju-yung, this philosophy of betterment and compassion towards all individuals and society was an essential part of what a company should be. His beliefs and drive were crucial in helping revitalize the nation, create work, and elevate people's lives. Today, these values are a fundamental part of our heritage and continue to define who we are as a company. Moreover, they help guide us as we expand our sense of responsibility and commitment to bettering people’s lives around the world.",
     "historyIntro": "From a pioneering Korean passenger car to a global auto leader — decades of innovation.",
     "milestonesTitle": "Key Milestones",
     "milestones": [
@@ -759,7 +762,10 @@
       {
         "year": "1993",
         "image": "/images/years/2000.webp",
-        "events": ["Launch of SONATA II", "Unveiling of the HCD-II concept car"]
+        "events": [
+          "Launch of SONATA II",
+          "Unveiling of the HCD-II concept car"
+        ]
       },
       {
         "year": "1992",
@@ -781,17 +787,23 @@
       {
         "year": "1990",
         "image": "/images/years/2000.webp",
-        "events": ["Launch of ELANTRA and SCOUPE"]
+        "events": [
+          "Launch of ELANTRA and SCOUPE"
+        ]
       },
       {
         "year": "1989",
         "image": "/images/years/2000.webp",
-        "events": ["Overseas exports of EXCEL surpass 1 million units"]
+        "events": [
+          "Overseas exports of EXCEL surpass 1 million units"
+        ]
       },
       {
         "year": "1988",
         "image": "/images/years/2000.webp",
-        "events": ["Launch of SONATA, Hyundai Motor’s mid-size luxury sedan"]
+        "events": [
+          "Launch of SONATA, Hyundai Motor’s mid-size luxury sedan"
+        ]
       },
       {
         "year": "1987",
@@ -820,7 +832,9 @@
       {
         "year": "1983",
         "image": "/images/years/2000.webp",
-        "events": ["Incorporation of the Canadian subsidiary HMC"]
+        "events": [
+          "Incorporation of the Canadian subsidiary HMC"
+        ]
       },
       {
         "year": "1976",
@@ -841,7 +855,9 @@
       {
         "year": "1967",
         "image": "/images/years/2000.webp",
-        "events": ["Incorporation of Hyundai Motor Company"]
+        "events": [
+          "Incorporation of Hyundai Motor Company"
+        ]
       }
     ]
   },
@@ -877,7 +893,7 @@
     "privacyConsent": "I agree that my personal information will be used in accordance with the privacy policy.",
     "successMsg": "Thank you for reaching out. Your message has been received."
   },
-"findUs": {
+  "findUs": {
     "title": "Find Us",
     "subtitle": "Locate your nearest Hyundai showroom",
     "home": "Home",
@@ -1111,7 +1127,11 @@
         "label": "Genuine Parts",
         "heading": "Guaranteed to fit, Guaranteed to perform, Guaranteed Genuine",
         "body": "Hyundai Genuine Parts are tested under various simulated extreme conditions to ensure quality, reliability, and durability. They are also backed by a 12-month / 20,000 km warranty, giving you added peace of mind. Hyundai Genuine Parts always prove to be a sound investment for your vehicle. Specifically designed and tested to meet Australian Design Rules, all Hyundai Genuine Parts are manufactured to the highest Hyundai standards.",
-        "guarantees": ["to fit", "to perform", "Genuine"],
+        "guarantees": [
+          "to fit",
+          "to perform",
+          "Genuine"
+        ],
         "guaranteeImages": [
           "/images/parts/guarantee-fit.webp",
           "/images/parts/guarantee-performance.webp",

@@ -9,7 +9,6 @@ import { getFindCarData } from "@/lib/find-car-data";
 import RouteLoadingScreen from "@/components/loaders/route-loading-screen";
 import ChatWidget from "@/components/chat/ChatWidget";
 import { getChatTree } from "@/lib/chat/chat-data-db";
-import GsapConfig from "@/components/gsap-config";
 
 
 export function generateStaticParams() {
@@ -71,7 +70,6 @@ export default async function LocaleLayout({
       <body>
         <LoadingScreen />
         <RouteLoadingScreen />
-        <GsapConfig />
         <Header locale={locale} dict={dict.nav} categories={categories} cars={cars} />
         <main className="pt-[72px]">{children}</main>
         <Footer locale={locale} dict={dict.footer} cars={cars} categories={categories} />
