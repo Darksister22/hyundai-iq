@@ -8,7 +8,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Locale } from "@/lib/i18n";
 import type { FindCarCategory, HomeCar, HeroBanner } from "@/lib/find-car-data";
-import ParallaxImage from "@/components/parallax-image";
 import ModelCard from "@/components/model-card";
 import type { Swiper as SwiperClass } from "swiper";
 import HomeServicesSection, { type HomeServicesDict } from "./home-services-section";
@@ -17,6 +16,8 @@ import Image from "next/image";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
+import ParallaxLoader from "./loaders/parallax-loader";
+import Reveal from "./reveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -172,7 +173,7 @@ export default function HomeClient({
   return (
     <div ref={rootRef} className="flex flex-col">
       <div className="-mt-[72px]">
-<section ref={heroRef} className="relative h-[100lvh] overflow-hidden">          {banners.length === 0 ? (
+        <section ref={heroRef} className="relative h-[100lvh] overflow-hidden">          {banners.length === 0 ? (
           /* fallback when the CMS has no banners yet — single static slide */
           <div className="relative h-full bg-[#002C5F] flex items-center">
             <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
@@ -230,7 +231,7 @@ export default function HomeClient({
                     ) : (
                       <Image
                         src={b.mediaUrl}
-                        fill 
+                        fill
                         unoptimized
                         alt={bannerTitle(b) ?? ""}
                         className="absolute inset-0 w-full h-full object-cover"
@@ -323,42 +324,69 @@ export default function HomeClient({
         </div>
       </section>
 
-      <section className="py-24 overflow-hidden">
-        <div className="relative w-screen mx-[calc(50%-50vw)]">
-          <ParallaxImage
-            src="/images/founder.webp"
-            className="h-[70vh] min-h-[460px] w-full"
-          />
-          <Link
-            href={`/${locale}/about-hyundai`}
-            className="absolute -bottom-5 start-8 inline-flex items-center gap-2 bg-[#002C5F] text-white text-sm font-semibold px-6 py-3 rounded shadow-lg hover:bg-[#003d7a] transition-colors"
-          >
-            {dict.knowMore}
-            <span aria-hidden>›</span>
-          </Link>
-        </div>
+      <Reveal>
 
-        <div className="max-w-7xl mx-auto px-6 mt-12">
-          <span className="text-sm text-gray-400">{dict.whoWeAre}</span>
-          <h2 className="mt-2 text-2xl md:text-4xl font-bold text-[#002C5F] leading-snug max-w-4xl">
-            {dict.whoWeAreDesc}
-          </h2>
-        </div>
-      </section>
 
-      <section className="relative w-screen mx-[calc(50%-50vw)] overflow-hidden mb-16">
-        <ParallaxImage
-          src="/images/IONIQ_9_3.webp"
-          className="h-[60vh] min-h-[400px] w-full"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-        <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex items-center">
-          <h2 className="text-3xl md:text-5xl font-bold text-white">
-            {locale === "ar" ? "الآن نمضي قدماً" : "Next Starts Now"}
-          </h2>
-        </div>
-      </section>
+        <section className="py-5 overflow-hidden">
+          <div className="px-3 md:px-4">
+            {/* image + text share one card */}
+            <div className="relative">
+              {/* founder image — margined (not full-bleed), straight edges */}
+              <div className="relative h-[70lvh] min-h-[380px] overflow-hidden bg-gray-200">
+                <ParallaxLoader src="/images/founder.webp" alt={dict.whoWeAre} />
+                <Link
+                  href={`/${locale}/about-hyundai`}
+                  className="absolute bottom-4 start-4 inline-flex items-center gap-2 bg-white/90 text-[#002C5F] text-sm font-semibold px-4 py-2 rounded shadow hover:bg-white transition-colors"
+                >
+                  <span aria-hidden className="inline-block" >{dict.knowMore}</span>
+                </Link>
+              </div>
 
+              {/* label + description sit in a gray box directly under the image */}
+              <div className="bg-gray-50 px-6 md:px-10 py-8 md:py-10">
+                <span className="text-sm text-gray-400">{dict.whoWeAre}</span>
+                <h2 className="mt-2 text-2xl md:text-4xl font-bold text-[#002C5F] leading-snug max-w-4xl text-start">
+                  {dict.whoWeAreDesc}
+                </h2>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Reveal>
+      <Reveal>
+        <section className="w-[100vw] mx-[calc(50%-50vw)] overflow-hidden mb-16">
+          {/* image — inset from the page edges, with the same notch + chevron as the service cards */}
+          <div className="px-3 md:px-4">
+            <Link href={`/${locale}/offers`} aria-label={locale === "ar" ? "اكتشف اكثر" : "Find Out More"} className="group block relative">
+              <div
+                className="relative h-[85lvh] min-h-[460px] overflow-hidden bg-gray-100"
+                style={{
+                  clipPath: locale === "ar"
+                    ? "polygon(0 0, 100% 0, 100% calc(100% - 3rem), calc(100% - 4.75rem) calc(100% - 3rem), calc(100% - 3.5rem) 100%, 0 100%)"
+                    : "polygon(0 0, 100% 0, 100% 100%, 3.5rem 100%, 4.75rem calc(100% - 3rem), 0 calc(100% - 3rem))",
+                }}
+              >
+                <ParallaxLoader src="/images/IONIQ_9_3.webp" alt="" />
+              </div>
+
+              {/* chevron in the notch */}
+              <span className="absolute bottom-0 start-0 h-12 px-4 bg-white flex items-center gap-2 text-[#002C5F] text-sm font-semibold pointer-events-none">
+                {locale === "ar" ? "اكتشف اكثر" : "Find Out More"}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180 transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
+                  <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            </Link>
+          </div>
+
+          {/* header — black, flush to the start edge */}
+          <div className="px-2 md:px-3 py-8">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#111] text-start">
+              {locale === "ar" ? "الآن نمضي قدماً" : "Next Starts Now"}
+            </h2>
+          </div>
+        </section>
+      </Reveal>
       <HomeServicesSection locale={locale} dict={dict.homeServices} />
     </div>
   );

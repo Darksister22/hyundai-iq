@@ -35,8 +35,8 @@ export default function HomeServicesSection({
     : "polygon(0 0, 100% 0, 100% 100%, 3.5rem 100%, 4.75rem calc(100% - 3rem), 0 calc(100% - 3rem))";
 
   return (
-    <section className="bg-white py-20">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="bg-white py-15">
+      <div className="max-w-6xl mx-auto ">
         <Reveal>
           <p className="text-sm text-gray-400 text-center mb-2">{dict.eyebrow}</p>
           <h2 className="text-3xl md:text-4xl font-bold text-[#111] text-center mb-12">
