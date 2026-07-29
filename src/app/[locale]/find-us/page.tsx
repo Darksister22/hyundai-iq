@@ -1,5 +1,4 @@
 import { getDictionary, Locale } from "@/lib/i18n";
-import ParallaxImage from "@/components/parallax-image";
 import { getLocations } from "@/lib/locations";
 import LocationCard from "@/components/location-card";
 import { type Metadata } from "next";
@@ -36,7 +35,8 @@ export default async function FindUsPage({
   return (
     <>
       {/* ── Banner ── */}
-<section className="relative h-[50lvh] md:h-[80lvh] min-h-[400px] -mt-[72px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">        <ImageWithLoader src="/images/find-us.webp" fill unoptimized className="object-cover" alt={dict.findUs.title} />        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+<section className="relative h-[50lvh] md:h-[80lvh] min-h-[400px] -mt-[72px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">       
+   <ImageWithLoader src="/images/find-us.webp" fill unoptimized className="object-cover" alt={dict.findUs.title} />        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-12">
           <nav className="text-xs text-white/80 flex items-center gap-2 self-start mb-3">
             <span>{dict.findUs.home ?? (locale === "ar" ? "الرئيسية" : "Home")}</span>

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getAftersalesOffers } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
+import ImageWithLoader from "@/components/loaders/loading-image";
 
 export const revalidate = 300;
 
@@ -22,7 +22,7 @@ export default async function OffersPage({
     <div className="bg-white">
       {/* banner */}
       <section className="relative h-[60lvh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
-        <Image src="/images/IONIQ_9_3.webp" alt={t.bannerTitle} fill priority sizes="100vw" className="object-cover" />
+        <ImageWithLoader src="/images/IONIQ_9_3.webp" alt={t.bannerTitle} fill  sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
 
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">
@@ -43,7 +43,7 @@ export default async function OffersPage({
             <article key={o.slug}>
               <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-gray-100">
                 {o.image && (
-                  <Image src={o.image} alt={isAr ? o.title.ar : o.title.en} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+                  <ImageWithLoader src={o.image} alt={isAr ? o.title.ar : o.title.en} fill unoptimized sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
                 )}
               </div>
               <h2 className="mt-5 text-xl md:text-2xl font-bold text-[#111]">

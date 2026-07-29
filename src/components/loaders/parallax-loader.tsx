@@ -21,7 +21,7 @@ export default function ParallaxLoader({ src, alt = "" }: { src: string; alt?: s
 
   return (
     <div ref={ref} className="absolute inset-0 scale-110 will-change-transform">
-      <ImageWithLoader src={src} alt={alt} fill className="object-cover" />
+      <ImageWithLoader src={src} unoptimized alt={alt} fill className="object-cover" />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getDictionary, Locale } from "@/lib/i18n";
 import ContactForm from "@/components/contact-form";
 import BranchContactCard from "@/components/branch-contact-card";
-import Image from "next/image";
+import ImageWithLoader from "@/components/loaders/loading-image";
 import { getBranchContacts } from "@/lib/info";
 
 import { type Metadata } from "next";
@@ -39,11 +39,11 @@ export default async function ContactPage({
     <>
       {/* Hero banner */}
       <section className="relative h-[492px] -mt-[72px] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">       
-        <Image
+        <ImageWithLoader
           src="/images/contact-us.webp"
           alt=""            
-          fill
-          priority          
+          fill          
+          unoptimized
           className="object-cover"
         />
 

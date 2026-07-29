@@ -57,12 +57,6 @@ export default function ConvenienceSection({ locale, model }: Props) {
       <div className="relative h-[60lvh] min-h-[400px] bg-gradient-to-br from-gray-400 to-gray-600 flex items-end overflow-hidden">
         {conv.bgImage && (
           <>
-            {/* <img
-              src={conv.bgImage}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-            /> */}
-
             <ImageWithLoader  src={conv.bgImage}
               alt=""
               fill

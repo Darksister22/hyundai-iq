@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getSalesOffers } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
 import { type Metadata } from "next";
+import ImageWithLoader from "@/components/loaders/loading-image";
 
 export async function generateMetadata({
   params,
@@ -39,7 +40,7 @@ export default async function OffersPage({
     <div className="bg-white">
       {/* banner */}
       <section className="relative h-[60lvh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
-        <Image src="/images/IONIQ_9_3.webp" unoptimized alt={t.bannerTitle} fill priority sizes="100vw" className="object-cover" />
+        <ImageWithLoader src="/images/IONIQ_9_3.webp" unoptimized alt={t.bannerTitle} fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
 
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">

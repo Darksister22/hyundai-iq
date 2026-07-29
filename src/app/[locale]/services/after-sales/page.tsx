@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import AfterSalesAccordion, {
   type AccordionGroup,
 } from "@/components/after-sales-accordion";
@@ -14,6 +13,7 @@ import {
   type OpenHoursSection,
 } from "@/lib/info";
 import { type Metadata } from "next";
+import ImageWithLoader from "@/components/loaders/loading-image";
 
 export async function generateMetadata({
   params,
@@ -72,7 +72,7 @@ export default async function AfterSalesPage({
     <div className="bg-white">
       {/* Banner — starts at the top, under the fixed header */}
       <section className="relative h-[60lvh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-100">
-        <Image src="/images/customer-promise.webp" alt={t.bannerTitle} fill priority sizes="100vw" className="object-cover" />
+        <ImageWithLoader src="/images/customer-promise.webp" alt={t.bannerTitle} fill sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">
@@ -155,7 +155,7 @@ export default async function AfterSalesPage({
           <div className="lg:sticky lg:top-28 order-first lg:order-none">
             {/* relative + aspect gives `fill` a positioned parent with real height */}
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
-              <Image src="/images/services/call-center-photo.webp" alt={t.introTitle} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+              <ImageWithLoader src="/images/services/call-center-photo.webp" alt={t.introTitle} unoptimized fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
             </div>
           </div>
         </div>

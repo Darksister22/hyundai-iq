@@ -1,11 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import OfferDetails from "@/components/offer-sections/offer-details";
 import ServiceBookingForm from "@/components/service-booking-form";
 import { supabase } from "@/lib/supabase";
 import { getAftersalesOfferBySlug, getAftersalesOfferSlugs } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
+import ImageWithLoader from "@/components/loaders/loading-image";
 
 export async function generateStaticParams() {
   const slugs = await getAftersalesOfferSlugs();
@@ -48,7 +48,7 @@ export default async function AftersalesOfferDetailPage({
       {/* hero image */}
       <section className="relative h-[60lvh] min-h-[24rem] -mt-[72px] overflow-hidden bg-gray-200">
         {offer.image && (
-          <Image src={offer.image} alt={isAr ? offer.title.ar : offer.title.en} fill priority sizes="100vw" className="object-cover" />
+          <ImageWithLoader unoptimized src={offer.image} alt={isAr ? offer.title.ar : offer.title.en} fill sizes="100vw" className="object-cover" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/30" />
 

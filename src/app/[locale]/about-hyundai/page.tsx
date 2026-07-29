@@ -32,8 +32,15 @@ export default async function AboutPage({
   return (
     <>
       {/* Intro banner */}
-      <section className="relative h-[60lvh] min-h-[460px] -mt-[72px] overflow-hidden bg-gray-200">
-        <ImageWithLoader src="/images/about-us.webp" alt={t.home} fill className="object-cover object-center" />
+      <section className="relative h-[80lvh] min-h-[460px] -mt-[72px] overflow-hidden bg-gray-200">
+        {/* phone image */}
+        <div className="md:hidden absolute inset-0">
+          <ImageWithLoader unoptimized src="/images/about-us-mobile.webp" alt={t.home} fill className="object-cover object-center" />
+        </div>
+        {/* desktop image */}
+        <div className="hidden md:block absolute inset-0">
+          <ImageWithLoader unoptimized src="/images/about-us.webp" alt={t.home} fill className="object-cover object-center" />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">
           <nav className="text-xs text-white/80 flex items-center gap-2 self-start mb-4">
@@ -115,7 +122,7 @@ export default async function AboutPage({
             {/* Founder image — full-bleed, straight edges, takes most of the screen */}
             <section className="pt-20">
               <div className="relative w-[100vw] left-1/2 -translate-x-1/2 h-[70lvh] min-h-[400px] overflow-hidden bg-gray-200">
-                <ParallaxLoader src="/images/founder.webp" alt="Founder"  />
+                <ParallaxLoader src="/images/founder.webp" alt="Founder" />
               </div>
             </section>
 
@@ -137,25 +144,28 @@ export default async function AboutPage({
             </section>
 
             {/* image before commitment */}
-            <section className="pt-16">
-              <div className="relative w-[100vw] left-1/2 -translate-x-1/2 h-[60lvh] min-h-[460px] overflow-hidden bg-gray-200">
-                <ParallaxLoader src="/images/IONIQ_9_3.webp" alt=""  />
+            <section className="pt-13">
+              <div className="relative mx-3 md:mx-7 h-[90lvh] min-h-[460px] overflow-hidden bg-gray-200">
+                <ParallaxLoader src="/images/IONIQ_9_3.webp" alt="" />
               </div>
             </section>
             {/* Block quote — with its own large image before it; the two
                 together fill most of the screen. Straight edges, side margins. */}
-            <section className="pb-20">
-              <div className="max-w-7xl mx-auto px-6">
-                <div className="bg-gray-50 p-10 md:p-14 mx-4 md:mx-8 relative min-h-[45lvh] flex flex-col justify-center">
-                  <span className="absolute top-6 end-8 text-[#002C5F] text-4xl">&ldquo;</span>
-                  <blockquote className="text-2xl md:text-3xl font-bold text-[#002C5F] leading-relaxed max-w-3xl">
-                    {t.quote}
-                  </blockquote>
-                  <cite className="block mt-6 text-sm text-gray-500 not-italic">{t.quoteAuthor}</cite>
+            <section className="pb-18 pt-7">
+              <div className="mx-4 md:mx-8">
+                <div className="flex flex-col md:flex-row md:items-start gap-0">
+                  <div className="bg-[#002C5F] text-white w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shrink-0 self-start md:self-stretch">
+                    <span className="text-4xl md:text-5xl font-bold leading-none">&ldquo;</span>
+                  </div>
+                  <div className="bg-gray-50 flex-1 flex flex-col justify-center p-8 md:p-14 min-h-[45lvh]">
+                    <blockquote className="text-2xl md:text-3xl font-bold text-[#002C5F] leading-relaxed max-w-4xl">
+                      {t.quote}
+                    </blockquote>
+                    <cite className="block mt-6 text-sm text-gray-500 not-italic">{t.quoteAuthor}</cite>
+                  </div>
                 </div>
               </div>
             </section>
-
             {/* Alternating image + text rows — tighter spacing, straight edges */}
             <Row title={t.cornerTitle} body={t.cornerBody} img="/images/row1.webp" />
             <Row title={t.nextTitle} body={t.nextBody} reverse img="/images/row2.webp" />
@@ -182,8 +192,8 @@ function Row({
   reverse?: boolean;
 }) {
   return (
-    <section className="py-2 lg:py-3">
-      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
+    <section className="py-1 lg:py-2">
+      <div className="max-w-7xl mx-auto px-7 grid lg:grid-cols-2 gap-3 lg:gap-10 items-center">
         <div className={reverse ? "lg:order-last" : ""}>
           <Reveal>
             {label && (
@@ -195,7 +205,7 @@ function Row({
         </div>
         {/* straight edges (no rounded), relative wrapper for the fill image */}
         <div className="relative h-80 lg:h-[440px] overflow-hidden bg-gray-100">
-          <ParallaxLoader src={img} alt={title}  />
+          <ParallaxLoader src={img} alt={title} />
         </div>
       </div>
     </section>

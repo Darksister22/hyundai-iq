@@ -12,6 +12,7 @@ import ParallaxImage from "@/components/parallax-image";
 import ModelCard from "@/components/model-card";
 import type { Swiper as SwiperClass } from "swiper";
 import HomeServicesSection, { type HomeServicesDict } from "./home-services-section";
+import Image from "next/image";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -227,9 +228,10 @@ export default function HomeClient({
                         className="absolute inset-0 w-full h-full object-cover"
                       />
                     ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={b.mediaUrl}
+                        fill 
+                        unoptimized
                         alt={bannerTitle(b) ?? ""}
                         className="absolute inset-0 w-full h-full object-cover"
                       />
