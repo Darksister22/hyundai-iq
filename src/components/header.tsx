@@ -129,11 +129,21 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
     const onStuck = (e: Event) => {
       const stuck = (e as CustomEvent<boolean>).detail;
       subnavStuck.current = stuck;
-      if (stuck) setHidden(true);
+      if (stuck) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
     };
     window.addEventListener("hyundai:subnav-stuck", onStuck);
     return () => window.removeEventListener("hyundai:subnav-stuck", onStuck);
   }, []);
+  //Reset header to its top state. 
+  useEffect(() => {
+    subnavStuck.current = false;
+    setHidden(false);
+    setAtTop(window.scrollY < 20);
+  }, [pathname]);
   // close the offers dropdown on outside click
   useEffect(() => {
     if (!offersOpen) return;
@@ -181,7 +191,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
           {/* ---------- zone 1: logo ---------- */}
           <Link href={`/${locale}`} className="flex items-center shrink-0">
             <span className="relative inline-block h-6">
-             <Image src="/svglogo/HyundaiLogoWhite.svg" alt="Hyundai" width={140} height={24} style={{ height: "1.5rem", width: "auto" }} className="order-3" />
+              <Image src="/svglogo/HyundaiLogoWhite.svg" alt="Hyundai" width={140} height={24} style={{ height: "1.5rem", width: "auto" }} className="order-3" />
               <Image
                 src="/svglogo/HyundaiLogoBlue.svg"
                 alt="Hyundai"
@@ -313,7 +323,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
 
           </nav>
 
-        {/* ---------- zone 3: actions, separated by a rule ---------- */}
+          {/* ---------- zone 3: actions, separated by a rule ---------- */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
             {/* divider marks where navigation ends and actions begin */}
             <span className={`h-5 w-px transition-colors ${divider}`} aria-hidden />
@@ -326,7 +336,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
               {dict.langSwitch}
             </Link>
 
-                       {/* second divider before the distributor logo */}
+            {/* second divider before the distributor logo */}
             <span className={`h-5 w-px transition-colors ${divider}`} aria-hidden />
 
             {/* Al-Oula logo — white logo, so it needs a dark bg pill once the
@@ -341,7 +351,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
           </div>
 
           {/* hamburger — now shown below lg, not below md */}
-          
+
           {/* mobile cluster — logo + hamburger, shown below lg */}
           <div className="lg:hidden flex items-center gap-3">
             {/* Al-Oula logo — white logo, dark pill once header is white */}

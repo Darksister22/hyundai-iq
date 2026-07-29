@@ -62,12 +62,20 @@ export default function HomeClient({
   const heroRef = useRef<HTMLDivElement>(null);
   const [activeCat, setActiveCat] = useState<CategoryFilter>("all");
   const modelSwiperRef = useRef<SwiperClass | null>(null);
-  const handleCardSettled = useCallback(() => {
-    modelSwiperRef.current?.update();
-  }, []);
 
   // which car card is expanded to state 3 (only one at a time)
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
+  const filteredCars =
+    activeCat === "all" ? cars : cars.filter((c) => c.categoryId === activeCat);
+const handleCardSettled = useCallback(() => {
+    const sw = modelSwiperRef.current;
+    if (!sw || sw.destroyed) return;
+    sw.update();
+    if (expandedSlug) {
+      const idx = filteredCars.findIndex((c) => c.slug === expandedSlug);
+      if (idx >= 0) sw.slideTo(idx, 400);
+    }
+  }, [expandedSlug, filteredCars]);
 
   // click outside the expanded card collapses it back to state 1/2
   useEffect(() => {
@@ -157,13 +165,11 @@ export default function HomeClient({
     })),
   ];
 
-  const filteredCars =
-    activeCat === "all" ? cars : cars.filter((c) => c.categoryId === activeCat);
+
 
   // Swiper's loop/autoplay misbehave with a single slide
 
   const multiSlide = banners.length > 1;
-
   const bannerTitle = (b: HeroBanner) =>
     isAr ? b.titleAr ?? b.titleEn : b.titleEn;
   const bannerTagline = (b: HeroBanner) =>
@@ -173,98 +179,100 @@ export default function HomeClient({
   return (
     <div ref={rootRef} className="flex flex-col">
       <div className="-mt-[72px]">
-        <section ref={heroRef} className="relative h-[100lvh] overflow-hidden">          {banners.length === 0 ? (
-          /* fallback when the CMS has no banners yet — single static slide */
-          <div className="relative h-full bg-[#002C5F] flex items-center">
-            <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
-              <h1 className=" font-head hero-anim text-5xl font-bold leading-tight">
-                {isAr ? "هيونداي العراق" : "Hyundai Iraq"}
-              </h1>
+        <section ref={heroRef} className="relative h-[100lvh] overflow-hidden">
+          {banners.length === 0 ? (
+            /* fallback when the CMS has no banners yet — single static slide */
+            <div className="relative h-full bg-[#002C5F] flex items-center">
+              <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full">
+                <h1 className=" font-head hero-anim text-5xl font-bold leading-tight">
+                  {isAr ? "هيونداي العراق" : "Hyundai Iraq"}
+                </h1>
+              </div>
             </div>
-          </div>
-        ) : (
-          <Swiper
-            modules={[Autoplay, EffectFade, Pagination, Navigation]}
-            effect="fade"
-            fadeEffect={{ crossFade: true }}
-            autoplay={multiSlide ? { delay: 12000, disableOnInteraction: false } : false}
-            pagination={multiSlide ? { clickable: true } : false}
-            navigation={multiSlide ? { prevEl: ".hero-prev", nextEl: ".hero-next" } : false}
-            loop={multiSlide}
-            className="h-full"
-          >
-            {multiSlide && (
-              <>
-                <button
-                  aria-label="Previous banner"
-                  className="hero-prev absolute start-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
-                    <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                <button
-                  aria-label="Next banner"
-                  className="hero-next absolute end-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
-                    <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </>
-            )}
-            {banners.map((b) => (
-              <SwiperSlide key={b.id}>
-                <div className="relative h-full bg-[#002C5F] flex items-end">
-                  {/* media background — image or looping muted video */}
-                  {b.mediaUrl &&
-                    (b.mediaType === "video" ? (
-                      <video
-                        src={b.mediaUrl}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                    ) : (
-                      <Image
-                        src={b.mediaUrl}
-                        fill
-                        unoptimized
-                        alt={bannerTitle(b) ?? ""}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                    ))}
+          ) : (
+            <Swiper
+              modules={[Autoplay, EffectFade, Pagination, Navigation]}
+              dir={isAr ? "rtl" : "ltr"}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              autoplay={multiSlide ? { delay: 12000, disableOnInteraction: false } : false}
+              pagination={multiSlide ? { clickable: true } : false}
+              navigation={multiSlide ? { prevEl: ".hero-prev", nextEl: ".hero-next" } : false}
+              loop={multiSlide}
+              className="h-full"
+            >
+              {multiSlide && (
+                <>
+                  <button
+                    aria-label="Previous banner"
+                    className="hero-prev absolute start-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                      <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                  <button
+                    aria-label="Next banner"
+                    className="hero-next absolute end-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="rtl:rotate-180">
+                      <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                </>
+              )}
+              {banners.map((b) => (
+                <SwiperSlide key={b.id}>
+                  <div className="relative h-full bg-[#002C5F] flex items-end">
+                    {/* media background — image or looping muted video */}
+                    {b.mediaUrl &&
+                      (b.mediaType === "video" ? (
+                        <video
+                          src={b.mediaUrl}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
+                        <Image
+                          src={b.mediaUrl}
+                          fill
+                          unoptimized
+                          alt={bannerTitle(b) ?? ""}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ))}
 
-                  <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full pb-20 md:pb-24">
-                    {bannerTitle(b) && (
-                      <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
-                        {bannerTitle(b)}
-                      </h1>
-                    )}
-                    {bannerTagline(b) && (
-                      <p className="hero-anim text-base opacity-70 max-w-md mb-8">
-                        {bannerTagline(b)}
-                      </p>
-                    )}
-                    {b.carSlug && (
-                      <div className="hero-anim">
-                        <Link
-                          href={`/${locale}/models/${b.carSlug}`}
-                          className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
-                        >
-                          {dict.explore}
-                        </Link>
-                      </div>
-                    )}
+                    <div className="max-w-7xl mx-auto px-6 relative z-10 text-white w-full pb-20 md:pb-24">
+                      {bannerTitle(b) && (
+                        <h1 className="hero-anim text-5xl font-bold leading-tight mb-4">
+                          {bannerTitle(b)}
+                        </h1>
+                      )}
+                      {bannerTagline(b) && (
+                        <p className="hero-anim text-base opacity-70 max-w-md mb-8">
+                          {bannerTagline(b)}
+                        </p>
+                      )}
+                      {b.carSlug && (
+                        <div className="hero-anim">
+                          <Link
+                            href={`/${locale}/models/${b.carSlug}`}
+                            className="inline-block px-8 py-3 bg-[#00AAD2] text-white text-sm font-semibold rounded hover:bg-[#008aad] transition-colors"
+                          >
+                            {dict.explore}
+                          </Link>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        )}
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </section>
       </div>
 
@@ -304,8 +312,8 @@ export default function HomeClient({
               slidesPerView="auto"
               spaceBetween={20}
               pagination={{ clickable: true }}
-              className="model-swiper !pb-10"
-            >
+              onSwiper={(s) => { modelSwiperRef.current = s; }}
+              className="model-swiper !pb-10">
               {filteredCars.map((car) => (
                 <SwiperSlide key={car.id} className="!w-auto !h-[60lvh] flex items-center">
                   <ModelCard
@@ -313,7 +321,21 @@ export default function HomeClient({
                     car={car}
                     exploreLabel={dict.explore}
                     expanded={expandedSlug === car.slug}
-                    onExpand={(slug) => setExpandedSlug(slug)}
+                    onExpand={(slug) => {
+                      setExpandedSlug(slug);
+                      const idx = filteredCars.findIndex((c) => c.slug === slug);
+                      if (idx < 0) return;
+                      let frame = 0;
+                      const tick = () => {
+                        const sw = modelSwiperRef.current;
+                        if (!sw || sw.destroyed) return;
+                        sw.update();
+                        sw.slideTo(idx, 100);
+                        frame++;
+                        if (frame < 30) requestAnimationFrame(tick);
+                      };
+                      requestAnimationFrame(tick);
+                    }}
                     onCollapse={() => setExpandedSlug(null)}
                     onTransitionSettled={handleCardSettled}
                   />
@@ -323,16 +345,13 @@ export default function HomeClient({
           </div>
         </div>
       </section>
-
       <Reveal>
-
-
-        <section className="py-5 overflow-hidden">
+        <section className=" overflow-hidden">
           <div className="px-3 md:px-4">
             {/* image + text share one card */}
             <div className="relative">
               {/* founder image — margined (not full-bleed), straight edges */}
-              <div className="relative h-[70lvh] min-h-[380px] overflow-hidden bg-gray-200">
+              <div className="relative h-[70lvh] overflow-hidden bg-gray-200">
                 <ParallaxLoader src="/images/founder.webp" alt={dict.whoWeAre} />
                 <Link
                   href={`/${locale}/about-hyundai`}

@@ -25,8 +25,7 @@ body {
 }
 
 html {
-  scrollbar-gutter: stable;
-  overflow-x: clipS;
+  overflow-x: clip;
   overscroll-behavior-y: none;
   /*Stop toolbar resize*/
 }
@@ -102,4 +101,8 @@ html {
   .model-swiper [data-card-slug] * {
     transition-duration: 0.01ms !important;
   }
+}
+
+.swiper-slide {
+  width: 100% !important;
 }

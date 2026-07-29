@@ -7,12 +7,12 @@ interface Props {
   hoverVideo?: string | null;
   hoverImage?: string | null;
   alt: string;
-  /** true while the parent card is hovered */
+  label:string;
   active: boolean;
 }
 
 
-export default function CarHoverMedia({ hoverVideo, hoverImage, alt, active }: Props) {
+export default function CarHoverMedia({ hoverVideo, hoverImage, alt, active ,label}: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Play/pause driven by the parent's hover state rather than the video's own
@@ -36,7 +36,6 @@ export default function CarHoverMedia({ hoverVideo, hoverImage, alt, active }: P
       className={`absolute inset-0 transition-opacity duration-500 ${
         active ? "opacity-100" : "opacity-0"
       }`}
-      aria-hidden
     >
       {hoverVideo ? (
         <video
@@ -46,8 +45,8 @@ export default function CarHoverMedia({ hoverVideo, hoverImage, alt, active }: P
           muted
           loop
           playsInline
-          preload="none"            // don't download until it's actually needed
-          className="w-full h-full object-contain"
+          preload="none"
+          className="w-full h-full object-cover"
         />
       ) : (
         <Image
@@ -55,9 +54,17 @@ export default function CarHoverMedia({ hoverVideo, hoverImage, alt, active }: P
           alt={alt}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-contain"
+          className="object-cover"
         />
       )}
+
+{/* dark scrim + centered discover text */}
+      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+        <span className="inline-flex items-center gap-2 text-white text-lg font-semibold">
+          {label}
+          <span aria-hidden className="inline-block">›</span>
+        </span>
+      </div>
     </div>
   );
 }

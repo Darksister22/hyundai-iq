@@ -18,7 +18,7 @@ interface Props {
   cars: FindCarCar[];            // DB cars, already ordered by sort_order
   navHeight?: number;
   onMountedChange?: (mounted: boolean) => void;
-   instantClose?: boolean;
+  instantClose?: boolean;
 }
 
 // "all" or a category id from the DB
@@ -51,10 +51,7 @@ export default function FindCarPanel({
   // in an effect (avoids the cascading-render warning).
   if (open && !mounted) setMounted(true);
 
-  // TEMP: hardcoded hover media on the first card to test the effect.
-  // Remove once hover_image / hover_video come from Supabase.
-  const testHoverImage = (index: number) =>
-    index === 0 ? "/images/IONIQ_9_3.webp" : null;
+
 
   // localized label with English fallback
   const catLabel = (c: FindCarCategory) => (isAr ? c.nameAr ?? c.nameEn : c.nameEn);
@@ -83,7 +80,7 @@ export default function FindCarPanel({
         .fromTo(gridRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, "-=0.05");
     } else {
       if (instantClose) {
-               tl.to(panelRef.current, {
+        tl.to(panelRef.current, {
           height: 0,
           duration: 0.3,
           ease: "power2.inOut",
@@ -102,7 +99,7 @@ export default function FindCarPanel({
     }
     return () => { tl.kill(); };
   }, [open, mounted]);
-    useEffect(() => {
+  useEffect(() => {
     onMountedChange?.(mounted);
   }, [mounted, onMountedChange]);
 
@@ -187,9 +184,8 @@ export default function FindCarPanel({
                 <button
                   onClick={onClose}
                   aria-label="Close"
-                  className={`relative z-10 text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${
-                    isAr ? "md:left-0" : "md:right-0"
-                  }`}
+                  className={`relative z-10 text-gray-400 hover:text-gray-700 transition-all duration-500 md:absolute md:top-0 ${isAr ? "md:left-0" : "md:right-0"
+                    }`}
                 >
                   <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
                     <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -204,9 +200,8 @@ export default function FindCarPanel({
                     <button
                       key={c.id}
                       onClick={() => onCategory(c.id)}
-                      className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                        category === c.id ? "bg-white shadow text-[#111]" : "text-gray-500 hover:text-gray-800"
-                      }`}
+                      className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${category === c.id ? "bg-white shadow text-[#111]" : "text-gray-500 hover:text-gray-800"
+                        }`}
                     >
                       {c.label}
                     </button>
@@ -227,44 +222,40 @@ export default function FindCarPanel({
                   onClick={onClose}
                   onMouseEnter={() => setHoveredId(m.id)}
                   onMouseLeave={() => setHoveredId(null)}
-                  className="group bg-gray-50 hover:bg-gray-100 rounded-xl p-8 transition-colors flex flex-col"
+                  className="group relative overflow-hidden bg-gray-50 hover:bg-gray-100 rounded-xl p-8 transition-colors flex flex-col"
                 >
-                  <h3
-                    className={`text-2xl font-bold text-[#111] mb-6 ${isAr ? "text-right" : "text-left"}`}
-                  >
-                    {carName(m)}
-                  </h3>
+                  {/* base content — hidden while the card is hovered */}
+                  <div className={`flex flex-col flex-1 transition-opacity duration-300 ${hoveredId === m.id ? "opacity-0" : "opacity-100"}`}>
+                    <h3 className={`text-2xl font-bold text-[#111] mb-6 ${isAr ? "text-right" : "text-left"}`}>
+                      {carName(m)}
+                    </h3>
 
-                  <div className="flex-1 flex items-center justify-center overflow-hidden min-h-[220px]">
-                    <div className="relative w-full h-[220px]">
-                      {m.heroImage ? (
-                        <Image
-                          src={m.heroImage}
-                          alt={carName(m)}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          // fades out only when there's hover media to replace it
-                          className={`object-contain transition-all duration-500 ${
-                            hoveredId === m.id && testHoverImage(i)
-                              ? "opacity-0"
-                              : "group-hover:scale-105"
-                          }`}
-                        />
-                      ) : (
-                        // fallback when the CMS has no hero image yet
-                        <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400 transition-transform duration-500 group-hover:scale-105">
-                          {m.nameEn}
-                        </div>
-                      )}
-
-                      <CarHoverMedia
-                        hoverVideo={null}
-                        hoverImage={testHoverImage(i)}
-                        alt={carName(m)}
-                        active={hoveredId === m.id}
-                      />
+                    <div className="flex-1 flex items-center justify-center overflow-hidden min-h-[220px]">
+                      <div className="relative w-full h-[220px]">
+                        {(m.spinFrame ?? m.heroImage) ? (
+                          <Image
+                            src={m.spinFrame ?? m.heroImage!}
+                            alt={carName(m)}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-contain"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
+
+                  {/* hover media — the ONLY thing visible on hover, covers the card */}
+                  <CarHoverMedia
+                    hoverVideo={m.hoverVideo ?? null}
+                    hoverImage={m.heroImage ?? null}
+                    alt={carName(m)}
+                    label={isAr ? "اكتشف" : "Discover"}
+                    active={hoveredId === m.id}
+                  />
                 </Link>
               ))}
             </div>

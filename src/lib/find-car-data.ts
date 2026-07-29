@@ -21,6 +21,7 @@ export interface FindCarCar {
   nameAr: string | null;
   nameEn: string;
   heroImage: string | null; // full public URL (may be null if not uploaded yet)
+  spinFrame: string | null; 
   categoryId: number | null;
   sortOrder: number;
   hoverVideo?: string | null;  // mp4/webm — takes priority when present
@@ -60,7 +61,15 @@ export async function getFindCarData(): Promise<FindCarData> {
     fetchCategories(),
     supabase
       .from("cars")
-      .select("id, slug, name_ar, name_en, hero_image, category_id, sort_order")
+      .select(
+        `
+        id, slug, name_ar, name_en, hero_image, category_id, sort_order,
+        spin_colors:visualizer_spin_colors (
+          sort_order,
+          frames:visualizer_spin_frames ( frame_index, image )
+        )
+      `
+      )
       .order("sort_order", { ascending: true }),
   ]);
 
@@ -68,15 +77,28 @@ export async function getFindCarData(): Promise<FindCarData> {
     console.error("[find-car-data] cars fetch failed:", carsRes.error.message);
   }
 
-  const cars: FindCarCar[] = (carsRes.data ?? []).map((c) => ({
-    id: c.id,
-    slug: c.slug,
-    nameAr: c.name_ar,
-    nameEn: c.name_en,
-    heroImage: c.hero_image,
-    categoryId: c.category_id,
-    sortOrder: c.sort_order,
-  }));
+  const cars: FindCarCar[] = (carsRes.data ?? []).map((c) => {
+    // first frame of the lowest-sort_order color = the default "front" view
+    const colors = ((c.spin_colors as unknown as SpinColorRow[]) ?? [])
+      .slice()
+      .sort((a, b) => a.sort_order - b.sort_order);
+    const firstFrames = (colors[0]?.frames ?? [])
+      .slice()
+      .sort((a, b) => a.frame_index - b.frame_index)
+      .map((f) => f.image)
+      .filter((img): img is string => !!img);
+
+    return {
+      id: c.id,
+      slug: c.slug,
+      nameAr: c.name_ar,
+      nameEn: c.name_en,
+      heroImage: c.hero_image,
+      spinFrame: firstFrames[0] ?? null,
+      categoryId: c.category_id,
+      sortOrder: c.sort_order,
+    };
+  });
 
   return { categories, cars };
 }

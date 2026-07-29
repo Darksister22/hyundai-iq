@@ -41,12 +41,16 @@ export default function GallerySection({ locale, model, heading }: Props) {
 
     // Lock background scroll while the overlay is up, restore on close.
     const prevOverflow = document.body.style.overflow;
+    const prevPadding = document.body.style.paddingRight;
+    const scrollbarW = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = "hidden";
+    document.body.style.paddingRight = `${scrollbarW}px`;
     window.addEventListener("keydown", onKey);
 
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPadding;
     };
   }, [isOpen, isRTL, next, prev]);
 
@@ -63,11 +67,11 @@ export default function GallerySection({ locale, model, heading }: Props) {
         <div className="relative aspect-[16/9] max-h-[70lvh] w-full rounded-lg overflow-hidden mb-4 bg-neutral-100 flex items-center justify-center text-gray-500 text-sm">
           {model.gallery[active] ? (
 
-            <ImageWithLoader   src={model.gallery[active]}
+            <ImageWithLoader src={model.gallery[active]}
               alt={`Gallery image ${active + 1}`}
               fill
               unoptimized
-              className="absolute inset-0 w-full h-full object-contain"/>
+              className="absolute inset-0 w-full h-full object-contain" />
           ) : (
             <>Gallery image {active + 1}</>
           )}
@@ -76,7 +80,7 @@ export default function GallerySection({ locale, model, heading }: Props) {
           <button
             onClick={() => setIsOpen(true)}
             aria-label="View fullscreen"
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/80 hover:bg-white w-10 h-10 rounded flex items-center justify-center transition-colors"
+            className="absolute top-4 right-2 z-10 -translate-x-1/2 bg-white/80 hover:bg-white w-10 h-10 rounded flex items-center justify-center transition-colors"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path
@@ -102,9 +106,8 @@ export default function GallerySection({ locale, model, heading }: Props) {
             <SwiperSlide key={i}>
               <button
                 onClick={() => setActive(i)}
-                className={`group h-24 w-full rounded overflow-hidden border-2 transition-colors ${
-                  active === i ? "border-[#002C5F]" : "border-transparent"
-                }`}
+                className={`group h-24 w-full rounded overflow-hidden border-2 transition-colors ${active === i ? "border-[#002C5F]" : "border-transparent"
+                  }`}
               >
                 {img ? (
 
@@ -179,14 +182,18 @@ export default function GallerySection({ locale, model, heading }: Props) {
 
           {/* The image itself. stopPropagation so clicking the photo doesn't close. */}
 
-          <ImageWithLoader             src={model.gallery[active]}
-            alt={`Gallery image ${active + 1}`}
-            loading="lazy"
-            sizes="100vw"
-            fill
-            unoptimized
+      <div
             onClick={(e) => e.stopPropagation()}
-            className="max-w-[92vw] max-h-[88lvh] object-contain select-none" />
+            className="relative w-[92vw] h-[88lvh]"
+          >
+            <ImageWithLoader
+              src={model.gallery[active]}
+              alt={`Gallery image ${active + 1}`}
+              fill
+              unoptimized
+              className="object-contain select-none"
+            />
+          </div>
         </div>
       )}
     </section>
