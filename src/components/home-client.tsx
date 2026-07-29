@@ -67,15 +67,12 @@ export default function HomeClient({
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const filteredCars =
     activeCat === "all" ? cars : cars.filter((c) => c.categoryId === activeCat);
-const handleCardSettled = useCallback(() => {
-    const sw = modelSwiperRef.current;
-    if (!sw || sw.destroyed) return;
-    sw.update();
-    if (expandedSlug) {
-      const idx = filteredCars.findIndex((c) => c.slug === expandedSlug);
-      if (idx >= 0) sw.slideTo(idx, 400);
-    }
-  }, [expandedSlug, filteredCars]);
+
+  const handleCardSettled = useCallback(() => {
+    // loops in onExpand/onCollapse already positioned the carousel;
+    // just refresh measurements here — no slideTo, which caused the end-jitter
+    modelSwiperRef.current?.update();
+  }, []);
 
   // click outside the expanded card collapses it back to state 1/2
   useEffect(() => {
@@ -145,8 +142,8 @@ const handleCardSettled = useCallback(() => {
             ease: "power2.out",
             scrollTrigger: {
               trigger: gridRef.current,
-              start: "top 90%",
-              toggleActions: "play none none none",
+              start: "top 99%",
+              toggleActions: "play none reverse none",
             },
           }
         );
@@ -222,7 +219,7 @@ const handleCardSettled = useCallback(() => {
                 </>
               )}
               {banners.map((b) => (
-                <SwiperSlide key={b.id}>
+                <SwiperSlide key={b.id} >
                   <div className="relative h-full bg-[#002C5F] flex items-end">
                     {/* media background — image or looping muted video */}
                     {b.mediaUrl &&
@@ -336,7 +333,25 @@ const handleCardSettled = useCallback(() => {
                       };
                       requestAnimationFrame(tick);
                     }}
-                    onCollapse={() => setExpandedSlug(null)}
+onCollapse={() => {
+                      setExpandedSlug(null);
+                      let frame = 0;
+                      const tick = () => {
+                        const sw = modelSwiperRef.current;
+                        if (!sw || sw.destroyed) return;
+                        sw.update();
+                        // don't chase the collapsing card — just keep the carousel
+                        // within valid bounds so it can't scroll into empty space
+                        const max = sw.maxTranslate();
+                        const min = sw.minTranslate();
+                        const current = sw.translate;
+                        const clamped = Math.max(max, Math.min(min, current));
+                        if (clamped !== current) sw.translateTo(clamped, 100);
+                        frame++;
+                        if (frame < 30) requestAnimationFrame(tick);
+                      };
+                      requestAnimationFrame(tick);
+                    }}
                     onTransitionSettled={handleCardSettled}
                   />
                 </SwiperSlide>
@@ -345,22 +360,21 @@ const handleCardSettled = useCallback(() => {
           </div>
         </div>
       </section>
-      <Reveal>
-        <section className=" overflow-hidden">
-          <div className="px-3 md:px-4">
-            {/* image + text share one card */}
-            <div className="relative">
-              {/* founder image — margined (not full-bleed), straight edges */}
-              <div className="relative h-[70lvh] overflow-hidden bg-gray-200">
-                <ParallaxLoader src="/images/founder.webp" alt={dict.whoWeAre} />
-                <Link
-                  href={`/${locale}/about-hyundai`}
-                  className="absolute bottom-4 start-4 inline-flex items-center gap-2 bg-white/90 text-[#002C5F] text-sm font-semibold px-4 py-2 rounded shadow hover:bg-white transition-colors"
-                >
-                  <span aria-hidden className="inline-block" >{dict.knowMore}</span>
-                </Link>
-              </div>
-
+      <section className=" overflow-hidden">
+        <div className="px-3 md:px-4">
+          {/* image + text share one card */}
+          <div className="relative">
+            {/* founder image — margined (not full-bleed), straight edges */}
+            <div className="relative h-[70lvh] overflow-hidden bg-gray-200">
+              <ParallaxLoader src="/images/founder.webp" alt={dict.whoWeAre} />
+              <Link
+                href={`/${locale}/about-hyundai`}
+                className="absolute bottom-4 start-4 inline-flex items-center gap-2 bg-white/90 text-[#002C5F] text-sm font-semibold px-4 py-2 rounded shadow hover:bg-white transition-colors"
+              >
+                <span aria-hidden className="inline-block" >{dict.knowMore}</span>
+              </Link>
+            </div>
+            <Reveal>
               {/* label + description sit in a gray box directly under the image */}
               <div className="bg-gray-50 px-6 md:px-10 py-8 md:py-10">
                 <span className="text-sm text-gray-400">{dict.whoWeAre}</span>
@@ -368,10 +382,12 @@ const handleCardSettled = useCallback(() => {
                   {dict.whoWeAreDesc}
                 </h2>
               </div>
-            </div>
+            </Reveal>
+
           </div>
-        </section>
-      </Reveal>
+        </div>
+      </section>
+
       <Reveal>
         <section className="w-[100vw] mx-[calc(50%-50vw)] overflow-hidden mb-16">
           {/* image — inset from the page edges, with the same notch + chevron as the service cards */}

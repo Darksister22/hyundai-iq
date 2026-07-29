@@ -60,12 +60,13 @@ export default function ModelCard({
   useLayoutEffect(() => {
     const el = cardRef.current;
     if (!el) return;
-    const target = expanded ? { width: Math.min(window.innerWidth * 0.92, 560), height: 440 } : { width: 260, height: 360 };
-    if (isFirst.current) {
-      isFirst.current = false;
-      gsap.set(el, target);
-      return
-    }
+    const target = expanded
+      ? { width: Math.min(window.innerWidth * 0.82, 560), height: 440 }
+      : { width: 260, height: 360 }; if (isFirst.current) {
+        isFirst.current = false;
+        gsap.set(el, target);
+        return
+      }
     const tween = gsap.to(el, {
       ...target,
       duration: 0.65,
@@ -85,8 +86,7 @@ export default function ModelCard({
       onClick={() => {
         if (!expanded && hasSpin) onExpand(car.slug);
       }}
-      className={`group relative shrink-0 rounded-xl bg-gray-50 overflow-hidden
-        transition-shadow duration-300
+      className={`group relative shrink-0 rounded-xl bg-gray-100 transition-shadow duration-400
         ${expanded
           ? "cursor-default shadow-xl z-10"
           : `hover:shadow-xl hover:z-10 ${hasSpin ? "cursor-pointer" : "cursor-default"}`
@@ -159,12 +159,12 @@ export default function ModelCard({
             }`}
         >
           {/* watermark name — TOP of card, behind the car */}
-          <span className="absolute top-4 inset-x-0 text-center text-6xl md:text-8xl font-extrabold text-gray-300 pointer-events-none select-none z-0 leading-none">
+          <span className="absolute top-10 inset-x-0 text-center text-5xl md:text-7xl font-extrabold text-gray-300 pointer-events-none select-none z-0 leading-none">
             {name}
           </span>
 
           {/* top bar — above everything (z-30) */}
-          <div className="relative z-30 flex items-start justify-between">
+          <div className="relative z-20 flex items-start justify-between">
             {colors.length > 0 ? (
               <div className="relative" onClick={stop} onMouseDown={stop}>
                 <button
@@ -172,7 +172,7 @@ export default function ModelCard({
                     stop(e);
                     setColorOpen((o) => !o);
                   }}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-1"
                 >
                   <span
                     className="w-5 h-5 rounded"
@@ -202,7 +202,7 @@ export default function ModelCard({
                 </button>
 
                 {colorOpen && (
-                  <div className="absolute top-full mt-2 bg-white shadow-lg rounded-lg p-1 z-40 min-w-[160px]">
+                  <div className="absolute top-full mt-2 bg-white shadow-lg rounded-lg p-1 z-40 ">
                     {colors.map((c, i) => (
                       <button
                         key={`${c.hex ?? ""}-${i}`}
