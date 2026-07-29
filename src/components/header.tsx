@@ -313,7 +313,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
 
           </nav>
 
-          {/* ---------- zone 3: actions, separated by a rule ---------- */}
+        {/* ---------- zone 3: actions, separated by a rule ---------- */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
             {/* divider marks where navigation ends and actions begin */}
             <span className={`h-5 w-px transition-colors ${divider}`} aria-hidden />
@@ -325,18 +325,41 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
             >
               {dict.langSwitch}
             </Link>
+
+                       {/* second divider before the distributor logo */}
+            <span className={`h-5 w-px transition-colors ${divider}`} aria-hidden />
+
+            {/* Al-Oula logo — white logo, so it needs a dark bg pill once the
+                header turns white; sits bare over the transparent header */}
+            <span className={`inline-flex items-center rounded px-2 py-1 transition-colors ${solid ? "bg-[#002C5F]" : ""}`}>
+              <img
+                src="/svglogo/AloulaHorizontal.svg"
+                alt="Al-Oula Motors"
+                className="h-10 w-auto"
+              />
+            </span>
           </div>
 
           {/* hamburger — now shown below lg, not below md */}
-          <button
-            className={`lg:hidden p-2 -me-2 rounded-md transition-colors ${solid ? "text-gray-800" : "text-white"}`}
-            aria-label="menu"
-            onClick={() => { setMenuVisible(true); requestAnimationFrame(() => setMenuOpen(true)); }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
+          
+          {/* mobile cluster — logo + hamburger, shown below lg */}
+          <div className="lg:hidden flex items-center gap-3">
+            {/* Al-Oula logo — white logo, dark pill once header is white */}
+            <span className={`inline-flex items-center rounded px-2 py-1 transition-colors ${solid ? "bg-[#002C5F]" : ""}`}>
+              <img src="/svglogo/AloulaHorizontal.svg" alt="Al-Oula Motors" className="h-10 w-auto" />
+            </span>
+
+            {/* hamburger */}
+            <button
+              className={`p-2 -me-2 rounded-md transition-colors ${solid ? "text-gray-800" : "text-white"}`}
+              aria-label="menu"
+              onClick={() => { setMenuVisible(true); requestAnimationFrame(() => setMenuOpen(true)); }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
 
