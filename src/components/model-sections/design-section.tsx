@@ -79,23 +79,26 @@ export default function DesignSection({
         <Swiper
           modules={[Navigation]}
           navigation
-          spaceBetween={24}
-          slidesPerView={1}
-          breakpoints={{ 768: { slidesPerView: 2 } }}
+          spaceBetween={30}
+          slidesPerView="auto"
+          centeredSlides
+          // breakpoints={{ 768: { slidesPerView: 2 } }}
           key={tab}
         >
           {items.map((item, i) => (
-           <SwiperSlide key={i} className="!w-[340px]">
+            <SwiperSlide key={i}>
               <div className="group">
                 <div className="relative h-[420px] rounded-lg overflow-hidden mb-5">
                   {item.image ? (
-                    <ImageWithLoader
-                      src={item.image}
-                      alt={isAr ? item.captionAr : item.captionEn}
-                      unoptimized
-                      fill
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
+                    <div className="absolute inset-0">
+                      <ImageWithLoader
+                        src={item.image}
+                        alt={isAr ? item.captionAr : item.captionEn}
+                        unoptimized
+                        fill
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
+                    </div>
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-xs text-gray-400 transition-transform duration-700 ease-out group-hover:scale-105">
                       {tab} {i + 1}
