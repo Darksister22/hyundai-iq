@@ -250,7 +250,6 @@ export default function FindCarPanel({
 
                   {/* hover media — the ONLY thing visible on hover, covers the card */}
                   <CarHoverMedia
-                    hoverVideo={m.hoverVideo ?? null}
                     hoverImage={m.heroImage ?? null}
                     alt={carName(m)}
                     label={isAr ? "اكتشف" : "Discover"}
