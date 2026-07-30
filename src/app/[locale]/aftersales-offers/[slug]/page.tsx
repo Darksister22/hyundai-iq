@@ -6,12 +6,41 @@ import { supabase } from "@/lib/supabase";
 import { getAftersalesOfferBySlug, getAftersalesOfferSlugs } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
 import ImageWithLoader from "@/components/loaders/loading-image";
+import type { Metadata } from "next";
 
 export async function generateStaticParams() {
   const slugs = await getAftersalesOfferSlugs();
   return slugs.map((slug) => ({ slug }));
 }
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale, slug } = await params;
+  const locale = rawLocale as Locale;
+  const isAr = locale === "ar";
 
+  const offer = await getAftersalesOfferBySlug(slug);
+  if (!offer) return {}; // page will notFound() in the component
+
+  const title = isAr ? offer.title.ar : offer.title.en;
+  const description = isAr
+    ? offer.subtitle?.ar ?? offer.title.ar
+    : offer.subtitle?.en ?? offer.title.en;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/${locale}/aftersales-offers/${slug}` },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: offer.image ? [{ url: offer.image }] : undefined,
+    },
+  };
+}
 export const revalidate = 300;
 
 export default async function AftersalesOfferDetailPage({
@@ -56,9 +85,12 @@ export default async function AftersalesOfferDetailPage({
           <nav className="mb-4 flex items-center gap-2 text-sm text-white/70">
             <Link href={`/${locale}`} className="hover:text-white transition-colors">{t.breadcrumbHome}</Link>
             <span aria-hidden>›</span>
-            <Link href={`/${locale}/aftersales-offers`} className="hover:text-white transition-colors">{t.breadcrumbOffers}</Link>
+            <span >{t.breadcrumbOffers}</span>
             <span aria-hidden>›</span>
-            <span className="text-white">{isAr ? offer.title.ar : offer.title.en}</span>
+            <Link href={`/${locale}/aftersales-offers`} className="hover:text-white transition-colors">{isAr ? "عروض الصيانة" : "Maintenance Offers"}</Link>
+            <span aria-hidden>›</span>
+            
+
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-white">{isAr ? offer.title.ar : offer.title.en}</h1>
           <p className="mt-3 max-w-2xl text-white/90">{isAr ? offer.subtitle.ar : offer.subtitle.en}</p>

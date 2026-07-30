@@ -242,7 +242,7 @@ if (tabsRef.current) {
                         </h1>
                       )}
                       {bannerTagline(b) && (
-                        <p className="hero-anim text-base opacity-70 max-w-md mb-8">
+                        <p className="hero-anim text-base opacity-70  ">
                           {bannerTagline(b)}
                         </p>
                       )}

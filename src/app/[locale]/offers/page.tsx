@@ -47,7 +47,9 @@ export default async function OffersPage({
           <nav className="mb-4 flex items-center gap-2 text-sm text-white/70">
             <Link href={`/${locale}`} className="hover:text-white transition-colors">{t.breadcrumbHome}</Link>
             <span aria-hidden>›</span>
-            <span className="text-white">{t.breadcrumbOffers}</span>
+            <span >{t.breadcrumbOffers}</span>
+                        <span aria-hidden>›</span>
+
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-white">{t.bannerTitle}</h1>
           <p className="mt-3 max-w-2xl text-white/90">{t.bannerSubtitle}</p>

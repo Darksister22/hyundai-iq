@@ -5,12 +5,40 @@ import OfferCarousel from "@/components/offer-sections/offer-carousel";
 import OfferForm from "@/components/offer-sections/offer-form";
 import { getSalesOfferBySlug, getSalesOfferSlugs } from "@/lib/offers-data-db";
 import { getDictionary, Locale } from "@/lib/i18n";
+import type { Metadata } from "next";
+
 
 export async function generateStaticParams() {
   const slugs = await getSalesOfferSlugs();
   return slugs.map((slug) => ({ slug }));
 }
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale, slug } = await params;
+  const locale = rawLocale as Locale;
+  const isAr = locale === "ar";
 
+  const offer = await getSalesOfferBySlug(slug);
+  if (!offer) return {}; // component calls notFound()
+
+  const title = isAr ? offer.title.ar : offer.title.en;
+  const description = isAr ? offer.subtitle.ar : offer.subtitle.en;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/${locale}/offers/${slug}` },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: offer.image ? [{ url: offer.image }] : undefined,
+    },
+  };
+}
 // unknown slugs render on first visit; existing pages regenerate every 5 min
 export const revalidate = 300;
 
@@ -40,10 +68,13 @@ export default async function OfferDetailPage({
         <div className="absolute inset-0 max-w-7xl mx-auto px-6 flex flex-col justify-end pb-16">
           <nav className="mb-4 flex items-center gap-2 text-sm text-white/70">
             <Link href={`/${locale}`} className="hover:text-white transition-colors">{t.breadcrumbHome}</Link>
+            <span aria-hidden>›</span> 
+            <span >{t.breadcrumbOffers}</span>
             <span aria-hidden>›</span>
-            <Link href={`/${locale}/offers`} className="hover:text-white transition-colors">{t.breadcrumbOffers}</Link>
+            <Link href={`/${locale}/offers`} className="hover:text-white transition-colors">{isAr ? "عروض المبيعات" : "Sales Offers"}</Link>
             <span aria-hidden>›</span>
-            <span className="text-white">{isAr ? offer.title.ar : offer.title.en}</span>
+
+
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-white">{isAr ? offer.title.ar : offer.title.en}</h1>
           <p className="mt-3 max-w-2xl text-white/90">{isAr ? offer.subtitle.ar : offer.subtitle.en}</p>
@@ -70,8 +101,8 @@ export default async function OfferDetailPage({
           offerOptions={
             offer.cars.length > 0
               ? offer.cars.map((c) =>
-                  `${isAr ? offer.title.ar : offer.title.en} — ${isAr ? c.name.ar : c.name.en}`
-                )
+                `${isAr ? offer.title.ar : offer.title.en} — ${isAr ? c.name.ar : c.name.en}`
+              )
               : [isAr ? offer.title.ar : offer.title.en]
           }
           dict={t}

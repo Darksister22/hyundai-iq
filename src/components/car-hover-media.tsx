@@ -1,47 +1,38 @@
 "use client";
 
-import { useRef,useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 interface Props {
-  hoverVideo?: string | null;
-  hoverImage?: string | null;
+  hoverImage?: string | null; // may be an image OR a video URL
   alt: string;
-  label:string;
+  label: string;
   active: boolean;
 }
 
+// treat common video extensions as video, everything else as image
+const isVideo = (url: string) => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
 
-export default function CarHoverMedia({ hoverVideo, hoverImage, alt, active ,label}: Props) {
+export default function CarHoverMedia({ hoverImage, alt, label, active }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Play/pause driven by the parent's hover state rather than the video's own
-  // mouse events, so it can't desync from the card's visual state.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    if (active) {
-      video.play().catch(() => {}); // autoplay can reject; not worth surfacing
-    } else {
-      video.pause();
-      video.currentTime = 0;
-    }
+    if (active) video.play().catch(() => {});
+    else { video.pause(); video.currentTime = 0; }
   }, [active]);
 
-  if (!hoverVideo && !hoverImage) return null;
+  if (!hoverImage) return null;
+
+  const video = isVideo(hoverImage);
 
   return (
-    <div
-      className={`absolute inset-0 transition-opacity duration-500 ${
-        active ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      {hoverVideo ? (
+    <div className={`absolute inset-0 transition-opacity duration-500 ${active ? "opacity-100" : "opacity-0"}`}>
+      {video ? (
         <video
           ref={videoRef}
-          src={hoverVideo}
-          poster={hoverImage ?? undefined}
+          src={hoverImage}
           muted
           loop
           playsInline
@@ -50,19 +41,18 @@ export default function CarHoverMedia({ hoverVideo, hoverImage, alt, active ,lab
         />
       ) : (
         <Image
-          src={hoverImage!}
+          src={hoverImage}
           alt={alt}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          unoptimized
           className="object-cover"
         />
       )}
 
-{/* dark scrim + centered discover text */}
       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
         <span className="inline-flex items-center gap-2 text-white text-lg font-semibold">
           {label}
-          <span aria-hidden className="inline-block">›</span>
+          <span aria-hidden className="inline-block rtl:rotate-180">›</span>
         </span>
       </div>
     </div>
