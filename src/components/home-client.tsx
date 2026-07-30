@@ -114,7 +114,7 @@ export default function HomeClient({
         });
       }
 
-      if (tabsRef.current) {
+if (tabsRef.current) {
         gsap.from(tabsRef.current.querySelectorAll("button"), {
           y: 20,
           opacity: 0,
@@ -124,27 +124,19 @@ export default function HomeClient({
           scrollTrigger: {
             trigger: tabsRef.current,
             start: "top 85%",
-            end: "bottom 20%",
-            toggleActions: "play reverse play reverse",
+            once: true,          // play once, never reverse
           },
         });
       }
 
       if (gridRef.current) {
         gsap.fromTo(
-          gridRef.current.querySelectorAll(".swiper-slide"),
+          gridRef.current,               // animate the container, not individual slides
           { y: 50, opacity: 0 },
           {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: "top 99%",
-              toggleActions: "play none reverse none",
-            },
+            y: 0, opacity: 1, duration: 0.6, ease: "power2.out",
+            clearProps: "all",
+            scrollTrigger: { trigger: gridRef.current, start: "top 90%", once: true },
           }
         );
       }
@@ -333,7 +325,7 @@ export default function HomeClient({
                       };
                       requestAnimationFrame(tick);
                     }}
-onCollapse={() => {
+                    onCollapse={() => {
                       setExpandedSlug(null);
                       let frame = 0;
                       const tick = () => {
@@ -401,7 +393,7 @@ onCollapse={() => {
                     : "polygon(0 0, 100% 0, 100% 100%, 3.5rem 100%, 4.75rem calc(100% - 3rem), 0 calc(100% - 3rem))",
                 }}
               >
-                <ParallaxLoader src="/images/IONIQ_9_3.webp" alt="" />
+                <ParallaxLoader unoptimized src="/images/IONIQ_9_3.webp" alt="" />
               </div>
 
               {/* chevron in the notch */}

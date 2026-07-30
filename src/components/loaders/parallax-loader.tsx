@@ -2,7 +2,15 @@
 import { useEffect, useRef } from "react";
 import ImageWithLoader from "@/components/loaders/loading-image";
 
-export default function ParallaxLoader({ src, alt = "" }: { src: string; alt?: string }) {
+export default function ParallaxLoader({
+  src,
+  alt = "",
+  unoptimized = false,   // opt in per image, like ImageWithLoader
+}: {
+  src: string;
+  alt?: string;
+  unoptimized?: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,10 +27,9 @@ export default function ParallaxLoader({ src, alt = "" }: { src: string; alt?: s
   }, []);
 
   return (
-    // outer clips; only vertical scale so no horizontal overhang
     <div className="absolute inset-0 overflow-hidden">
       <div ref={ref} className="absolute inset-0 scale-y-110 will-change-transform">
-        <ImageWithLoader src={src} alt={alt} fill className="object-cover" />
+        <ImageWithLoader src={src} alt={alt} fill unoptimized={unoptimized} className="object-cover" />
       </div>
     </div>
   );

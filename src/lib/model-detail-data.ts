@@ -1,10 +1,3 @@
-// lib/model-detail-data.ts
-// Server-side data layer for the model detail page.
-// Fetches one car with ALL its child collections in a single nested
-// Supabase query and adapts the result into the existing VehicleModel
-// shape, so the section components keep working unchanged.
-// Kurdish columns are skipped because the public site is ar/en only.
-
 import { supabase } from "@/lib/supabase";
 import type {
   VehicleModel,
@@ -15,6 +8,7 @@ import type {
   InteriorOption,
   DesignRow,
   PerfStat,
+  EngineVariant,
 } from "@/lib/models-data";
 import type { Locale } from "@/lib/i18n";
 
@@ -83,6 +77,17 @@ interface SpinColorRow {
   color_name_en: string | null;
   frames: SpinFrameRow[] | null;
 }
+interface CarEngineRow {
+  sort_order: number;
+  engine: { name_ar: string | null; name_en: string | null } | null;
+  power: LabelRow | null;
+  torque: LabelRow | null;
+  transmission: LabelRow | null;
+  ground_clearance_ar: string | null;
+  ground_clearance_en: string | null;
+  accel_0_100_ar: string | null;
+  accel_0_100_en: string | null;
+}
 interface Color360Row {
   sort_order: number;
   color_hex: string | null;
@@ -140,11 +145,20 @@ export async function getCarBySlug(
       design_title_ar, design_title_en, design_hero_image,
       additional_design_heading_ar, additional_design_heading_en,
       perf_hero_image, transmission_ar, transmission_en,
-      accel_0_100_ar, accel_0_100_en, perf_closing_image,
+      perf_closing_image,
       safety_heading_ar, safety_heading_en,
       convenience_heading_ar, convenience_heading_en, convenience_image,
       seating:seating_options ( label_ar, label_en ),
       drive:drive_options ( label_ar, label_en ),
+      car_engines (
+        sort_order,
+        engine:engine_options ( name_ar, name_en ),
+        power:power_options   ( label_ar, label_en ),
+        torque:torque_options ( label_ar, label_en ),
+        transmission:transmission_options ( label_ar, label_en ),
+        ground_clearance_ar, ground_clearance_en,
+        accel_0_100_ar, accel_0_100_en
+      ),
       highlight_cards ( sort_order, title_ar, title_en, description_ar, description_en, image ),
       design_cards ( kind, sort_order, caption_ar, caption_en, image ),
       additional_design_items ( sort_order, label_ar, label_en, image ),
@@ -179,12 +193,30 @@ export async function getCarBySlug(
     { labelEn: "Drive", labelAr: "الدفع", value: loc(drive?.label_ar ?? null, drive?.label_en ?? null) },
   ].filter((s) => s.value !== "");
 
-  // ── PERFORMANCE stats: Max Power / Max Torque / Transmission / 0-100 ──
+  // ── ENGINE BLOCKS: one per engine, in CMS order. The first is the base
+  //    engine — the only one Overview shows.
+  const engines: EngineVariant[] = bySort(
+    c.car_engines as unknown as CarEngineRow[]
+  )
+    .filter((r) => Boolean(r.engine?.name_en))
+    .map((r) => ({
+      nameEn: r.engine?.name_en ?? "",
+      nameAr: arf(r.engine?.name_ar, r.engine?.name_en),
+      stats: [
+        { labelEn: "Max Power", labelAr: "القوة القصوى", value: loc(r.power?.label_ar ?? null, r.power?.label_en ?? null) },
+        { labelEn: "Max Torque", labelAr: "عزم الدوران", value: loc(r.torque?.label_ar ?? null, r.torque?.label_en ?? null) },
+        { labelEn: "Transmission", labelAr: "ناقل الحركة", value: loc(r.transmission?.label_ar ?? null, r.transmission?.label_en ?? null) },
+        { labelEn: "Ground clearance", labelAr: "الخلوص الأرضي", value: loc(r.ground_clearance_ar, r.ground_clearance_en) },
+        { labelEn: "0-100 Kph", labelAr: "٠-١٠٠ كم/س", value: loc(r.accel_0_100_ar, r.accel_0_100_en) },
+      ].filter((s) => s.value !== ""),
+    }));
+
+  // ── Fallback for a car with no engine rows yet: one block built from the
+  //    legacy mirrored columns, so nothing goes blank.
   const perfStats: PerfStat[] = [
     { labelEn: "Max Power", labelAr: "القوة القصوى", value: loc(c.max_power_ar, c.max_power_en) },
     { labelEn: "Max Torque", labelAr: "عزم الدوران", value: loc(c.max_torque_ar, c.max_torque_en) },
     { labelEn: "Transmission", labelAr: "ناقل الحركة", value: loc(c.transmission_ar, c.transmission_en) },
-    { labelEn: "0-100 kph", labelAr: "٠-١٠٠ كم/س", value: loc(c.accel_0_100_ar, c.accel_0_100_en) },
   ].filter((s) => s.value !== "");
 
   // ── collections — always mapped; feat_* flags control visibility
@@ -303,6 +335,7 @@ export async function getCarBySlug(
       engineEn: c.engine_en ?? "",
       engineAr: arf(c.engine_ar, c.engine_en),
       stats: perfStats,
+      engines,
       closingImage: c.perf_closing_image ?? "",
     },
     safety: {

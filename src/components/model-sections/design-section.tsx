@@ -85,7 +85,7 @@ export default function DesignSection({
           key={tab}
         >
           {items.map((item, i) => (
-           <SwiperSlide key={i}>
+           <SwiperSlide key={i} className="!w-[340px]">
               <div className="group">
                 <div className="relative h-[420px] rounded-lg overflow-hidden mb-5">
                   {item.image ? (

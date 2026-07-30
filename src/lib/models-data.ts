@@ -65,6 +65,21 @@ export interface PerfStat {
   value: string;
 }
 
+/**
+ * One engine block in the Performance section, in display order. The first
+ * entry is the base/default engine — the only one Overview shows.
+ *
+ * `stats` is the whole label/value column rendered under the engine name:
+ * that engine's power and torque first, then the per-car values (seating,
+ * transmission, ground clearance, 0-100) repeated under every engine, the
+ * way the reference layout shows them.
+ */
+export interface EngineVariant {
+  nameEn: string;
+  nameAr: string;
+  stats: PerfStat[];
+}
+
 export interface VehicleModel {
   slug: string;
   nameEn: string;
@@ -104,6 +119,8 @@ export interface VehicleModel {
     engineEn: string;
     engineAr: string;
     stats: PerfStat[];
+    /** every engine offered — optional so the legacy fixtures still typecheck */
+    engines?: EngineVariant[];
     closingImage: string;
   };
   safety: {
