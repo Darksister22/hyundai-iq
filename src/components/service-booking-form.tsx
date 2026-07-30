@@ -8,17 +8,15 @@ export interface BookingFormDict {
   bookingInfo: string;
   serviceType: string;
   select: string;
-  serviceEnquiry: string;
-  periodicMaintenance: string;
-  recall: string;
-  technicalFaults: string;
   userCity: string;
   selectCity: string;
   preferredTime: string;
-  satWed: string;
-  satWedHours: string;
-  thu: string;
-  thuHours: string;
+  /** shared day label for both call-time slots — "Saturday to Thursday" */
+  satThu: string;
+  /** "8:00 AM to 12:00 PM" */
+  satThuAmHours: string;
+  /** "12:00 PM to 5:00 PM" */
+  satThuPmHours: string;
   vehicleInfo: string;
   vehicle: string;
   selectModel: string;
@@ -35,6 +33,7 @@ export interface BookingFormDict {
   firstName: string;
   lastName: string;
   email: string;
+  emailOptional: string;
   phone: string;
   privacyText: string;
   readMore: string;
@@ -47,14 +46,25 @@ export interface BookingFormDict {
   successMsg: string;
   errorMsg: string;
   requiredMsg: string;
+  errorPhone: string;
+  errorEmail: string;
 }
 
 interface ServiceBookingFormProps {
   locale: Locale;
   dict: BookingFormDict;
-  /** car models fetched server-side: English name as value, localized label */
+  /** accepted maintenance vehicles from the DB: English name as value, localized label */
   carModels: { value: string; label: string }[];
+  /** service types from the DB: English name as value, localized label */
+  serviceTypes: { value: string; label: string }[];
 }
+
+/** Manufacturing-year range. Bump MAX_YEAR when a new model year ships. */
+const MIN_YEAR = 2000;
+const MAX_YEAR = 2026;
+
+/** Preferred-time slot keys — must match service_bookings' check constraint. */
+type TimeSlot = "sat_thu_am" | "sat_thu_pm";
 
 // shared input styling — identical to contact-form.tsx's inputCls
 const inputCls =
@@ -189,12 +199,17 @@ function TextInput({
 /* ------------------------------------------------------------------ */
 /* Form                                                                */
 /* ------------------------------------------------------------------ */
-export default function ServiceBookingForm({ locale, dict, carModels }: ServiceBookingFormProps) {
+export default function ServiceBookingForm({
+  locale,
+  dict,
+  carModels,
+  serviceTypes,
+}: ServiceBookingFormProps) {
   const isAr = locale === "ar";
 
   const [serviceType, setServiceType] = useState("");
   const [city, setCity] = useState("");
-  const [preferredTime, setPreferredTime] = useState<"sat_wed" | "thu">("sat_wed");
+  const [preferredTime, setPreferredTime] = useState<TimeSlot>("sat_thu_am");
   const [carModel, setCarModel] = useState("");
   const [year, setYear] = useState("");
   const [vin, setVin] = useState("");
@@ -209,25 +224,23 @@ export default function ServiceBookingForm({ locale, dict, carModels }: ServiceB
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [agreeCommercial, setAgreeCommercial] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
-  const [state, setState] = useState<"idle" | "submitting" | "success" | "error" | "invalid">("idle");
+  const [state, setState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorText, setErrorText] = useState("");
 
-  const serviceTypeOptions: Option[] = [
-    { value: "service_enquiry",      label: dict.serviceEnquiry },
-    { value: "periodic_maintenance", label: dict.periodicMaintenance },
-    { value: "recall",               label: dict.recall },
-    { value: "technical_faults",     label: dict.technicalFaults },
-  ];
+  // service types now come from the DB (dashboard-managed list)
+  const serviceTypeOptions: Option[] = serviceTypes;
 
   const cityOptions: Option[] = IRAQI_GOVERNORATES.map((g) => ({
     value: g.en,                                   // DB stores the english key
     label: locale === "ar" ? g.ar : g.en,
   }));
 
-  const yearOptions: Option[] = Array.from({ length: 2026 - 2010 + 1 }, (_, i) => {
-    const y = String(2026 - i);
+  const yearOptions: Option[] = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => {
+    const y = String(MAX_YEAR - i);
     return { value: y, label: y };
   });
 
+  // accepted maintenance vehicles now come from the DB, not the cars table
   const modelOptions: Option[] = carModels;
 
   const genderOptions: Option[] = [
@@ -235,24 +248,50 @@ export default function ServiceBookingForm({ locale, dict, carModels }: ServiceB
     { value: "female", label: dict.female },
   ];
 
-  const timeCards = [
-    { value: "sat_wed" as const, day: dict.satWed, hours: dict.satWedHours },
-    { value: "thu" as const,     day: dict.thu,    hours: dict.thuHours },
+  // Both slots run Saturday → Thursday; only the hours differ.
+  const timeCards: { value: TimeSlot; day: string; hours: string }[] = [
+    { value: "sat_thu_am", day: dict.satThu, hours: dict.satThuAmHours },
+    { value: "sat_thu_pm", day: dict.satThu, hours: dict.satThuPmHours },
   ];
 
-  const valid =
+  // email intentionally excluded — it is optional now
+  const requiredFilled =
     serviceType && city && carModel && year &&
-    firstName.trim() && lastName.trim() && email.trim() && phone.trim() &&
+    firstName.trim() && lastName.trim() && phone.trim() &&
     agreePrivacy;
 
   const handleSubmit = async () => {
-    if (!valid) { setState("invalid"); return; }
+    setErrorText("");
+
+    if (!requiredFilled) {
+      setState("error");
+      setErrorText(dict.requiredMsg);
+      return;
+    }
+
+    // Iraqi mobiles are written locally as 07XX XXX XXXX. E.164 drops the
+    // leading zero: +9647XXXXXXXX. Strip non-digits so spaces and dashes
+    // the user typed don't break the check. Same rule as lead-form-panel.
+    const national = phone.replace(/\D/g, "").replace(/^0+/, "");
+    if (!/^7\d{8,9}$/.test(national)) {
+      setState("error");
+      setErrorText(dict.errorPhone);
+      return;
+    }
+
+    const cleanEmail = email.trim();
+    if (cleanEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setState("error");
+      setErrorText(dict.errorEmail);
+      return;
+    }
+
     setState("submitting");
     const { error } = await supabase.from("service_bookings").insert({
-      service_type: serviceType,
+      service_type: serviceType,          // service_types.name_en snapshot
       city,
       preferred_time: preferredTime,
-      car_model: carModel,
+      car_model: carModel,                // maintenance_vehicles.name_en snapshot
       manufacturing_year: Number(year),
       vin: vin.trim() || null,
       plate_number: plateNumber.trim() || null,
@@ -261,11 +300,18 @@ export default function ServiceBookingForm({ locale, dict, carModels }: ServiceB
       gender: gender || null,
       first_name: firstName.trim(),
       last_name: lastName.trim(),
-      email: email.trim(),
-      phone: `+964${phone.trim()}`,
+      email: cleanEmail || null,
+      phone: `+964${national}`,
       agree_commercial: agreeCommercial,
     });
-    setState(error ? "error" : "success");
+
+    if (error) {
+      console.error("[service_bookings] insert failed:", error.message);
+      setState("error");
+      setErrorText(dict.errorMsg);
+      return;
+    }
+    setState("success");
   };
 
   if (state === "success") {
@@ -305,10 +351,10 @@ export default function ServiceBookingForm({ locale, dict, carModels }: ServiceB
             onChange={setCity}
           />
 
-          {/* Preferred Time to Call — day cards */}
+          {/* Preferred Time to Call — two call windows, Sat → Thu */}
           <div>
             <FieldLabel label={dict.preferredTime} required />
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {timeCards.map((t) => (
                 <button
                   key={t.value}
@@ -383,7 +429,14 @@ export default function ServiceBookingForm({ locale, dict, carModels }: ServiceB
             <TextInput label={dict.lastName} required value={lastName} onChange={setLastName} />
           </div>
 
-          <TextInput label={dict.email} required type="email" inputMode="email" value={email} onChange={setEmail} />
+          {/* email is optional — label carries an explicit "(optional)" hint */}
+          <TextInput
+            label={`${dict.email} ${dict.emailOptional}`}
+            type="email"
+            inputMode="email"
+            value={email}
+            onChange={setEmail}
+          />
 
           {/* phone with fixed +964 — same attached-prefix style as the contact form */}
           <div>
@@ -400,7 +453,10 @@ export default function ServiceBookingForm({ locale, dict, carModels }: ServiceB
                 type="tel"
                 inputMode="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value.replace(/[^\d]/g, ""))}
+                // digits only, capped at 11 so "07xxxxxxxxx" still fits;
+                // the leading zero is stripped at submit time.
+                onChange={(e) => setPhone(e.target.value.replace(/[^\d]/g, "").slice(0, 11))}
+                placeholder="7XX XXX XXXX"
                 dir="ltr"
                 className={`w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-[#00AAD2] transition-colors ${
                   isAr ? "rounded-s text-end" : "rounded-e"
@@ -451,8 +507,9 @@ export default function ServiceBookingForm({ locale, dict, carModels }: ServiceB
           </span>
         </label>
 
-        {state === "invalid" && <p className="mt-4 text-sm text-red-500">{dict.requiredMsg}</p>}
-        {state === "error" && <p className="mt-4 text-sm text-red-500">{dict.errorMsg}</p>}
+        {state === "error" && errorText && (
+          <p className="mt-4 text-sm text-red-500">{errorText}</p>
+        )}
 
         <button
           type="button"

@@ -3,6 +3,12 @@ import { supabase } from "@/lib/supabase";
 import { getDictionary, Locale } from "@/lib/i18n";
 import { type Metadata } from "next";
 
+/** Row shape shared by service_types and maintenance_vehicles. */
+type ListRow = {
+  name_ar: string | null;
+  name_en: string;
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -16,26 +22,46 @@ export async function generateMetadata({
     alternates: { canonical: `/${locale}/services/service-booking` },
   };
 }
+
 export default async function ServiceBookingPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
-    const { locale: rawLocale } = await params;
+  const { locale: rawLocale } = await params;
   const locale = rawLocale as Locale;
   const dict = (await getDictionary(locale)).serviceBooking;
-  
-const { data, error } = await supabase
-  .from("cars")
-  .select("name_ar, name_en")
-  .order("name_en");
-if (error) console.error("cars query failed:", error.message);
 
-  const carModels = (data ?? []).map((c: { name_ar: string | null; name_en: string }) => ({
-    value: c.name_en,                              // stored in the DB
-    label: locale === "ar" ? c.name_ar ?? c.name_en : c.name_en,
-  }));
+  // Both dropdowns are now dashboard-managed lists. `name_en` is the value
+  // stored on the booking (snapshot convention, same as city / car_model).
+  const [servicesRes, vehiclesRes] = await Promise.all([
+    supabase
+      .from("service_types")
+      .select("name_ar, name_en")
+      .eq("is_active", true)
+      .order("sort_order")
+      .order("id"),
+    supabase
+      .from("maintenance_vehicles")
+      .select("name_ar, name_en")
+      .eq("is_active", true)
+      .order("sort_order")
+      .order("id"),
+  ]);
 
+  if (servicesRes.error)
+    console.error("service_types query failed:", servicesRes.error.message);
+  if (vehiclesRes.error)
+    console.error("maintenance_vehicles query failed:", vehiclesRes.error.message);
+
+  const toOptions = (rows: ListRow[] | null) =>
+    (rows ?? []).map((r) => ({
+      value: r.name_en, // stored in the DB
+      label: locale === "ar" ? r.name_ar ?? r.name_en : r.name_en,
+    }));
+
+  const serviceTypes = toOptions(servicesRes.data as ListRow[] | null);
+  const carModels = toOptions(vehiclesRes.data as ListRow[] | null);
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-16 ">
@@ -47,7 +73,12 @@ if (error) console.error("cars query failed:", error.message);
         </div>
 
         {/* form */}
-        <ServiceBookingForm locale={locale} dict={dict} carModels={carModels} />
+        <ServiceBookingForm
+          locale={locale}
+          dict={dict}
+          carModels={carModels}
+          serviceTypes={serviceTypes}
+        />
       </div>
     </section>
   );

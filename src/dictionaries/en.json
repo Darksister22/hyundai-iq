@@ -995,6 +995,12 @@
     "requiredMsg": "Please fill all required fields and accept the Privacy Policy.",
     "callCenterHeading": "Hyundai is always available to hear your inquiries",
     "telephoneNo": "Telephone No",
+    "satThu": "Saturday to Thursday",
+    "satThuAmHours": "8:00 AM to 12:00 PM",
+     "emailOptional": "(optional)",
+    "errorPhone": "Please enter a valid Iraqi mobile number (e.g. 0770 123 4567).",
+    "errorEmail": "Please enter a valid email address.",
+    "satThuPmHours": "12:00 PM to 5:00 PM",
     "workingHours": "Working Hours"
   },
   "privacyPolicy": {

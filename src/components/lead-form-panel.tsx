@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { IRAQI_GOVERNORATES } from "@/lib/iraqi-governorates";
 import type { Locale } from "@/lib/i18n";
+import { isLocked, setLock } from "@/lib/submit-lock";
 
 export type LeadVariant = "price" | "testDrive";
 
@@ -63,7 +64,8 @@ export default function LeadFormPanel({
   const [hp, setHp] = useState(""); // honeypot — bots fill hidden fields
 
   const title = variant === "price" ? dict.requestPriceOffer : dict.requestTestDrive;
-
+  const COOLDOWN_MS = 5 * 60 * 1000;
+  const lockKey = `lead:${variant}:${modelSlug}`;
   // lock background scroll while open, and close on Escape
   useEffect(() => {
     if (!open) return;
@@ -95,7 +97,11 @@ export default function LeadFormPanel({
       setState("success");
       return;
     }
+    if (isLocked(lockKey)) {
+      setState("success");
+      return;
 
+    }
     // Iraqi mobiles are written locally as 07XX XXX XXXX. E.164 drops the
     // leading zero: +9647XXXXXXXX. Strip non-digits first so spaces and
     // dashes the user typed don't break the check.
@@ -136,8 +142,10 @@ export default function LeadFormPanel({
       setState("error");
       return;
     }
+    setLock(lockKey, COOLDOWN_MS)
 
     setState("success");
+
   };
 
   // clears a validation error as soon as the user starts fixing it
@@ -150,9 +158,8 @@ export default function LeadFormPanel({
       {/* backdrop */}
       <div
         onClick={onClose}
-        className={`fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
-          open ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
       />
 
       {/* Desktop: side drawer on the end edge (left in RTL, right in LTR).
@@ -260,18 +267,18 @@ export default function LeadFormPanel({
               </Field>
 
               {variant === "testDrive" && (
-               <Field label={dict.formDate} required>
-                 {/* min = today: no back-dated appointments */}
-                 <input
-                   type="date"
-                   value={date}
-                   onChange={(e) => { setDate(e.target.value); clearError(); }}
-                   required
-                   min={new Date().toISOString().split("T")[0]}
-                   className={INPUT}
-                 />
-               </Field>
-             )}
+                <Field label={dict.formDate} required>
+                  {/* min = today: no back-dated appointments */}
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => { setDate(e.target.value); clearError(); }}
+                    required
+                    min={new Date().toISOString().split("T")[0]}
+                    className={INPUT}
+                  />
+                </Field>
+              )}
 
               {state === "error" && errorMsg && (
                 <p role="alert" className="text-sm text-red-600">{errorMsg}</p>
