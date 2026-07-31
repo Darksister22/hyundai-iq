@@ -95,30 +95,37 @@ export default function GallerySection({ locale, model, heading }: Props) {
         </div>
 
         {/* Thumbnail strip */}
-        <Swiper
+<Swiper
+          key={total}              // force re-init when the gallery count changes
           modules={[Navigation]}
           navigation
+          observer                 // re-init if the DOM/slides mutate
+          observeParents           // ...or if an ancestor's size changes
           spaceBetween={12}
-          slidesPerView={2.5}
-          breakpoints={{ 768: { slidesPerView: 5 }, 1100: { slidesPerView: 6 } }}
+          slidesPerView="auto"     // width comes from each slide, not a fraction
+          onSwiper={(s) => console.log("[gallery] swiper init:", s.slides.length)} // TEMP: remove once confirmed
         >
           {model.gallery.map((img, i) => (
-            <SwiperSlide key={i}>
+            // that don't depend on container math. ! overrides Swiper's inline width.
+            <SwiperSlide key={i} className="!h-20 !w-40">
               <button
                 onClick={() => setActive(i)}
-                className={`group h-24 w-full rounded overflow-hidden border-2 transition-colors ${active === i ? "border-[#002C5F]" : "border-transparent"
-                  }`}
+                // relative + full size: anchors the fill image to THIS button
+                className={`group relative h-20 w-40 rounded overflow-hidden border-2 transition-colors ${
+                  active === i ? "border-[#002C5F]" : "border-transparent"
+                }`}
               >
                 {img ? (
-
-                  <ImageWithLoader src={img}
+                  <ImageWithLoader
+                    src={img}
                     alt={`Thumbnail ${i + 1}`}
                     loading="lazy"
                     fill
                     unoptimized
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                 ) : (
-                  <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-[10px] text-gray-400 transition-transform duration-500 group-hover:scale-110">
+                  <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-[10px] text-gray-400">
                     {i + 1}
                   </div>
                 )}

@@ -8,6 +8,11 @@ import { getDictionary, Locale } from "@/lib/i18n";
 import ImageWithLoader from "@/components/loaders/loading-image";
 import type { Metadata } from "next";
 
+type ListRow = {
+  name_ar: string | null;
+  name_en: string;
+};
+
 export async function generateStaticParams() {
   const slugs = await getAftersalesOfferSlugs();
   return slugs.map((slug) => ({ slug }));
@@ -72,6 +77,33 @@ export default async function AftersalesOfferDetailPage({
     })
   );
 
+  const [servicesRes, vehiclesRes] = await Promise.all([
+    supabase
+      .from("service_types")
+      .select("name_ar, name_en")
+      .eq("is_active", true)
+      .order("sort_order")
+      .order("id"),
+    supabase
+      .from("maintenance_vehicles")
+      .select("name_ar, name_en")
+      .eq("is_active", true)
+      .order("sort_order")
+      .order("id"),
+  ]);
+
+  if (servicesRes.error)
+    console.error("service_types query failed:", servicesRes.error.message);
+  if (vehiclesRes.error)
+    console.error("maintenance_vehicles query failed:", vehiclesRes.error.message);
+
+  const toOptions = (rows: ListRow[] | null) =>
+    (rows ?? []).map((r) => ({
+      value: r.name_en, // stored in the DB
+      label: locale === "ar" ? r.name_ar ?? r.name_en : r.name_en,
+    }));
+
+  const serviceTypes = toOptions(servicesRes.data as ListRow[] | null);
   return (
     <div className="bg-white">
       {/* hero image */}
@@ -89,7 +121,7 @@ export default async function AftersalesOfferDetailPage({
             <span aria-hidden>›</span>
             <Link href={`/${locale}/aftersales-offers`} className="hover:text-white transition-colors">{isAr ? "عروض الصيانة" : "Maintenance Offers"}</Link>
             <span aria-hidden>›</span>
-            
+
 
           </nav>
           <h1 className="text-3xl md:text-4xl font-bold text-white">{isAr ? offer.title.ar : offer.title.en}</h1>
@@ -112,7 +144,7 @@ export default async function AftersalesOfferDetailPage({
 
       {/* booking form — same component as the service-booking page */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
-        <ServiceBookingForm locale={locale} dict={sbDict} carModels={carModels} />
+        <ServiceBookingForm locale={locale} dict={sbDict} carModels={carModels} serviceTypes={serviceTypes} />
       </section>
     </div>
   );

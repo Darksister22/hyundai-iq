@@ -3,13 +3,15 @@ import { Locale } from "@/lib/i18n";
 import Image from "next/image";
 import FooterVehicles from "./footer-vehicles";
 import FooterServices from "./footer-services";
-import { YouTube, Twitter, Instagram, Facebook } from "@deemlol/next-icons";
+import { SocialIcon, SOCIAL_LABELS } from "./social-icons";
+import type { SocialLink } from "@/lib/social";
 import { FindCarCar, FindCarCategory } from "@/lib/find-car-data";
 
 interface FooterProps {
   locale: Locale;
   cars: FindCarCar[];
   categories: FindCarCategory[];
+  socials: SocialLink[];
   dict: {
     newsletter: string;
     newsletterDesc: string;
@@ -32,7 +34,7 @@ interface FooterProps {
   };
 }
 
-export default function Footer({ locale, dict, cars, categories }: FooterProps) {
+export default function Footer({ locale, dict, cars, categories, socials }: FooterProps) {
   const isAr = locale === "ar";
 
   return (
@@ -106,15 +108,22 @@ export default function Footer({ locale, dict, cars, categories }: FooterProps) 
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
 
           <div className="flex items-center gap-5 order-2 md:order-1">
-            {[{ Icon: YouTube, href: "#", label: "YouTube" }, { Icon: Twitter, href: "#", label: "X" }, { Icon: Instagram, href: "#", label: "Instagram" }, { Icon: Facebook, href: "#", label: "Facebook" }].map(({ Icon, href, label }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="text-white/60 hover:text-white transition-colors">
-                <Icon size={20} />
+            {socials.map((s) => (
+              <a
+                key={s.platform}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={SOCIAL_LABELS[s.platform]}
+                className="text-white/60 hover:text-white transition-colors"
+              >
+                <SocialIcon platform={s.platform} size={20} />
               </a>
             ))}
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs text-white/50 order-1 md:order-2">
-            <Link href={`/${locale}/privacy-policy`} className="hover:text-white transition-colors">{dict.privacyPolicy}</Link>
+            <Link href={`https://www.hyundai.com/worldwide/en/footer/contact-legal/privacy-policy`} className="hover:text-white transition-colors">{dict.privacyPolicy}</Link>
             <span>{dict.legalTerms}</span>
             <span>{isAr ? "سياسة ملفات تعريف الارتباط" : "Cookie Policy"}</span>
           </div>

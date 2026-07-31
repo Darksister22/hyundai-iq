@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { IRAQI_GOVERNORATES } from "@/lib/iraqi-governorates";
 import type { Locale } from "@/lib/i18n";
+import { useSubmitCooldown } from "@/lib/use-submit-cooldown";
 
 export interface BookingFormDict {
   bookingInfo: string;
@@ -127,9 +128,8 @@ function Select({
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
-          className={`${inputCls} flex items-center justify-between bg-white text-start ${
-            selected ? "text-gray-900" : "text-gray-500"
-          }`}
+          className={`${inputCls} flex items-center justify-between bg-white text-start ${selected ? "text-gray-900" : "text-gray-500"
+            }`}
         >
           <span>{selected ? selected.label : placeholder}</span>
           <svg
@@ -150,9 +150,8 @@ function Select({
                 key={o.value}
                 type="button"
                 onClick={() => { onChange(o.value); setOpen(false); }}
-                className={`block w-full px-4 py-3 text-start text-sm transition-colors hover:bg-gray-100 ${
-                  o.value === value ? "bg-gray-100 text-gray-900" : "text-gray-700"
-                }`}
+                className={`block w-full px-4 py-3 text-start text-sm transition-colors hover:bg-gray-100 ${o.value === value ? "bg-gray-100 text-gray-900" : "text-gray-700"
+                  }`}
               >
                 {o.label}
               </button>
@@ -244,7 +243,7 @@ export default function ServiceBookingForm({
   const modelOptions: Option[] = carModels;
 
   const genderOptions: Option[] = [
-    { value: "male",   label: dict.male },
+    { value: "male", label: dict.male },
     { value: "female", label: dict.female },
   ];
 
@@ -268,7 +267,7 @@ export default function ServiceBookingForm({
       setErrorText(dict.requiredMsg);
       return;
     }
-
+    if (isLocked) return;
     // Iraqi mobiles are written locally as 07XX XXX XXXX. E.164 drops the
     // leading zero: +9647XXXXXXXX. Strip non-digits so spaces and dashes
     // the user typed don't break the check. Same rule as lead-form-panel.
@@ -311,9 +310,10 @@ export default function ServiceBookingForm({
       setErrorText(dict.errorMsg);
       return;
     }
+    startCooldown();
     setState("success");
   };
-
+  const { isLocked, remainingLabel, startCooldown } = useSubmitCooldown(`lead:service-booking`);
   if (state === "success") {
     // success card — mirrors the contact form's success state
     return (
@@ -360,11 +360,10 @@ export default function ServiceBookingForm({
                   key={t.value}
                   type="button"
                   onClick={() => setPreferredTime(t.value)}
-                  className={`px-4 py-3 text-center border rounded transition-colors ${
-                    preferredTime === t.value
-                      ? "bg-[#002C5F] border-[#002C5F] text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  }`}
+                  className={`px-4 py-3 text-center border rounded transition-colors ${preferredTime === t.value
+                    ? "bg-[#002C5F] border-[#002C5F] text-white"
+                    : "bg-white border-gray-200 text-gray-900"
+                    }`}
                 >
                   <span className="block font-bold text-sm">{t.day}</span>
                   <span className={`block text-xs mt-1 ${preferredTime === t.value ? "text-white/80" : "text-gray-500"}`}>
@@ -443,9 +442,8 @@ export default function ServiceBookingForm({
             <FieldLabel label={dict.phone} required />
             <div className="flex">
               <span
-                className={`px-3 py-3 border border-gray-200 bg-gray-50 text-sm text-gray-600 flex items-center ${
-                  isAr ? "rounded-e border-s-0" : "rounded-s border-e-0"
-                }`}
+                className={`px-3 py-3 border border-gray-200 bg-gray-50 text-sm text-gray-600 flex items-center ${isAr ? "rounded-e border-s-0" : "rounded-s border-e-0"
+                  }`}
               >
                 +964
               </span>
@@ -458,9 +456,8 @@ export default function ServiceBookingForm({
                 onChange={(e) => setPhone(e.target.value.replace(/[^\d]/g, "").slice(0, 11))}
                 placeholder="7XX XXX XXXX"
                 dir="ltr"
-                className={`w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-[#00AAD2] transition-colors ${
-                  isAr ? "rounded-s text-end" : "rounded-e"
-                }`}
+                className={`w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-[#00AAD2] transition-colors ${isAr ? "rounded-s text-end" : "rounded-e"
+                  }`}
               />
             </div>
           </div>
@@ -501,7 +498,7 @@ export default function ServiceBookingForm({
           />
           <span>
             {dict.agreePrivacy}{" "}
-            <a href={`/${locale}/privacy-policy`} className="text-[#002C5F] font-medium hover:underline">
+            <a href={`https://www.hyundai.com/worldwide/en/footer/contact-legal/privacy-policy`} className="text-[#002C5F] font-medium hover:underline">
               {dict.privacyPolicy}
             </a>
           </span>
@@ -514,10 +511,11 @@ export default function ServiceBookingForm({
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={state === "submitting"}
+          disabled={state === "submitting" || isLocked}
           className="mt-8 px-8 py-3 bg-[#002C5F] text-white text-sm font-semibold rounded hover:bg-[#003d7a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {state === "submitting" ? dict.submitting : dict.submit}
+          {isLocked ? isAr ? `يرجى إرسال طلب آخر بعد ${remainingLabel}`
+            : `Please submit another request in ${remainingLabel}` : state === "submitting" ? dict.submitting : dict.submit}
         </button>
       </section>
     </div>

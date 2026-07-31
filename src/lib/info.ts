@@ -88,6 +88,7 @@ export async function getOpenHoursCards(): Promise<OpenHoursCardRow[]> {
   const { data, error } = await supabase
     .from("open_hours_cards")
     .select("*")
+    .eq("is_active", true)
     .order("sort_order", { ascending: true });
 
   if (error) {
@@ -113,6 +114,7 @@ export async function getBranchContacts(): Promise<BranchContactRow[]> {
   const { data, error } = await supabase
     .from("branch_contacts")
     .select("*")
+    .eq("is_active", true)
     .order("sort_order", { ascending: true });
 
   if (error) {

@@ -97,6 +97,7 @@ export async function getSalesOffers(): Promise<Offer[]> {
   const { data, error } = await supabase
     .from("sales_offers")
     .select(SALES_COLS)
+    .eq("is_active", true)
     .order("sort_order");
   if (error) { console.error("sales_offers list failed:", error.message); return []; }
 
@@ -112,7 +113,7 @@ export async function getSalesOffers(): Promise<Offer[]> {
 }
 
 export async function getSalesOfferSlugs(): Promise<string[]> {
-  const { data, error } = await supabase.from("sales_offers").select("slug");
+  const { data, error } = await supabase.from("sales_offers").select("slug").eq("is_active", true);
   if (error) { console.error("sales_offers slugs failed:", error.message); return []; }
   return (data as { slug: string }[]).map((r) => r.slug);
 }
@@ -122,6 +123,7 @@ export async function getSalesOfferBySlug(slug: string): Promise<Offer | null> {
     .from("sales_offers")
     .select(SALES_COLS)
     .eq("slug", slug)
+    .eq("is_active", true)
     .maybeSingle<SalesOfferRow>();
   if (error) { console.error("sales_offer fetch failed:", error.message); return null; }
   if (!o) return null;
@@ -164,6 +166,7 @@ export async function getAftersalesOffers(): Promise<Offer[]> {
   const { data, error } = await supabase
     .from("aftersales_offers")
     .select(AFTERSALES_COLS)
+    .eq("is_active", true)
     .order("sort_order");
   if (error) { console.error("aftersales_offers list failed:", error.message); return []; }
 
@@ -179,7 +182,7 @@ export async function getAftersalesOffers(): Promise<Offer[]> {
 }
 
 export async function getAftersalesOfferSlugs(): Promise<string[]> {
-  const { data, error } = await supabase.from("aftersales_offers").select("slug");
+  const { data, error } = await supabase.from("aftersales_offers").select("slug").eq("is_active", true);
   if (error) { console.error("aftersales_offers slugs failed:", error.message); return []; }
   return (data as { slug: string }[]).map((r) => r.slug);
 }
@@ -191,6 +194,7 @@ export async function getAftersalesOfferBySlug(
     .from("aftersales_offers")
     .select(AFTERSALES_COLS)
     .eq("slug", slug)
+    .eq("is_active", true)
     .maybeSingle<AftersalesOfferRow>();
   if (error) { console.error("aftersales_offer fetch failed:", error.message); return null; }
   if (!o) return null;

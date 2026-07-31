@@ -6,6 +6,7 @@ import { textHyundai, headHyundai, arabic } from "@/lib/fonts";
 import Footer from "@/components/footer-sections/footer";
 import LoadingScreen from "@/components/loaders/loading-screen";
 import { getFindCarData } from "@/lib/find-car-data";
+import { getSocialLinks } from "@/lib/social";
 import RouteLoadingScreen from "@/components/loaders/route-loading-screen";
 import ChatWidget from "@/components/chat/ChatWidget";
 import { getChatTree } from "@/lib/chat/chat-data-db";
@@ -63,6 +64,7 @@ export default async function LocaleLayout({
   const dir = getDirection(locale);
   const dict = await getDictionary(locale);
   const { categories, cars } = await getFindCarData();
+  const socials = await getSocialLinks();
   const chatTree = await getChatTree(locale);
 
   return (
@@ -72,7 +74,7 @@ export default async function LocaleLayout({
         <RouteLoadingScreen />
         <Header locale={locale} dict={dict.nav} categories={categories} cars={cars} />
         <main className="pt-[72px]">{children}</main>
-        <Footer locale={locale} dict={dict.footer} cars={cars} categories={categories} />
+        <Footer locale={locale} dict={dict.footer} cars={cars} categories={categories} socials={socials} />
         {chatTree && <ChatWidget tree={chatTree} locale={locale} />}
       </body>
     </html>

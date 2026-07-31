@@ -101,12 +101,20 @@ const bySort = <T extends { sort_order: number }>(rows: T[] | null | undefined):
 
 /** All slugs, for generateStaticParams. */
 export async function getAllCarSlugs(): Promise<string[]> {
-  const { data, error } = await supabase.from("cars").select("slug");
+  const { data, error } = await supabase
+    .from("cars")
+    .select("slug, category:categories ( is_active )")
+    .eq("is_active", true);
   if (error) {
     console.error("[model-detail-data] slugs fetch failed:", error.message);
     return [];
   }
-  return (data ?? []).map((r) => r.slug);
+  return (data ?? [])
+    .filter((r) => {
+      const cat = (r as unknown as { category: { is_active: boolean } | null }).category;
+      return !cat || cat.is_active !== false; // null category shows; active shows
+    })
+    .map((r) => r.slug);
 }
 
 /**
@@ -134,6 +142,7 @@ export async function getCarBySlug(
     .select(
       `
       id, slug, name_ar, name_en,brochure_url,
+      category:categories ( is_active ),
       feat_hero, feat_overview, feat_highlights, feat_design, feat_additional,
       feat_visualizer, feat_performance, feat_safety, feat_convenience, feat_gallery,
       hero_image, hero_headline_ar, hero_headline_en,
@@ -173,6 +182,7 @@ export async function getCarBySlug(
     `
     )
     .eq("slug", slug)
+    .eq("is_active", true)
     .maybeSingle();
 
   if (error) {
@@ -180,6 +190,11 @@ export async function getCarBySlug(
     return null;
   }
   if (!c) return null;
+
+  // Cascade: a car whose category is inactive is treated as not found (404),
+  // even if the car itself is active. Cars with no category are unaffected.
+  const catRow = (c.category as unknown as { is_active: boolean } | null) ?? null;
+  if (catRow && catRow.is_active === false) return null;
 
   const seating = (c.seating as unknown as LabelRow | null) ?? null;
   const drive = (c.drive as unknown as LabelRow | null) ?? null;

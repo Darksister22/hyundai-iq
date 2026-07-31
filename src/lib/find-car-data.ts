@@ -37,6 +37,7 @@ async function fetchCategories(): Promise<FindCarCategory[]> {
   const { data, error } = await supabase
     .from("categories")
     .select("id, name_ar, name_en, sort_order")
+    .eq("is_active", true)
     .order("sort_order", { ascending: true });
 
   if (error) {
@@ -70,6 +71,7 @@ export async function getFindCarData(): Promise<FindCarData> {
         )
       `
       )
+      .eq("is_active", true)
       .order("sort_order", { ascending: true }),
   ]);
 
@@ -77,7 +79,12 @@ export async function getFindCarData(): Promise<FindCarData> {
     console.error("[find-car-data] cars fetch failed:", carsRes.error.message);
   }
 
-  const cars: FindCarCar[] = (carsRes.data ?? []).map((c) => {
+  // Cascade: a car is hidden if its category is inactive (categories already
+  // holds only active ones). Cars with no category are always shown.
+  const activeCatIds = new Set(categories.map((c) => c.id));
+  const cars: FindCarCar[] = (carsRes.data ?? [])
+    .filter((c) => c.category_id == null || activeCatIds.has(c.category_id))
+    .map((c) => {
     // first frame of the lowest-sort_order color = the default "front" view
     const colors = ((c.spin_colors as unknown as SpinColorRow[]) ?? [])
       .slice()
@@ -197,6 +204,7 @@ export async function getHomeData(): Promise<HomeData> {
         )
       `
       )
+      .eq("is_active", true)
       .order("sort_order", { ascending: true }),
     supabase
       .from("banners")
@@ -207,6 +215,7 @@ export async function getHomeData(): Promise<HomeData> {
         car:cars ( slug )
       `
       )
+      .eq("is_active", true)
       .order("sort_order", { ascending: true }),
   ]);
 
@@ -217,7 +226,11 @@ export async function getHomeData(): Promise<HomeData> {
     console.error("[find-car-data] banners fetch failed:", bannersRes.error.message);
   }
 
-  const cars: HomeCar[] = (carsRes.data ?? []).map((c) => {
+  // Cascade: hide cars whose category is inactive (null category always shows).
+  const activeCatIds = new Set(categories.map((c) => c.id));
+  const cars: HomeCar[] = (carsRes.data ?? [])
+    .filter((c) => c.category_id == null || activeCatIds.has(c.category_id))
+    .map((c) => {
     // PostgREST returns the FK embed as an object (or null)
     const seating = (c.seating as unknown as SeatingRow | null) ?? null;
 

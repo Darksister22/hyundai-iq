@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { IRAQI_GOVERNORATES } from "@/lib/iraqi-governorates";
 import type { Locale } from "@/lib/i18n";
-import { isLocked, setLock } from "@/lib/submit-lock";
+import { useSubmitCooldown } from "@/lib/use-submit-cooldown";
 
 export type LeadVariant = "price" | "testDrive";
 
@@ -64,8 +64,7 @@ export default function LeadFormPanel({
   const [hp, setHp] = useState(""); // honeypot — bots fill hidden fields
 
   const title = variant === "price" ? dict.requestPriceOffer : dict.requestTestDrive;
-  const COOLDOWN_MS = 5 * 60 * 1000;
-  const lockKey = `lead:${variant}:${modelSlug}`;
+
   // lock background scroll while open, and close on Escape
   useEffect(() => {
     if (!open) return;
@@ -97,10 +96,8 @@ export default function LeadFormPanel({
       setState("success");
       return;
     }
-    if (isLocked(lockKey)) {
-      setState("success");
+    if (isLocked) {
       return;
-
     }
     // Iraqi mobiles are written locally as 07XX XXX XXXX. E.164 drops the
     // leading zero: +9647XXXXXXXX. Strip non-digits first so spaces and
@@ -142,8 +139,8 @@ export default function LeadFormPanel({
       setState("error");
       return;
     }
-    setLock(lockKey, COOLDOWN_MS)
 
+    startCooldown();
     setState("success");
 
   };
@@ -152,7 +149,7 @@ export default function LeadFormPanel({
   const clearError = () => {
     if (state === "error") setState("idle");
   };
-
+  const { isLocked, remainingLabel, startCooldown } = useSubmitCooldown(`lead:${variant}:${modelSlug}`);
   return (
     <>
       {/* backdrop */}
@@ -286,10 +283,16 @@ export default function LeadFormPanel({
 
               <button
                 type="submit"
-                disabled={state === "sending"}
-                className="mt-2 w-full py-3 rounded-full bg-[#002C5F] text-white text-sm font-semibold hover:bg-[#003d7a] disabled:opacity-60 transition-colors"
+                disabled={state === "sending" || isLocked}
+                className="mt-2 w-full py-3 rounded-full bg-[#002C5F] text-white text-sm font-semibold hover:bg-[#003d7a] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
               >
-                {state === "sending" ? dict.formSubmitting : dict.formSubmit}
+                {isLocked
+                  ? isAr
+                    ? `يرجى إرسال طلب آخر بعد ${remainingLabel}`
+                    : `Please submit another request in ${remainingLabel}`
+                  : state === "sending"
+                    ? dict.formSubmitting
+                    : dict.formSubmit}
               </button>
             </form>
           )}

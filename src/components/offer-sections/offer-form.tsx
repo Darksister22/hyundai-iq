@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { IRAQI_GOVERNORATES } from "@/lib/iraqi-governorates";
 import type { Locale } from "@/lib/i18n";
+import { useSubmitCooldown } from "@/lib/use-submit-cooldown";
 
 export interface OfferFormDict {
   formTitle: string;
@@ -48,7 +49,7 @@ export default function OfferForm({
 
     // honeypot: fake success so bots don't learn they were caught
     if (hp) { setState("success"); return; }
-
+    if (isLocked) return;
     // Iraqi mobiles: 07XX XXX XXXX → E.164 +9647XXXXXXXX (drop leading 0)
     const national = phone.replace(/\D/g, "").replace(/^0+/, "");
     if (!/^7\d{8,9}$/.test(national)) { setState("error"); return; }
@@ -78,10 +79,13 @@ export default function OfferForm({
       setState("error");
       return;
     }
+    startCooldown();
     setState("success");
   };
 
   const clearError = () => { if (state === "error") setState("idle"); };
+
+  const { isLocked, remainingLabel, startCooldown } = useSubmitCooldown(`lead:${offer}:${offerSlug}`);
 
   if (state === "success") {
     return (
@@ -152,17 +156,18 @@ export default function OfferForm({
         <div className="md:col-span-2">
           <button
             type="submit"
-            disabled={state === "sending"}
+            disabled={state === "sending" || isLocked}
             className="w-full md:w-auto px-10 py-3 rounded-full bg-[#002C5F] text-white text-sm font-semibold hover:bg-[#003d7a] disabled:opacity-60 transition-colors"
           >
-            {state === "sending" ? dict.formSubmitting : dict.formSubmit}
+            {isLocked ? isAr ? `يرجى إرسال طلب آخر بعد ${remainingLabel}`
+              : `Please submit another request in ${remainingLabel}` : state === "sending" ? dict.formSubmitting : dict.formSubmit
+            }
           </button>
         </div>
       </form>
     </div>
   );
 }
-
 const INPUT =
   "w-full px-4 py-2.5 rounded border border-gray-200 bg-white text-sm text-[#111] focus:outline-none focus:border-[#002C5F] transition-colors";
 

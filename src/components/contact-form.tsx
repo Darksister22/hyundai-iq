@@ -3,6 +3,8 @@
 import { useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import { supabase } from "@/lib/supabase";
+import { useSubmitCooldown } from "@/lib/use-submit-cooldown";
+
 
 // Typed inline from the dictionary, same convention as Footer.
 // Mirrors the official Hyundai ME contact form fields.
@@ -75,7 +77,7 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
 
     setSubmitting(true);
     setError(null);
-
+    if (isLocked) return;
     try {
       // 1. Upload attachments (max 2) and collect public URLs.
       //    Generated file names avoid issues with Arabic/special
@@ -120,9 +122,10 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
       setError(dict.errorMsg ?? "Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
+      startCooldown();
     }
   };
-
+  const { isLocked, remainingLabel, startCooldown } = useSubmitCooldown(`lead:contact`);
   // inquiry dropdown options: stable key for the DB + localized label
   const inquiryOptions = [
     { key: "general", label: dict.inquiryGeneral },
@@ -193,9 +196,8 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
           {/* +964 = Iraq country code, prefixed before the number */}
           <div className="flex">
             <span
-              className={`px-3 py-3 border border-gray-200 bg-gray-50 text-sm text-gray-600 flex items-center ${
-                isAr ? "rounded-e border-s-0" : "rounded-s border-e-0"
-              }`}
+              className={`px-3 py-3 border border-gray-200 bg-gray-50 text-sm text-gray-600 flex items-center ${isAr ? "rounded-e border-s-0" : "rounded-s border-e-0"
+                }`}
             >
               +964
             </span>
@@ -204,9 +206,8 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
               name="phone"
               required
               dir="ltr"
-              className={`w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-[#00AAD2] transition-colors ${
-                isAr ? "rounded-s text-end" : "rounded-e"
-              }`}
+              className={`w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-[#00AAD2] transition-colors ${isAr ? "rounded-s text-end" : "rounded-e"
+                }`}
             />
           </div>
         </Field>
@@ -334,10 +335,14 @@ export default function ContactForm({ locale, dict }: ContactFormProps) {
       {/* Submit — disabled until required consent is checked */}
       <button
         type="submit"
-        disabled={!consent || submitting}
+        disabled={!consent || submitting || isLocked}
         className="mt-8 px-8 py-3 bg-[#002C5F] text-white text-sm font-semibold rounded hover:bg-[#003d7a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {submitting ? "…" : dict.send}
+        {isLocked
+          ? isAr
+            ? `يرجى إرسال طلب آخر بعد ${remainingLabel}`
+            : `Please submit another request in ${remainingLabel}`
+          : submitting ? "…" : dict.send}
       </button>
     </form>
   );
