@@ -245,7 +245,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                     : "opacity-0 -translate-y-3 scale-y-95 invisible pointer-events-none"
                   }`}
               >
-                <div className="grid grid-cols-2 gap-1">
+                {/* <div className="grid grid-cols-2 gap-1">
                   {serviceLinks.map(({ href, label, desc, Icon }) => (
                     <Link
                       key={href}
@@ -253,7 +253,6 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                       onClick={() => setSvcOpen(false)}
                       className="group flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
                     >
-                      {/* icon tile — tints navy on hover */}
                       <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-[#002C5F] transition-colors group-hover:bg-[#002C5F] group-hover:text-white">
                         <Icon size={18} strokeWidth={1.8} />
                       </span>
@@ -267,7 +266,8 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                       </span>
                     </Link>
                   ))}
-                </div>
+                </div> */}
+                
               </div>
             </div>
 
@@ -440,7 +440,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                     />
                   </svg>
                 </button>
-                {svcMobileOpen && (
+                {/* {svcMobileOpen && (
                   <div className="mb-2 ps-4 flex flex-col border-s-2 border-gray-100">
                     {serviceLinks.map(({ href, label, desc, Icon }) => (
                       <Link
@@ -457,7 +457,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                       </Link>
                     ))}
                   </div>
-                )}
+                )} */}
               </div>
 
               <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)} className="py-3 text-base font-medium">

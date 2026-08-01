@@ -60,7 +60,7 @@ export default function Footer({ locale, dict, cars, categories, socials }: Foot
               heading={dict.vehicles}
             />
 
-            <FooterServices
+            {/* <FooterServices
               heading={dict.services}
               links={[
                 { href: `/${locale}/services/service-booking`, label: dict.serviceBooking },
@@ -71,7 +71,7 @@ export default function Footer({ locale, dict, cars, categories, socials }: Foot
                 { href: `/${locale}/offers`, label: dict.salesOffers },
                 { href: `/${locale}/aftersales-offers`, label: dict.aftersalesOffers },
               ]}
-            />
+            /> */}
 
             <div>
               <h4 className="text-sm font-semibold mb-4">{dict.support}</h4>

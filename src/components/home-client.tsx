@@ -414,7 +414,7 @@ if (tabsRef.current) {
           </div>
         </section>
       </Reveal>
-      <HomeServicesSection locale={locale} dict={dict.homeServices} />
+      {/* <HomeServicesSection locale={locale} dict={dict.homeServices} /> */}
     </div>
   );
 }
