@@ -107,14 +107,19 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
 
   //header scroll state
 
-  useEffect(() => {
+useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY;
       if (findOpenRef.current) { setFindInstant(true); setFindOpen(false); }
       setAtTop(current < 20);
       setSvcOpen(false);
       setOffersOpen(false);
-      if (current < 80 && !subnavStuck.current) setHidden(false);
+      // At the top the sub-nav can't be stuck — clear the flag and show the
+      // header, don't gate on subnavStuck (its observer may lag this frame).
+      if (current < 80) {
+        subnavStuck.current = false;
+        setHidden(false);
+      }
       else if (current > lastScroll.current) setHidden(true);
       else if (current < lastScroll.current && !subnavStuck.current) setHidden(false);
       lastScroll.current = current;
@@ -124,7 +129,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // while a model page's sub nav is stuck to the top, the header stays hidden
+// while a model page's sub nav is stuck to the top, the header stays hidden
   useEffect(() => {
     const onStuck = (e: Event) => {
       const stuck = (e as CustomEvent<boolean>).detail;
@@ -132,18 +137,26 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
       if (stuck) {
         setHidden(true);
       } else {
+        // Unstuck: show the header now and re-measure atTop, since we may be
+        // at the very top with no further scroll event coming to correct it.
         setHidden(false);
+        setAtTop(window.scrollY < 20);
       }
     };
     window.addEventListener("hyundai:subnav-stuck", onStuck);
     return () => window.removeEventListener("hyundai:subnav-stuck", onStuck);
   }, []);
+
   //Reset header to its top state. 
   useEffect(() => {
     subnavStuck.current = false;
     setHidden(false);
-    setAtTop(window.scrollY < 20);
+    const id = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setAtTop(window.scrollY < 20))
+    );
+    return () => cancelAnimationFrame(id);
   }, [pathname]);
+
   // close the offers dropdown on outside click
   useEffect(() => {
     if (!offersOpen) return;
@@ -267,7 +280,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                     </Link>
                   ))}
                 </div> */}
-                
+
               </div>
             </div>
 
@@ -418,7 +431,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
               </button>
 
               {/* Connect to a Service — accordion */}
-              <div>
+              {/* <div>
                 <button
                   onClick={() => setSvcMobileOpen((o) => !o)}
                   className="w-full flex items-center justify-between text-start py-3 text-base font-medium"
@@ -440,7 +453,7 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                     />
                   </svg>
                 </button>
-                {/* {svcMobileOpen && (
+                {svcMobileOpen && (
                   <div className="mb-2 ps-4 flex flex-col border-s-2 border-gray-100">
                     {serviceLinks.map(({ href, label, desc, Icon }) => (
                       <Link
@@ -457,8 +470,8 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
                       </Link>
                     ))}
                   </div>
-                )} */}
-              </div>
+                )}
+              </div> */}
 
               <Link href={`/${locale}/about-hyundai`} onClick={() => setMenuOpen(false)} className="py-3 text-base font-medium">
                 {dict.aboutUs}
