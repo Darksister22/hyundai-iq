@@ -270,7 +270,7 @@ function toVars(t: Tune): string {
 /* built once at module load, so server and client render the same string.
    --safe-top starts at 0 and is overwritten once the sticky bar is measured. */
 const STAGE_CSS =
-   `#visualizer{--safe-top:116px}@media (min-width:768px){#visualizer{--safe-top:72px}}` +  BREAKPOINTS.map(([key, min]) => {
+  `#visualizer{--safe-top:116px}@media (min-width:768px){#visualizer{--safe-top:72px}}` + BREAKPOINTS.map(([key, min]) => {
     const body = `#visualizer{${toVars(TUNE[key])}}`;
     return min === null ? body : `@media (min-width:${min}px){${body}}`;
   }).join("");
@@ -303,9 +303,78 @@ export default function VisualizerSection({
   const lastX = useRef(0);
   const acc = useRef(0);
   const frames = color?.spinFrames ?? [];
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const carImgRef = useRef<HTMLImageElement>(null);
+  const [bgAutoY, setBgAutoY] = useState<number | null>(null);
 
   // preload the active color's frames so spinning is seamless
   const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!frames.length) return;
+    let cancelled = false;
+
+    const measure = () => {
+      const img = new window.Image();
+      img.crossOrigin = "anonymous"; // required to read cross-origin pixels
+      img.src = frames[0]; // contact line is ~constant across rotation; one frame is enough
+      img.onload = () => {
+        if (cancelled) return;
+
+        // 1) find lowest opaque row as a fraction of the frame's own height
+        const H = 200, scale = H / img.naturalHeight;
+        const W = Math.max(1, Math.round(img.naturalWidth * scale));
+        const c = document.createElement("canvas");
+        c.width = W; c.height = H;
+        const ctx = c.getContext("2d", { willReadFrequently: true });
+        if (!ctx) return;
+        ctx.drawImage(img, 0, 0, W, H);
+
+        let data: Uint8ClampedArray;
+        try { data = ctx.getImageData(0, 0, W, H).data; }
+        catch { setBgAutoY(null); return; } // tainted → fall back to tuned value
+
+        let bottom = H - 1;
+        const ALPHA = 24;
+        scan: for (let y = H - 1; y >= 0; y--) {
+          for (let x = 0; x < W; x++) {
+            if (data[(y * W + x) * 4 + 3] > ALPHA) { bottom = y; break scan; }
+          }
+        }
+        const carBottomFrac = bottom / H; // 0..1 within the intrinsic frame
+
+        // 2) map that to the canvas, replicating object-contain placement of
+        //    the car <img> using its live rendered box (rect is post-transform)
+        const canvasEl = canvasRef.current, carEl = carImgRef.current;
+        if (!canvasEl || !carEl) return;
+        const cRect = canvasEl.getBoundingClientRect();
+        const bRect = carEl.getBoundingClientRect();
+        if (!cRect.width || !bRect.height) return;
+
+        const imgAspect = img.naturalWidth / img.naturalHeight;
+        const boxAspect = bRect.width / bRect.height;
+        // contain: which axis binds decides the rendered height + letterbox offset
+        const renderedH = imgAspect > boxAspect ? bRect.width / imgAspect : bRect.height;
+        const offsetY = (bRect.height - renderedH) / 2;
+
+        const carTopInCanvas = bRect.top - cRect.top;
+        const contactPx = carTopInCanvas + offsetY + carBottomFrac * renderedH;
+
+        // ellipse center = 50% of canvas + translateY(bgY); solve for bgY, → cqw
+        const bgYpx = contactPx - cRect.height / 2;
+        setBgAutoY((bgYpx * 100) / cRect.width - 11);      };
+    };
+
+    // wait a frame so the car box is laid out before we read its rect
+    const raf = requestAnimationFrame(measure);
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", measure);
+    };
+  }, [frames]);
+
   useEffect(() => {
     if (frames.length === 0) return;
     let done = 0;
@@ -408,6 +477,7 @@ export default function VisualizerSection({
                   available height = section height minus the sticky
                   sub-nav, so the canvas fits what's actually visible */}
               <div
+                ref={canvasRef}
                 className="absolute left-1/2 -translate-x-1/2"
                 style={{
                   width:
@@ -427,7 +497,9 @@ export default function VisualizerSection({
                   className="absolute left-1/2 top-1/2 max-w-none pointer-events-none select-none"
                   style={{
                     width: "var(--bg-size)",
-                    transform: "translate(-50%, -50%) translateY(var(--bg-y))",
+                    // measured baseline when available, else the tuned per-breakpoint value
+                    transform: `translate(-50%, -50%) translateY(${bgAutoY !== null ? `${bgAutoY.toFixed(3)}cqw` : "var(--bg-y)"
+                      })`,
                   }}
                 />
 
@@ -458,6 +530,7 @@ export default function VisualizerSection({
                 {/* CAR FRAMES — driven by carSize / carScale / carY */}
                 {/* eslint-disable-next-line @next/next/no-img-element -- hot-swapped per drag frame; next/image would fire an optimize request per frame */}
                 <img
+                ref={carImgRef}
                   src={frames[frame]}
                   alt=""
                   draggable={false}
@@ -508,17 +581,15 @@ export default function VisualizerSection({
         <div className="inline-flex bg-white rounded-full p-0.5 shadow-md">
           <button
             onClick={() => setTab("exterior")}
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-              tab === "exterior" ? "bg-[#111] text-white" : "text-gray-500"
-            }`}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${tab === "exterior" ? "bg-[#111] text-white" : "text-gray-500"
+              }`}
           >
             {exteriorLabel}
           </button>
           <button
             onClick={() => setTab("interior")}
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-              tab === "interior" ? "bg-[#111] text-white" : "text-gray-500"
-            }`}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${tab === "interior" ? "bg-[#111] text-white" : "text-gray-500"
+              }`}
           >
             {interiorLabel}
           </button>
@@ -527,17 +598,16 @@ export default function VisualizerSection({
 
       <div className="absolute bottom-5 inset-x-0 z-[2] flex flex-col items-center pointer-events-none">
         <p
-          className={`text-sm font-semibold mb-2 ${
-            tab === "interior" ? "text-white" : "text-[#111]"
-          }`}
+          className={`text-sm font-semibold mb-2 ${tab === "interior" ? "text-white" : "text-[#111]"
+            }`}
         >
           {tab === "exterior"
             ? isAr
               ? color?.nameAr
               : color?.nameEn
             : isAr
-            ? interior?.nameAr
-            : interior?.nameEn}
+              ? interior?.nameAr
+              : interior?.nameEn}
         </p>
 
         {/* exterior paint swatches */}
@@ -558,11 +628,10 @@ export default function VisualizerSection({
                 key={`${c.hex ?? c.nameEn}-${i}`}
                 onClick={() => selectColor(i)}
                 title={isAr ? c.nameAr : c.nameEn}
-                className={`w-7 h-7 rounded border-2 transition-transform ${
-                  colorIdx === i
+                className={`w-7 h-7 rounded border-2 transition-transform ${colorIdx === i
                     ? "border-[#111] scale-110"
                     : "border-transparent"
-                }`}
+                  }`}
                 style={{ backgroundColor: c.hex ?? "#ccc" }}
               />
             ))}
@@ -593,9 +662,8 @@ export default function VisualizerSection({
                 key={c.hex}
                 onClick={() => setIntIdx(i)}
                 title={isAr ? c.nameAr : c.nameEn}
-                className={`w-7 h-7 rounded border-2 transition-transform ${
-                  intIdx === i ? "border-white scale-110" : "border-transparent"
-                }`}
+                className={`w-7 h-7 rounded border-2 transition-transform ${intIdx === i ? "border-white scale-110" : "border-transparent"
+                  }`}
                 style={{ backgroundColor: c.hex }}
               />
             ))}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { isVideoUrl } from "@/lib/media";
 import { X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { IRAQI_GOVERNORATES } from "@/lib/iraqi-governorates";
@@ -188,7 +189,17 @@ export default function LeadFormPanel({
           <div className="mb-6">
             {modelImage && (
               <div className="relative w-full aspect-[16/9] mb-3">
-                <Image src={modelImage} alt={modelName} fill sizes="26rem" className="object-contain" />
+                {isVideoUrl(modelImage) ? (
+                  <video
+                    src={modelImage}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="absolute inset-0 h-full w-full object-contain"
+                  />
+                ) : (
+                  <Image src={modelImage} alt={modelName} fill sizes="26rem" className="object-contain" />
+                )}
               </div>
             )}
             <p className="text-xs text-gray-400">{dict.formYourCar}</p>

@@ -107,11 +107,11 @@ export default function Header({ locale, dict, categories, cars }: HeaderProps) 
 
   //header scroll state
 
-useEffect(() => {
+  useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY;
       if (findOpenRef.current) { setFindInstant(true); setFindOpen(false); }
-      setAtTop(current < 20);
+      setAtTop(current < 80);
       setSvcOpen(false);
       setOffersOpen(false);
       // At the top the sub-nav can't be stuck — clear the flag and show the
@@ -129,7 +129,7 @@ useEffect(() => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-// while a model page's sub nav is stuck to the top, the header stays hidden
+  // while a model page's sub nav is stuck to the top, the header stays hidden
   useEffect(() => {
     const onStuck = (e: Event) => {
       const stuck = (e as CustomEvent<boolean>).detail;

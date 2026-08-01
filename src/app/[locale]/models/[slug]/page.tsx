@@ -3,6 +3,7 @@ import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import { getCarBySlug, getAllCarSlugs } from "@/lib/model-detail-data";
 import ModelDetailClient from "@/components/model-detail-client";
 import { type Metadata } from "next";
+import { isVideoUrl } from "@/lib/media";
 
 export async function generateMetadata({
   params,
@@ -38,7 +39,7 @@ export async function generateMetadata({
     alternates: { canonical: `/${locale}/models/${slug}` },
     openGraph: {
       title: name,
-      images: model.hero ? [model.hero] : undefined,
+      images: model.hero && !isVideoUrl(model.hero) ? [model.hero] : undefined,
     },
   };
 }
@@ -78,7 +79,7 @@ export default async function ModelPage({
     "@type": "Product",
     name: `Hyundai ${isAr ? model.nameAr : model.nameEn}`,
     description: isAr ? model.heroHeadlineAr : model.heroHeadlineEn,
-    image: model.hero ? [model.hero] : undefined, brand: { "@type": "Brand", name: "Hyundai" },
+    image: model.hero && !isVideoUrl(model.hero) ? [model.hero] : undefined, brand: { "@type": "Brand", name: "Hyundai" },
     url: `${siteUrl}/${locale}/models/${slug}`,
     // Paint options double as product variants
     color: model.visualizer.colors
