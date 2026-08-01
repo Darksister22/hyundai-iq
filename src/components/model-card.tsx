@@ -6,6 +6,7 @@ import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
 import type { HomeCar } from "@/lib/find-car-data";
 import CarSpinner from "./car-spinner";
+import { isVideoUrl } from "@/lib/media";
 
 interface Props {
   locale: Locale;
@@ -111,14 +112,24 @@ export default function ModelCard({
 
           <div className="absolute inset-0 flex items-center justify-center p-6 pt-16">
             {idleImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={idleImage}
-                alt={name}
-                draggable={false}
-                loading="lazy"
-                className="w-full h-40 object-contain"
-              />
+              isVideoUrl(idleImage) ? (
+                <video
+                  src={idleImage}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-40 object-contain"
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={idleImage}
+                  alt={name}
+                  draggable={false}
+                  loading="lazy"
+                  className="w-full h-40 object-contain"
+                />
+              )
             ) : (
               <div className="w-full h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
                 {car.nameEn}

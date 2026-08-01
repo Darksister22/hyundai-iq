@@ -52,7 +52,7 @@ export default function CarHoverMedia({ hoverImage, alt, label, active }: Props)
       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
         <span className="inline-flex items-center gap-2 text-white text-lg font-semibold">
           {label}
-          <span aria-hidden className="inline-block rtl:rotate-180">›</span>
+          <span aria-hidden className="inline-block ">›</span>
         </span>
       </div>
     </div>

@@ -8,6 +8,7 @@ import gsap from "gsap";
 import type { Locale } from "@/lib/i18n";
 import type { FindCarCategory, FindCarCar } from "@/lib/find-car-data";
 import CarHoverMedia from "./car-hover-media";
+import { isVideoUrl } from "@/lib/media";
 
 interface Props {
   locale: Locale;
@@ -233,13 +234,23 @@ export default function FindCarPanel({
                     <div className="flex-1 flex items-center justify-center overflow-hidden min-h-[220px]">
                       <div className="relative w-full h-[220px]">
                         {(m.spinFrame ?? m.heroImage) ? (
-                          <Image
-                            src={m.spinFrame ?? m.heroImage!}
-                            alt={carName(m)}
-                            fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            className="object-contain"
-                          />
+                          isVideoUrl(m.spinFrame ?? m.heroImage) ? (
+                            <video
+                              src={(m.spinFrame ?? m.heroImage)!}
+                              muted
+                              playsInline
+                              preload="metadata"
+                              className="absolute inset-0 w-full h-full object-contain"
+                            />
+                          ) : (
+                            <Image
+                              src={m.spinFrame ?? m.heroImage!}
+                              alt={carName(m)}
+                              fill
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                              className="object-contain"
+                            />
+                          )
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-400">
                           </div>

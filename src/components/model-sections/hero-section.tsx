@@ -3,6 +3,7 @@
 import type { Locale } from "@/lib/i18n";
 import type { VehicleModel } from "@/lib/models-data";
 import ImageWithLoader from "../loaders/loading-image";
+import { isVideoUrl } from "@/lib/media";
 
 interface Props {
   locale: Locale;
@@ -26,16 +27,27 @@ export default function HeroSection({
 
   return (
 <section className="relative h-[100lvh] -mt-[72px] min-h-[560px] w-full overflow-hidden bg-gray-300">      {/* full-bleed exterior image */}
-      {model.hero && (
-        <ImageWithLoader 
-        src={model.hero}
-        fill
-        unoptimized
-          alt={locale === "ar" ? model.nameAr : model.nameEn}
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="lazy"/>
-
-      )}
+      {model.hero &&
+        (isVideoUrl(model.hero) ? (
+          <video
+            src={model.hero}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <ImageWithLoader
+            src={model.hero}
+            fill
+            unoptimized
+            alt={locale === "ar" ? model.nameAr : model.nameEn}
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+        ))}
 
       {/* dark gradient for text legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
